@@ -1,4 +1,4 @@
-# memorymanager
+# Quick Note
 Software to save command line arguments as 'memories'
 
 
