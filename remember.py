@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Created by Simon Camacho on
-# July 24, 2020. Memory Manager
+# July 24, 2020. Quick Note 
 # is an application to save little
 # memories for the user which can
 # then be reported back at any point
@@ -15,18 +15,41 @@ import sys
 import os.path
 from os import path
 
+# Color Definitions
+BOLD = '\033[1m'
+ITALIC = '\033[3m'
+RESET = '\033[0m'
+
+
+# Given a filename and a row number,
+# removes the memory at that row number
+def remove_memory(filename, row):
+	memories = []
+	with open(filename, 'r') as f:
+		counter = 1
+		for memory in f:
+			if row != counter:
+				memories.append(memory)
+			counter += 1
+	with open(filename, 'w') as f:
+		for memory in memories:
+			f.write(memory)
+
+# this is pretty inefficient as is. Maybe can be done in place without overwriting the entire file?	
+# can the file be collapsed somehow?
+
 
 # Given a filename, removes all
 # memories from that file
 def clear_memories(filename):
-	prompt = 'Are you sure you want to clear your current memories? There is no going back (y/n): '
-	decision = input('Are you sure you want to clear your current memories? There is no going back (y/n): ')
+	prompt = 'Are you sure you want to clear your current memories?' + BOLD + ' There is no going back (y/n): ' + RESET
+	decision = input(prompt)
 	while (decision != 'y') and (decision != 'n'):
-		decision = input('Are you sure you want to clear your current memories? There is no going back (y/n): ')
+		decision = input(prompt)
 	if decision == 'y':
 		open(filename, 'w').close()
 		print('Memories cleared')
-	elif decision == 'n':
+	elif decision == 'n': # this probably isn't necessary (i.e. don't need to check, could be an else)
 		print('Memory clearing aborted')	
 
 
@@ -38,10 +61,10 @@ def add_memory(filename, args):
 		temp_memory = '';
 		for word in args:
 			temp_memory += word + ' '
-		memory = temp_memory.strip()
+		memory = temp_memory.strip() + '\n'
 		f.write(memory)
-		f.write('\n') # probably a better way to do this
-		print('Remembered \'', memory, '\'', sep='')
+		# f.write('\n') # probably a better way to do this
+		print('Remembered \'', temp_memory.strip(), '\'', sep='')
 		# add the ability to clear reminders
 		# add the ability to archive reminders
 
@@ -53,24 +76,37 @@ def list_memories(filename):
 		print('You have no memories currently')
 		return;
 	with open(filename, 'r') as f:
+		counter = 1
 		for memory in f:
-			if memory != '': # this isn't working quite right
-				print(memory)
+			memory = str(counter) + '. ' + memory 
+			print(memory, end='')
+			counter += 1
+
+
+
+# add list numbers to memory list
+# get rid of the extra line in between -- DONE
+# add at the top how many lines there are
+# maybe save this at the top of the file?
+# 
+# display can be changed? Like default does oldest first
+# but can give a flag to do in reverse?
+# 
 
 
 # Prints some help/usage information
 def get_help():
-	print('If you would like to add a memory, type \'remember your_memory\'')
-	print('If you would like to view current memories, type \'remember --list\'')
-	print('If you would like to clear your current memories, type \'remember --clear\'')
+	print('If you would like to' + BOLD + ' add' + RESET + ' a memory, type \'remember' + ITALIC + ' your_memory' + RESET + '\'')
+	print('If you would like to' + BOLD + ' view' + RESET + ' current memories, type \'remember --list\'')
+	print('If you would like to' + BOLD + ' clear' + RESET + ' your current memories, type \'remember --clear\'')	
+	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'')
 
 
 # Prints some random info about Memory Manager
 def info():
-	print('Memory Mananger is a simple note-taking software designed by Simon Camacho for his personal use')
+	print(BOLD + 'Quick Note' + RESET + ' is an open-source note-taking software designed for personal use')
 	print('If you need help, type \'remember --help\'')
 	# print a random quote??
-
 
 
 def main():
@@ -85,7 +121,11 @@ def main():
 		elif args[0] == '--help':
 			get_help()
 	elif len(args) >= 1:
-		add_memory(filename, args)
+		if len(args) == 2:
+			if args[0] == '--remove':
+				remove_memory(filename, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
+		else:
+			add_memory(filename, args)
 	else:
 		info()
 
