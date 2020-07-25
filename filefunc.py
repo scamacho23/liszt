@@ -15,5 +15,6 @@ def add_file(filename):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
 		return;
 	else:
-		open(filename, 'w+')	
+		dot_name = '.' + filename
+		open(dot_name, 'w+')	
 

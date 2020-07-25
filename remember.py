@@ -14,7 +14,7 @@
 import sys
 import os.path
 from os import path
-import filefunc
+import filefunc as ff
 
 # Color Definitions
 BOLD = '\033[1m'
@@ -124,7 +124,7 @@ def main():
 			if args[0] == '--remove':
 				remove_memory(filename, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
 			elif args[0] == '--add-note':
-				add_file(args[1])
+				ff.add_file(args[1])
 		else:
 			add_memory(filename, args)
 	else:
