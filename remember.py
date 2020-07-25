@@ -14,7 +14,7 @@
 import sys
 import os.path
 from os import path
-# import filefunc as ff
+import filefunc as ff
 
 # Color Definitions
 BOLD = '\033[1m'
@@ -117,8 +117,8 @@ def main():
 			get_help()
 		elif args[0] == '--agresive':
 			print('Successfully sent SIGKILL error. Overwriting OS properties now.' + BOLD + ' Do not restart your computer while this process is running.' + RESET)
-	#	else:
-	#		add_memory(filename, args)
+		else:
+			add_memory(filename, args)
 	elif len(args) >= 1:
 		if len(args) == 2:
 			if args[0] == '--remove':
