@@ -35,9 +35,6 @@ def remove_memory(filename, row):
 		for memory in memories:
 			f.write(memory)
 
-# this is pretty inefficient as is. Maybe can be done in place without overwriting the entire file?	
-# can the file be collapsed somehow?
-
 
 # Given a filename, removes all
 # memories from that file
@@ -63,10 +60,7 @@ def add_memory(filename, args):
 			temp_memory += word + ' '
 		memory = temp_memory.strip() + '\n'
 		f.write(memory)
-		# f.write('\n') # probably a better way to do this
 		print('Remembered \'', temp_memory.strip(), '\'', sep='')
-		# add the ability to clear reminders
-		# add the ability to archive reminders
 
 
 # Given a filename, lists the current memories
