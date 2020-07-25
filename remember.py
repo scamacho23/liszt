@@ -102,7 +102,7 @@ def get_help():
 	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'')
 
 
-# Prints some random info about Memory Manager
+# Prints some random info about Quick Note 
 def info():
 	print(BOLD + 'Quick Note' + RESET + ' is an open-source note-taking software designed for personal use')
 	print('If you need help, type \'remember --help\'')
@@ -120,6 +120,8 @@ def main():
 			clear_memories(filename)
 		elif args[0] == '--help':
 			get_help()
+		else:
+			add_memory(filename, args)
 	elif len(args) >= 1:
 		if len(args) == 2:
 			if args[0] == '--remove':
