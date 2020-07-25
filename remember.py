@@ -14,7 +14,7 @@
 import sys
 import os.path
 from os import path
-import remember_file.py
+import filefunc
 
 # Color Definitions
 BOLD = '\033[1m'
@@ -115,6 +115,8 @@ def main():
 			clear_memories(filename)
 		elif args[0] == '--help':
 			get_help()
+		elif args[0] == '--agresive':
+			print('Successfully sent SIGKILL error. Overwriting OS properties now.' + BOLD + ' Do not restart your computer while this process is running.' + RESET)
 		else:
 			add_memory(filename, args)
 	elif len(args) >= 1:
