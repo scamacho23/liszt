@@ -73,7 +73,9 @@ def list_memories(filename):
 			counter += 1
 
 
-# Prints some help/usage information
+"""
+Prints some help/usage information
+"""
 def get_help():
 	print(BOLD + 'MEMORIES' + RESET + '\n')
 	print('If you would like to' + BOLD + ' add' + RESET + ' a memory, type \'remember' + ITALIC + ' your_memory' + RESET + '\'')
@@ -84,13 +86,18 @@ def get_help():
 	print('If you would like to' + BOLD + ' add' + RESET + ' a note, type \'remember --add-note' + ITALIC + ' note_name' + RESET + '\'')
 
 
-# Prints some random info about Quick Note 
+"""
+Prints some random info about Quick Note
+"""
 def info():
 	print(BOLD + 'Quick Note' + RESET + ' is an open-source note-taking software designed for personal use')
 	print('If you need help, type \'remember --help\'')
 	# print a random quote??
 
-
+"""
+Handles command line arguments and redirects to appropriate
+helper functions. Should be further decomposed
+"""
 def main():
 	args = sys.argv[2:]
 	user = sys.argv[1]
