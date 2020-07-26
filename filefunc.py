@@ -7,9 +7,12 @@ import sys
 import os.path
 from os import path
 
-# Given a filename, adds a dot file with
-# the given name, which will then be set 
-# as the default file for memories
+
+"""
+Given a filename, adds a dot file with
+the given name, which will then be set 
+as the default file for memories
+"""
 def add_file(args):
 	filename = ''
 	for word in args:
@@ -21,6 +24,18 @@ def add_file(args):
 	else:
 		dot_name = '.' + filename
 		open(dot_name, 'w+')
+		with open('.filelist', 'a') as f:
+			f.write(filename)
 		print('Added new note with name \'' + filename + '\'')
 
 
+"""
+Prints the list of current memory files
+"""
+def list_files():
+	counter = 1
+	with open('.filelist', 'r') as f:
+		for filename in f:
+			filename = str(counter) + '. ' + filename
+			print(filename)
+			counter += 1
