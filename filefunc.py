@@ -13,18 +13,19 @@ Given a filename, adds a dot file with
 the given name, which will then be set 
 as the default file for memories
 """
-def add_file(args):
+def add_file(user, args):
 	filename = ''
 	for word in args:
 		filename += word + ' '
-	filename = filename.strip() 
-	if path.isfile(filename):
+	filename = filename.strip()
+	dot_name = '/User/' + user + '/.quicknote/.' + filename 
+	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
 		return;
 	else:
-		dot_name = '.' + filename
-		open(dot_name, 'w+')
-		with open('.filelist', 'a') as f:
+		file_list = '/User/' + user + '/.quicknote/.filelist'
+		open(filename, 'w+')
+		with open(filename, 'a') as f:
 			f.write(filename)
 		print('Added new note with name \'' + filename + '\'')
 
@@ -32,9 +33,10 @@ def add_file(args):
 """
 Prints the list of current memory files
 """
-def list_files():
+def list_files(user):
 	counter = 1
-	with open('.filelist', 'r') as f:
+	file_path = '/Users/' + user + '/.quicknote/.filelist'
+	with open(file_path, 'r') as f:
 		for filename in f:
 			filename = str(counter) + '. ' + filename
 			print(filename)

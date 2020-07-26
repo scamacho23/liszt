@@ -84,7 +84,7 @@ def get_help():
 	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'\n')
 	print(BOLD + 'NOTES' + RESET + '\n')
 	print('If you would like to' + BOLD + ' add' + RESET + ' a note, type \'remember --add-note' + ITALIC + ' note_name' + RESET + '\'')
-
+	print('If you would like to' + BOLD + ' view' + RESET + ' current notes, type \'remember --list-note\'')
 
 """
 Prints some random info about Quick Note
@@ -101,23 +101,26 @@ helper functions. Should be further decomposed
 def main():
 	args = sys.argv[2:]
 	user = sys.argv[1]
-	filename = '/Users/' + user + '/.memories'
+	filename = '/Users/' + user + '/.quicknote/.memories' # this is deprecated and needs to be fixed
 	if len(args) == 1:
-		if args[0] == '--list':
+		command = args[0]
+		if command == '--list':
 			list_memories(filename)
-		elif args[0] == '--clear':
+		elif command == '--clear':
 			clear_memories(filename)
-		elif args[0] == '--help':
+		elif command == '--help':
 			get_help()
-		elif args[0] == '--version':
+		elif command == '--version':
 			print('Quick Note v.1.0.1')
+		elif command == '--list-note':
+			ff.list_files(user) 
 		else:
 			add_memory(filename, args)
 	elif len(args) >= 1:
 		if args[0] == '--remove':
 			remove_memory(filename, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
 		elif args[0] == '--add-note':
-				ff.add_file(args[1:])
+				ff.add_file(user, args[1:])
 		else:
 			add_memory(filename, args)
 	else:
