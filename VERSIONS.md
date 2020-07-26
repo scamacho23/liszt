@@ -11,7 +11,7 @@ clear_memories, list_memories, get_help
 and info methods. 
 
 **@version 1.0.1**: July 25-26, 2020
-Added remove_memory method, and begun
+Added remove_memory method, and began
 work on file adding and manipulation
 methods
 
