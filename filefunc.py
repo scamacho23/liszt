@@ -10,11 +10,17 @@ from os import path
 # Given a filename, adds a dot file with
 # the given name, which will then be set 
 # as the default file for memories
-def add_file(filename):
+def add_file(args):
+	filename = ''
+	for word in args:
+		filename += word + ' '
+	filename = filename.strip() 
 	if path.isfile(filename):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
 		return;
 	else:
 		dot_name = '.' + filename
-		open(dot_name, 'w+')	
+		open(dot_name, 'w+')
+		print('Added new note with name \'' + filename + '\'')
+
 
