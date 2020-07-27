@@ -15,4 +15,8 @@ Added remove_memory method, and began
 work on file adding and manipulation
 methods
 
+**@version 1.0.2**: July 27, 2020
+Added initial add_file, list_files,
+and change_file methods.
+
 *Type `remember --version` to view your version of **Quick Note***
