@@ -18,9 +18,11 @@ def make_memory_folder(user):
 Given the current user, makes a file to contain
 the names of all of the users note-files
 """
-def make_file_list(user):
-	file_path = '/Users/' + user + '/.quicknote/.filelist'
-	open(file_path, 'w+')
+def make_background_files(user):
+	file_list = '/Users/' + user + '/.quicknote/.filelist'
+	open(file_list, 'w+')
+	quicknote_cache = '/Users/' + user + '/.quicknote/.quicknote_cache'
+	open(quicknote_cache, 'w+')
 		 
 
 def main():
@@ -28,7 +30,7 @@ def main():
 	if len(args) == 1:
 		user = args[0]
 		make_memory_folder(user)
-		make_file_list(user)
+		make_background_files(user)
 	else:
 		print("Quick Note installation unsuccesfful. Please try again")
 
