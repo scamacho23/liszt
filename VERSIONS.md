@@ -34,5 +34,7 @@ commands to main.py help command. Added simpler file
 pathing to eliminate the need for the `$USER` argument
 in the command. Added the CONTRIBUTING.md file. Made
 the install.py file add a default note upon installation.
+Further fixed `rename_note`, added `remove_note` and `clear_note`
+methods.
 
 *Type `remember --version` to view your version of **Quick Note***
