@@ -14,12 +14,13 @@ Given a filename and a row number,
 removes the memory at that row number
 """
 def remove_memory(filename, row):
+	memories = []
 	with open(filename, "r") as f:
-		lines = f.readlines()
-	del lines[row]
+		memories = f.readlines()
+	del memories[row]
 	with open(filename, "w") as f:
-		for line in lines:
-			f.write(line)
+		for memory in memories:
+			f.write(memory)
 
 
 """
