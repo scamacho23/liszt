@@ -45,8 +45,17 @@ def list_notes(file_list):
 Given a filename, removes a file with that name
 if it exists
 """
-def remove_note(filename):
-	pass	
+def remove_note(filename, file_list):
+	if os.path.exists("demofile.txt"):
+		os.remove("demofile.txt")
+		with open(file_list, "r") as f:
+			lines = f.readlines()
+		with open(file_list, "w") as f:
+			for line in lines:
+				if line.strip("\n") != filename:
+					f.write(line)
+	else:
+		print("The file does not exist")
 
 
 """

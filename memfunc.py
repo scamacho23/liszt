@@ -14,19 +14,12 @@ Given a filename and a row number,
 removes the memory at that row number
 """
 def remove_memory(filename, row):
-	memories = []
-	with open(filename, 'r') as f:
-		counter = 1
-		for memory in f:
-			if row != counter:
-				memories.append(memory)
-			else:
-				memory = memory[:-1]
-				print('Removed memory with name \'' + memory + '\'')
-			counter += 1
-	with open(filename, 'w') as f:
-		for memory in memories:
-			f.write(memory)
+	with open(filename, "r") as f:
+		lines = f.readlines()
+	del lines[row]
+	with open("yourfile.txt", "w") as f:
+		for line in lines:
+			f.write(line)
 
 
 """
