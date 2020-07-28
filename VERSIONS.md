@@ -32,6 +32,7 @@ July 28, 2020
 Fixed existing version of `rename_note`, added sample 
 commands to main.py help command. Added simpler file 
 pathing to eliminate the need for the `$USER` argument
-in the command. 
+in the command. Added the CONTRIBUTING.md file. Made
+the install.py file add a default note upon installation.
 
 *Type `remember --version` to view your version of **Quick Note***
