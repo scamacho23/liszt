@@ -29,7 +29,7 @@ and `change_file` methods.
 ## **@version 1.0.3** ##
 July 28, 2020
 
-Fixed existing version of rename_note,
+Fixed existing version of `rename_note`,
 added sample commands to main.py help
 command
 

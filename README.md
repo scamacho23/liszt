@@ -16,3 +16,16 @@ For more information, see the `CONTRIBUTING.md` file.
 This project is fully open-source. We appreciate all the help
 we can get and are very open to beginners and anyone interested
 in helping.
+
+## Community Information
+As this project is simply being done in the free time of a few
+bored college students, **Quick Note** is not the –– and will not ––
+progress quickly (oh, the irony) without the help of others. At this
+point, **Quick Note** only works for OS X, and even then there are
+a number of issues (see [Installation](#Installation)). Bear with
+us while we figure this out.
+
+For users without `homebrew`, we hope to have a separate installer
+available soon. Still, the project will likely only work for OS X
+for the forseeable future. Portability to Linux should not be
+that hard to achieve, but Windows is another matter.
