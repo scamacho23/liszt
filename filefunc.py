@@ -81,9 +81,15 @@ def remove_note(args, file_list):
 """
 Clears all notes
 """
-def clear_notes():
-	pass
-
+def clear_notes(file_list):
+	with open(file_list, "r") as f:
+		lines = f.readlines()
+	for line in lines:
+		line = line.strip("\n")
+		filename = path.expanduser("~/.quicknote/." + line)
+		if os.path.exists(filename):
+			os.remove(filename)
+	open(file_list, "w").close()
 
 """
 Returns the name of the current working note
