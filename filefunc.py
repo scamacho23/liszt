@@ -19,8 +19,7 @@ def add_note(args, file_list):
 	for word in args:
 		filename += word + ' '
 	filename = filename.strip()
-	dot_name = '~/.quicknote/.' + filename 
-	dot_name = path.expanduser(dot_name)
+	dot_name = path.expanduser('~/.quicknote/.' + filename)
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
 		return;
@@ -110,15 +109,13 @@ def rename_note(args, file_list):
 		old_name += args[counter] + ' '
 		counter += 1 		
 	old_name = old_name.strip()
-	old_path = prefix + old_name
-	old_path = path.expanduser(old_path)
+	old_path = path.expanduser(prefix + old_name)
 	counter += 1
 	while not counter == len(args):
 		new_name += args[counter] + ' '
 		counter += 1 		
 	new_name = new_name.strip()
-	new_path = prefix + new_name
-	new_path = path.expanduser(new_path)
+	new_path = path.expanduser(prefix + new_name)
 	os.rename(old_path, new_path)
 	index = 0
 	with open(file_list, 'r') as f:

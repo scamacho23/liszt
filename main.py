@@ -18,12 +18,9 @@ Given the user, returns a list containing
 """
 def background_info():
 	files = []
-	quicknote_cache	= '~/.quicknote/.quicknote_cache'
-	quicknote_cache = path.expanduser(quicknote_cache)
-	file_list = '~/.quicknote/.filelist'
-	current_note = '~/.quicknote/.' + ff.get_current_note(quicknote_cache)
-	file_list = path.expanduser(file_list)
-	current_note = path.expanduser(current_note)
+	quicknote_cache = path.expanduser('~/.quicknote/.quicknote_cache')
+	file_list = path.expanduser('~/.quicknote/.filelist')
+	current_note = path.expanduser('~/.quicknote/.' + ff.get_current_note(quicknote_cache))
 	files.append(quicknote_cache)
 	files.append(file_list)
 	files.append(current_note)
@@ -42,6 +39,11 @@ def get_version():
 Prints some help/usage information
 """
 def get_help():
+	get_version()
+	print('\n', end='')
+	print(BOLD + 'GENERAL' + RESET + '\n')
+	print('\'Notes\' are files where we store your thoughts')
+	print('\'Memories\' are the individual entries in each note\n')
 	print(BOLD + 'MEMORIES' + RESET + '\n')
 	print('If you would like to' + BOLD + ' add' + RESET + ' a memory, type \'remember' + ITALIC + ' your_memory' + RESET + '\'')
 	print('If you would like to' + BOLD + ' view' + RESET + ' current memories, type \'remember --list\'')
