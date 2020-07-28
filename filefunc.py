@@ -9,6 +9,11 @@ import os.path
 from os import path
 
 
+# Color Definiitons
+BOLD = '\033[1m'
+RESET = '\033[0m'
+
+
 """
 Given a filename, adds a dot file with
 the given name, which will then be set 
@@ -45,17 +50,32 @@ def list_notes(file_list):
 Given a filename, removes a file with that name
 if it exists
 """
-def remove_note(filename, file_list):
-	if os.path.exists(filename):
-		os.remove(filename)
-		with open(file_list, "r") as f:
-			lines = f.readlines()
-		with open(file_list, "w") as f:
-			for line in lines:
-				if line.strip("\n") != filename:
-					f.write(line)
-	else:
-		print("The file does not exist")
+def remove_note(args, file_list):
+	filename_to_remove = ''
+	for word in args:
+		filename_to_remove += word + ' '
+	filename_to_remove = filename_to_remove.strip()
+
+	prompt = 'Are you sure you want to remove the note \'' + filename_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
+	decision = input(prompt)
+	while (decision != 'y') and (decision != 'n'):
+		decision = input(prompt)
+	if decision == 'n':
+		print('Note removal aborted')
+	elif decision == 'y': # this probably isn't necessary (i.e. don't need to check, could be an else)
+		file_to_remove = path.expanduser('~/.quicknote/.' + filename_to_remove)
+		files = []
+		if path.isfile(file_to_remove):
+			os.remove(file_to_remove)
+			with open(file_list, "r") as f:
+				files = f.readlines()
+			with open(file_list, "w") as f:
+				for filename in files:
+					if not filename.strip("\n") == filename_to_remove:
+						f.write(filename)
+			print('Removed note \'' + filename_to_remove + '\'')
+		else:
+			print("The file does not exist")
 
 
 """
@@ -126,13 +146,12 @@ def rename_note(args, file_list):
 	new_path = path.expanduser(prefix + new_name)
 	os.rename(old_path, new_path)
 	files = []
-	with open(file_list, 'r') as f:
-		for filename in f:
-			if not filename[:-1] == old_name:
-				files.append(filename) 
-	with open(file_list, 'w') as f:
+	with open(file_list, "r") as f:
+		files = f.readlines()
+	with open(file_list, "w") as f:
 		for filename in files:
-			f.write(filename)	
-		f.write(new_name)
+			if not filename.strip("\n") == old_name:
+				f.write(filename)
+		f.write(new_name + '\n')
 	print('Renamed \'' + old_name + '\' to \'' + new_name + '\'')	
 

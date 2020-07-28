@@ -55,7 +55,8 @@ def get_help():
 	print('If you would like to' + BOLD + ' view' + RESET + ' the default note, type \'remember --current-note\'')
 	print('If you would like to' + BOLD + ' change' + RESET + ' the default note, type \'remember --change-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' rename' + RESET + ' a note, type \'remember --rename-note' + ITALIC + ' note_to_rename' + RESET + ' / ' + ITALIC + 'new_name' + RESET + '\'')
-	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular note, type \'remember --remove-note' + ITALIC + ' row_number' + RESET + '\'')
+	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular note, type \'remember --remove-note' + ITALIC + ' note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' remove' + RESET + ' the current note, type \'remember --remove-note')
 	print('If you would like to' + BOLD + ' clear' + RESET + ' your current notes, type \'remember --clear-notes\'')	
 
 
@@ -107,21 +108,23 @@ def main():
 			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
 		# this is for removing the default note
 		elif command == '--remove-note':
-			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
+			print('This functionality is currently under maintenance. Please try again later.')
+			return
+			ff.remove_note(ff.get_current_note(quicknote_cache), file_list)
 		else:
 			mf.add_memory(current_note, args)
 	elif len(args) >= 1:
 		if command == '--remove':
 			mf.remove_memory(current_note, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
 		elif command == '--add-note':
-				ff.add_note(args[1:], file_list)
+			ff.add_note(args[1:], file_list)
 		elif command == '--change-note':
-				ff.change_note(args[1:], quicknote_cache) 
+			ff.change_note(args[1:], quicknote_cache)
 		elif command == '--rename-note':
-				ff.rename_note(args[1:], file_list)
+			ff.rename_note(args[1:], file_list)
 		# this is for removing any note
 		elif command == '--remove-note':
-			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
+			ff.remove_note(args[1:], file_list)	
 		else:
 			mf.add_memory(current_note, args)
 
