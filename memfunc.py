@@ -21,6 +21,7 @@ def remove_memory(filename, row):
 			if row != counter:
 				memories.append(memory)
 			else:
+				memory = memory[:-1]
 				print('Removed note with name \'' + memory + '\'')
 			counter += 1
 	with open(filename, 'w') as f:
@@ -76,4 +77,8 @@ def list_memories(filename):
 			memory = str(counter) + '. ' + memory 
 			print(memory, end='')
 			counter += 1
+
+
+def archive_memory(row):
+	pass
 
