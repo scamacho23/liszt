@@ -29,3 +29,7 @@ For users without `homebrew`, we hope to have a separate installer
 available soon. Still, the project will likely only work for OS X
 for the forseeable future. Portability to Linux should not be
 that hard to achieve, but Windows is another matter.
+
+*There is a Slack channel for contributors. If you would like to join
+the channel, make a pull request and include in the comment that you
+would like to be added (and the email to be used for the invite).*
