@@ -29,7 +29,7 @@ def background_info(user):
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.2' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.3' + RESET) 
 	print('If you would like to update, run \'brew tap scamacho23/quicknote\'')
 
 

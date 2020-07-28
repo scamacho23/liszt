@@ -26,4 +26,11 @@ July 27, 2020
 Added initial `add_file`, `list_files`,
 and `change_file` methods.
 
+## **@version 1.0.3** ##
+July 28, 2020
+
+Fixed existing version of rename_note,
+added sample commands to main.py help
+command
+
 *Type `remember --version` to view your version of **Quick Note***
