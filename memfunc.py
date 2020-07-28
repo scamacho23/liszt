@@ -17,7 +17,8 @@ def remove_memory(filename, row):
 	memories = []
 	with open(filename, "r") as f:
 		memories = f.readlines()
-	del memories[row]
+	print('Removed memory \'' + memories[row - 1][:-1] + '\'')
+	del memories[row - 1]
 	with open(filename, "w") as f:
 		for memory in memories:
 			f.write(memory)
