@@ -15,16 +15,10 @@ removes the memory at that row number
 """
 def remove_memory(filename, row):
 	memories = []
-	with open(filename, 'r') as f:
-		counter = 1
-		for memory in f:
-			if not row == counter:
-				memories.append(memory)
-			else:
-				memory = memory[:-1]
-				print('Removed memory with name \'' + memory + '\'')
-			counter += 1
-	with open(filename, 'w') as f:
+	with open(filename, "r") as f:
+		memories = f.readlines()
+	del memories[row]
+	with open(filename, "w") as f:
 		for memory in memories:
 			f.write(memory)
 

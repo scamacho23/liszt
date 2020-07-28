@@ -22,7 +22,6 @@ def add_note(args, file_list):
 	dot_name = path.expanduser('~/.quicknote/.' + filename)
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
-		return;
 	else:
 		open(dot_name, 'w+')
 		with open(file_list, 'a') as f:
@@ -46,8 +45,17 @@ def list_notes(file_list):
 Given a filename, removes a file with that name
 if it exists
 """
-def remove_note(filename):
-	pass	
+def remove_note(filename, file_list):
+	if os.path.exists(filename):
+		os.remove(filename)
+		with open(file_list, "r") as f:
+			lines = f.readlines()
+		with open(file_list, "w") as f:
+			for line in lines:
+				if line.strip("\n") != filename:
+					f.write(line)
+	else:
+		print("The file does not exist")
 
 
 """
