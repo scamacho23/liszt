@@ -22,7 +22,6 @@ def add_note(args, file_list):
 	dot_name = path.expanduser('~/.quicknote/.' + filename)
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
-		return;
 	else:
 		open(dot_name, 'w+')
 		with open(file_list, 'a') as f:
