@@ -46,8 +46,8 @@ Given a filename, removes a file with that name
 if it exists
 """
 def remove_note(filename, file_list):
-	if os.path.exists("demofile.txt"):
-		os.remove("demofile.txt")
+	if os.path.exists(filename):
+		os.remove(filename)
 		with open(file_list, "r") as f:
 			lines = f.readlines()
 		with open(file_list, "w") as f:
