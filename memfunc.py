@@ -18,7 +18,7 @@ def remove_memory(filename, row):
 	with open(filename, 'r') as f:
 		counter = 1
 		for memory in f:
-			if row != counter:
+			if not row == counter:
 				memories.append(memory)
 			else:
 				memory = memory[:-1]

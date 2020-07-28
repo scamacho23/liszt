@@ -9,7 +9,7 @@ In your command line, enter `brew tap scamacho23/quicknote` to get a beta of **Q
 At the moment, you will also need to add an alias to your `.bashrc` or `.zshrc` (depending on if 
 you use bash or zsh) that reads as follows:
 
-`alias remember='python3 path/to/quicknote/in/homebrew $USER'`
+`alias remember='python3 path/to/quicknote/in/homebrew'`
 
 ## Contributing to the Project
 For more information, see the `CONTRIBUTING.md` file.
@@ -19,7 +19,7 @@ in helping.
 
 ## Community Information
 As this project is simply being done in the free time of a few
-bored college students, **Quick Note** is not the –– and will not ––
+bored college students, **Quick Note** is not –– and will not ––
 progress quickly (oh, the irony) without the help of others. At this
 point, **Quick Note** only works for OS X, and even then there are
 a number of issues (see [Installation](#Installation)). Bear with

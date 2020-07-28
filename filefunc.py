@@ -117,21 +117,14 @@ def rename_note(args, file_list):
 	new_name = new_name.strip()
 	new_path = path.expanduser(prefix + new_name)
 	os.rename(old_path, new_path)
-	index = 0
-	with open(file_list, 'r') as f:
-		for filename in f:
-			if filename[-1] == '\n':
-				filename = filename[:-1]
-			if filename == old_name:
-				break 
-			else:
-				index += 1
 	files = []
 	with open(file_list, 'r') as f:
-		files = f.readlines()
-		files[index] = new_name
+		for filename in f:
+			if not filename[:-1] == old_name:
+				files.append(filename) 
 	with open(file_list, 'w') as f:
-		f.writelines(files)	
-	
+		for filename in files:
+			f.write(filename)	
+		f.write(new_name)
 	print('Renamed \'' + old_name + '\' to \'' + new_name + '\'')	
 
