@@ -17,7 +17,7 @@ def remove_memory(filename, row):
 	with open(filename, "r") as f:
 		lines = f.readlines()
 	del lines[row]
-	with open("yourfile.txt", "w") as f:
+	with open(filename, "w") as f:
 		for line in lines:
 			f.write(line)
 
