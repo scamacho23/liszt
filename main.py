@@ -105,7 +105,7 @@ def main():
 		elif command == '--current-note':
 			print(ff.get_current_note(quicknote_cache))
 		elif command == '--clear-notes':
-			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
+			ff.clear_notes(file_list)
 		# this is for removing the default note
 		elif command == '--remove-note':
 			print('This functionality is currently under maintenance. Please try again later.')

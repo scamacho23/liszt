@@ -71,7 +71,7 @@ def remove_note(args, file_list):
 				files = f.readlines()
 			with open(file_list, "w") as f:
 				for filename in files:
-					if not filename.strip("\n") == filename_to_remove:
+					if not filename.strip('\n') == filename_to_remove:
 						f.write(filename)
 			print('Removed note \'' + filename_to_remove + '\'')
 		else:
@@ -82,14 +82,24 @@ def remove_note(args, file_list):
 Clears all notes
 """
 def clear_notes(file_list):
-	with open(file_list, "r") as f:
-		lines = f.readlines()
-	for line in lines:
-		line = line.strip("\n")
-		filename = path.expanduser("~/.quicknote/." + line)
-		if os.path.exists(filename):
-			os.remove(filename)
-	open(file_list, "w").close()
+	prompt = 'Are you sure you want to clear all of your notes?' + BOLD + ' There is no going back (y/n): ' + RESET
+	decision = input(prompt)
+	while (decision != 'y') and (decision != 'n'):
+		decision = input(prompt)
+	if decision == 'n':
+		print('Clearing of notes aborted')
+	elif decision == 'y':
+		filenames = []
+		with open(file_list, "r") as f:
+			filenames = f.readlines()
+		for filename in filenames:
+			filename = path.expanduser("~/.quicknote/." + filename.strip('\n'))
+			if path.isfile(filename):
+				os.remove(filename)
+		open(file_list, "w").close()
+		# Change current file in quicknote_cache?
+		print('Cleared all notes from Quick Note cache')
+
 
 """
 Returns the name of the current working note
@@ -156,7 +166,7 @@ def rename_note(args, file_list):
 		files = f.readlines()
 	with open(file_list, "w") as f:
 		for filename in files:
-			if not filename.strip("\n") == old_name:
+			if not filename.strip('\n') == old_name:
 				f.write(filename)
 		f.write(new_name + '\n')
 	print('Renamed \'' + old_name + '\' to \'' + new_name + '\'')	
