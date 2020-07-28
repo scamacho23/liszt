@@ -3,6 +3,8 @@
 import sys
 import filefunc as ff
 import memfunc as mf
+import os.path
+from os import path
 
 
 # Color Definitions
@@ -14,11 +16,14 @@ RESET = '\033[0m'
 """
 Given the user, returns a list containing
 """
-def background_info(user):
+def background_info():
 	files = []
-	quicknote_cache	= '/Users/' + user + '/.quicknote/.quicknote_cache'
-	file_list = '/Users/' + user + '/.quicknote/.filelist'
-	current_note = '/Users/' + user + '/.quicknote/.' + ff.get_current_note(quicknote_cache)
+	quicknote_cache	= '~/.quicknote/.quicknote_cache'
+	quicknote_cache = path.expanduser(quicknote_cache)
+	file_list = '~/.quicknote/.filelist'
+	current_note = '~/.quicknote/.' + ff.get_current_note(quicknote_cache)
+	file_list = path.expanduser(file_list)
+	current_note = path.expanduser(current_note)
 	files.append(quicknote_cache)
 	files.append(file_list)
 	files.append(current_note)
@@ -65,14 +70,23 @@ Handles command line arguments and redirects to appropriate
 helper functions. Should be further decomposed
 """
 def main():
-	args = sys.argv[2:]
-	user = sys.argv[1]
-	files = background_info(user)
+	args = sys.argv[1:]
+	files = background_info()
 
 	quicknote_cache = files[0]
 	file_list = files[1]
 	current_note = files[2]
-
+	
+	# removing unwanted new-line characters
+	if quicknote_cache[-1] == '\n':
+		quicknote_cache == quicknote_cache[:-1]
+	if file_list[-1] == '\n':
+		file_list == file_list[:-1]
+	if current_note[-1] == '\n':
+		current_note == current_note[:-1]
+	if len(args) == 0:
+		info()
+		return
 	command = args[0]
 	if len(args) == 1:
 		if command == '--list':
@@ -89,23 +103,25 @@ def main():
 			print(ff.get_current_note(quicknote_cache))
 		elif command == '--clear-notes':
 			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
+		# this is for removing the default note
+		elif command == '--remove-note':
+			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
 		else:
 			mf.add_memory(current_note, args)
 	elif len(args) >= 1:
 		if command == '--remove':
 			mf.remove_memory(current_note, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
 		elif command == '--add-note':
-				ff.add_note(user, args[1:], file_list)
+				ff.add_note(args[1:], file_list)
 		elif command == '--change-note':
-				ff.change_note(user, args[1:], quicknote_cache) 
+				ff.change_note(args[1:], quicknote_cache) 
 		elif command == '--rename-note':
-				ff.rename_note(user, args[1:], file_list)
+				ff.rename_note(args[1:], file_list)
+		# this is for removing any note
 		elif command == '--remove-note':
 			print('This functionality has not been set up yet. Please look for the next release of ' + BOLD + 'Quick Note' + RESET)
 		else:
 			mf.add_memory(current_note, args)
-	else:
-		info()
 
 
 if __name__ == '__main__':

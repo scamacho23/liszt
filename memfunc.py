@@ -22,7 +22,7 @@ def remove_memory(filename, row):
 				memories.append(memory)
 			else:
 				memory = memory[:-1]
-				print('Removed note with name \'' + memory + '\'')
+				print('Removed memory with name \'' + memory + '\'')
 			counter += 1
 	with open(filename, 'w') as f:
 		for memory in memories:
@@ -69,7 +69,7 @@ def list_memories(filename):
 		print('Hmmm. The current note doesn\'t seem to be working. Please try again later.')
 		return
 	elif path.getsize(filename) == 0:
-		print('You have no memories currently')
+		print('You have no memories on this note')
 		return
 	with open(filename, 'r') as f:
 		counter = 1

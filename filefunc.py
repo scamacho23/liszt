@@ -14,12 +14,13 @@ Given a filename, adds a dot file with
 the given name, which will then be set 
 as the default file for memories
 """
-def add_note(user, args, file_list):
+def add_note(args, file_list):
 	filename = ''
 	for word in args:
 		filename += word + ' '
 	filename = filename.strip()
-	dot_name = '/Users/' + user + '/.quicknote/.' + filename 
+	dot_name = '~/.quicknote/.' + filename 
+	dot_name = path.expanduser(dot_name)
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
 		return;
@@ -40,21 +41,20 @@ def list_notes(file_list):
 			filename = str(counter) + '. ' + filename
 			print(filename, end='')
 			counter += 1
-		print('\n')
 
 
 """
 Given a filename, removes a file with that name
 if it exists
 """
-def remove_note(user, filename):
+def remove_note(filename):
 	pass	
 
 
 """
 Clears all notes
 """
-def clear_notes(user):
+def clear_notes():
 	pass
 
 
@@ -71,8 +71,8 @@ def get_current_note(quicknote_cache):
 Given the user and a filename, changes the current note to 
 the filename
 """
-def change_note(user, args, quicknote_cache):
-	filename = '/Users/' + user + '/.quicknote/.'
+def change_note(args, quicknote_cache):
+	filename = '~/.quicknote/.'
 	name = ''
 	for word in args:
 		name += word + ' '
@@ -84,6 +84,7 @@ def change_note(user, args, quicknote_cache):
 			return
 
 	filename += name
+	filename = path.expanduser(filename)
 	if not path.isfile(filename):
 		print('Hmmm. The note you entered doesn\'t seem to exist. Please try again.')
 		return
@@ -100,8 +101,8 @@ def change_note(user, args, quicknote_cache):
 """
 Given a filename, renames the file
 """
-def rename_note(user, args, file_list):
-	prefix = '/Users/' + user + '/.quicknote/.'
+def rename_note(args, file_list):
+	prefix = '~/.quicknote/.'
 	old_name = ''
 	new_name = ''
 	counter = 0
@@ -110,12 +111,14 @@ def rename_note(user, args, file_list):
 		counter += 1 		
 	old_name = old_name.strip()
 	old_path = prefix + old_name
+	old_path = path.expanduser(old_path)
 	counter += 1
 	while not counter == len(args):
 		new_name += args[counter] + ' '
 		counter += 1 		
 	new_name = new_name.strip()
 	new_path = prefix + new_name
+	new_path = path.expanduser(new_path)
 	os.rename(old_path, new_path)
 	index = 0
 	with open(file_list, 'r') as f:
