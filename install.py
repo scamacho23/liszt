@@ -31,7 +31,7 @@ def make_background_files():
 """
 Makes the default note file
 """
-def make_default()
+def make_default():
 	default_file = path.expanduser('~/.quicknote/.default')
 	open(default_file, 'w+')
 
