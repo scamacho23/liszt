@@ -35,6 +35,9 @@ pathing to eliminate the need for the `$USER` argument
 in the command. Added the CONTRIBUTING.md file. Made
 the install.py file add a default note upon installation.
 Further fixed `rename_note`, added `remove_note` and `clear_note`
-methods. Added `import_note` method.
+methods. Added `import_note` method. Added helper functions to assist
+with code decomposition; these are `make_note`, `parse_binary_args`,
+`parse_unary_args`, and `request_user_permission`. Added the ability
+to export notes as `.txt` files by adding the `export_note` method.
 
 *Type `remember --version` to view your version of **Quick Note***

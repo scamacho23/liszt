@@ -59,6 +59,7 @@ def get_help():
 	print('If you would like to' + BOLD + ' remove' + RESET + ' the current note, type \'remember --remove-note')
 	print('If you would like to' + BOLD + ' clear' + RESET + ' your current notes, type \'remember --clear-notes\'')	
 	print('If you would like to' + BOLD + ' import' + RESET + ' a note, type \'remember --import-note' + ITALIC + ' file_to_import' + RESET + ' / ' + ITALIC + 'note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' export' + RESET + ' a note, type \'remember --export-note' + ITALIC + ' note_to_export' + RESET + ' / ' + ITALIC + 'new_file_name' + RESET + '\'')
 
 
 """
@@ -128,6 +129,8 @@ def main():
 			ff.remove_note(args[1:], file_list)	
 		elif command == '--import-note':
 			ff.import_note(args[1:], file_list)
+		elif command == '--export-note':
+			ff.export_note(args[1:], file_list)
 		else:
 			mf.add_memory(current_note, args)
 
