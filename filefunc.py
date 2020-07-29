@@ -7,11 +7,72 @@
 import sys
 import os.path
 from os import path
+import shutil
 
 
 # Color Definiitons
 BOLD = '\033[1m'
 RESET = '\033[0m'
+
+
+"""
+Given a dot_name, a filename, and the file_list,
+makes a new note with that name and
+adds the name to file_list
+"""
+def make_note(dot_name, filename, file_list):
+	if path.isfile(dot_name):
+		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
+		return True 
+	else:
+		open(dot_name, 'w+')
+		with open(file_list, 'a') as f:
+			f.write(filename + '\n')
+		print('Added new note \'' + filename + '\'')
+		return False 
+
+
+"""
+Given the name of a .txt file,
+makes a copy of that file as a .file
+to be used as a new note
+"""
+def import_note(args, file_list):
+	old_name = ''
+	new_name = ''
+	counter = 0
+	while (not args[counter] == '/') and (not counter == len(args)):
+		old_name += args[counter] + ' '
+		counter += 1 		
+	old_name = old_name.strip()
+	counter += 1
+	while not counter == len(args):
+		new_name += args[counter] + ' '
+		counter += 1 		
+	new_name = new_name.strip()
+	new_note = path.expanduser('~/.quicknote/.' + new_name)
+	new_note_exists = make_note(new_note, new_name, file_list)	
+	if not new_note_exists: 
+		shutil.copyfile(old_name, new_note)
+
+
+
+"""
+Given the name of a note, makes a 
+copy of the note which is then exported
+to the user's working directory
+"""
+def export_note():
+	pass
+
+
+"""
+Given the name of a note, moves the name
+of the note from the .filelist file and
+adds it to the .archived file
+"""
+def archive_note():
+	pass
 
 
 """
@@ -25,13 +86,7 @@ def add_note(args, file_list):
 		filename += word + ' '
 	filename = filename.strip()
 	dot_name = path.expanduser('~/.quicknote/.' + filename)
-	if path.isfile(dot_name):
-		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
-	else:
-		open(dot_name, 'w+')
-		with open(file_list, 'a') as f:
-			f.write(filename + '\n')
-		print('Added new note with name \'' + filename + '\'')
+	make_note(dot_name, filename, file_list)
 
 
 """
@@ -39,6 +94,9 @@ Prints the list of current memory files
 """
 def list_notes(file_list):
 	counter = 1
+	if path.getsize(file_list) == 0:
+		print('You have no notes')
+		return
 	with open(file_list, 'r') as f:
 		for filename in f:
 			filename = str(counter) + '. ' + filename
