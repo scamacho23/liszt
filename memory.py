@@ -3,11 +3,20 @@
 import sys
 import os.path
 from os import path
+import note
+import helper_func as hf
 
 # Color Definitions
 BOLD = '\033[1m'
 ITALIC = '\033[3m'
 RESET = '\033[0m'
+
+
+"""
+"""
+def check_file(filename, row):
+	pass
+
 
 """
 Given a filename and a row number,
@@ -20,7 +29,7 @@ def remove_memory(filename, row):
 	memories = []
 	with open(filename, "r") as f:
 		memories = f.readlines()
-	if row <= 0 or row >= len(memories):
+	if row <= 0 or row > len(memories):
 		print('You have entered in a faulty row number. Please try again.')
 		return
 	print('Removed memory \'' + memories[row - 1].strip('\n') + '\'')
@@ -35,10 +44,8 @@ Given a filename, removes all
 memories from that file
 """
 def clear_memories(filename):
-	prompt = 'Are you sure you want to clear your current memories?' + BOLD + ' There is no going back (y/n): ' + RESET
-	decision = input(prompt)
-	while (decision != 'y') and (decision != 'n'):
-		decision = input(prompt)
+	prompt = 'Are you sure you want to clear your current memories on this note?' + BOLD + ' There is no going back (y/n): ' + RESET
+	decision = hf.request_user_permission(prompt)
 	if decision == 'y':
 		open(filename, 'w').close()
 		print('Memories cleared')
@@ -53,12 +60,10 @@ the end of the file
 """
 def add_memory(filename, args):
 	with open(filename, 'a') as f:
-		temp_memory = ''
-		for word in args:
-			temp_memory += word + ' '
-		memory = temp_memory.strip() + '\n'
+		temp_memory = hf.parse_unary_args(args) 
+		memory = temp_memory + '\n'
 		f.write(memory)
-		print('Remembered \'', temp_memory.strip(), '\'', sep='')
+		print('Remembered \'', temp_memory, '\'', sep='')
 
 
 """
@@ -80,6 +85,12 @@ def list_memories(filename):
 			counter += 1
 
 
+"""
+Given a row number, removes the
+memory at that row and adds it to
+the '.archive' memory file
+"""
 def archive_memory(row):
 	pass
+	
 

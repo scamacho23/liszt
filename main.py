@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-import filefunc as ff
-import memfunc as mf
+import note
+import memory as mem
 import os.path
 from os import path
 
@@ -18,9 +18,12 @@ Given the user, returns a list containing
 """
 def background_info():
 	files = []
+	# this file holds any miscellaneous information that Quick Note needs –– at the moment, just the current file
 	quicknote_cache = path.expanduser('~/.quicknote/.quicknote_cache')
+	# this holds a list of the files (faster than using os to loop through the files in the dir)
 	file_list = path.expanduser('~/.quicknote/.filelist')
-	current_note = path.expanduser('~/.quicknote/.' + ff.get_current_note(quicknote_cache))
+	# this holds the name of the current note, as taken from quicknote_cache
+	current_note = path.expanduser('~/.quicknote/.' + note.get_current_note(quicknote_cache))
 	files.append(quicknote_cache)
 	files.append(file_list)
 	files.append(current_note)
@@ -52,8 +55,8 @@ def get_help():
 	print(BOLD + 'NOTES' + RESET + '\n')
 	print('If you would like to' + BOLD + ' add' + RESET + ' a note, type \'remember --add-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' view' + RESET + ' current notes, type \'remember --list-notes\'')
-	print('If you would like to' + BOLD + ' view' + RESET + ' the default note, type \'remember --current-note\'')
-	print('If you would like to' + BOLD + ' change' + RESET + ' the default note, type \'remember --change-note' + ITALIC + ' note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' view' + RESET + ' the current note, type \'remember --current-note\'')
+	print('If you would like to' + BOLD + ' change' + RESET + ' the current note, type \'remember --change-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' rename' + RESET + ' a note, type \'remember --rename-note' + ITALIC + ' note_to_rename' + RESET + ' / ' + ITALIC + 'new_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular note, type \'remember --remove-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' remove' + RESET + ' the current note, type \'remember --remove-note')
@@ -95,45 +98,46 @@ def main():
 	command = args[0]
 	if len(args) == 1:
 		if command == '--list':
-			mf.list_memories(current_note)
+			mem.list_memories(current_note)
 		elif command == '--clear':
-			mf.clear_memories(current_note)
+			mem.clear_memories(current_note)
 		elif command == '--help':
 			get_help()
 		elif command == '--version':
 			get_version()
 		elif command == '--list-notes':
-			ff.list_notes(file_list) 
+			note.list_notes(file_list) 
 		elif command == '--current-note':
-			print(ff.get_current_note(quicknote_cache))
+			print(note.get_current_note(quicknote_cache))
 		elif command == '--clear-notes':
-			ff.clear_notes(file_list)
+			note.clear_notes(file_list, current_note, quicknote_cache)
 		# this is for removing the default note
 		elif command == '--remove-note':
 			print('This functionality is currently under maintenance. Please try again later.')
 			return
-			ff.remove_note(ff.get_current_note(quicknote_cache), file_list)
+			note.remove_note(note.get_current_note(quicknote_cache), file_list)
 		else:
-			mf.add_memory(current_note, args)
+			mem.add_memory(current_note, args)
 	elif len(args) >= 1:
 		if command == '--remove':
-			mf.remove_memory(current_note, int(args[1])) # need to add error checking in case someone enters a faulty row number or a non-digit
+			mem.remove_memory(current_note, int(args[1])) 
 		elif command == '--add-note':
-			ff.add_note(args[1:], file_list)
+			note.add_note(args[1:], file_list)
 		elif command == '--change-note':
-			ff.change_note(args[1:], quicknote_cache)
+			note.change_note(args[1:], quicknote_cache, current_note)
 		elif command == '--rename-note':
-			ff.rename_note(args[1:], file_list)
+			note.rename_note(args[1:], file_list, quicknote_cache)
 		# this is for removing any note
 		elif command == '--remove-note':
-			ff.remove_note(args[1:], file_list)	
+			note.remove_note(args[1:], file_list)	
 		elif command == '--import-note':
-			ff.import_note(args[1:], file_list)
+			note.import_note(args[1:], file_list)
 		elif command == '--export-note':
-			ff.export_note(args[1:], file_list)
+			note.export_note(args[1:], file_list)
 		else:
-			mf.add_memory(current_note, args)
+			mem.add_memory(current_note, args)
 
 
 if __name__ == '__main__':
 	main()	
+
