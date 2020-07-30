@@ -13,30 +13,19 @@ RESET = '\033[0m'
 
 
 """
-"""
-def check_file(filename, row):
-	pass
-
-
-"""
 Given a filename and a row number,
 removes the memory at that row number
 """
 def remove_memory(filename, row):
-	if not isinstance(row, int):
-		print('You have entered in a faulty row number. Please choose an integer value.')
+	memories = hf.check_row(filename, row)	
+	if memories == None:
 		return
-	memories = []
-	with open(filename, "r") as f:
-		memories = f.readlines()
-	if row <= 0 or row > len(memories):
-		print('You have entered in a faulty row number. Please try again.')
-		return
-	print('Removed memory \'' + memories[row - 1].strip('\n') + '\'')
+	memory_to_remove = memories[row - 1].strip('\n')
 	del memories[row - 1]
-	with open(filename, "w") as f:
+	with open(filename, 'w') as f:
 		for memory in memories:
 			f.write(memory)
+	print('Removed memory \'' + memory_to_remove + '\'')
 
 
 """
@@ -73,6 +62,7 @@ held by that file
 def list_memories(filename):
 	if not path.isfile(filename):
 		print('Hmmm. The current note doesn\'t seem to be working. Please try again later.')
+		print('If the current note continues to fail to open, please submit a help ticket by emailing us at quicknote.v1@gmail.com')
 		return
 	elif path.getsize(filename) == 0:
 		print('You have no memories on this note')
@@ -90,7 +80,17 @@ Given a row number, removes the
 memory at that row and adds it to
 the '.archive' memory file
 """
-def archive_memory(row):
-	pass
-	
+def archive_memory(filename, row):
+	archive_note = path.expanduser('~/.quicknote/.archive')
+	memories = hf.check_row(filename, row)
+	if memories == None:
+		return
+	memory_to_archive = memories[row - 1]
+	del memories[row - 1]
+	with open(filename, 'w') as f:
+		for memory in memories:
+			f.write(memory)
+	with open(archive_note, 'a') as f:
+		f.write(memory_to_archive)
+	print('Archived memory \'' + memory_to_archive.strip('\n') + '\'')
 

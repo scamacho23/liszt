@@ -32,6 +32,7 @@ def make_background_files():
 		f.write('archive')
 	quicknote_cache = path.expanduser('~/.quicknote/.quicknote_cache')
 	open(quicknote_cache, 'w+')
+	archive_list = path.expanduser('~/.quicknote/.archivelist')
 
 		 
 """

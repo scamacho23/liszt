@@ -10,6 +10,25 @@ from os import path
 
 
 """
+Given a filename and a row number,
+confirms that the entered row is a 
+valid row number. Returns the contents 
+of the note as a list 
+"""
+def check_row(filename, row):
+	if not isinstance(row, int):
+		print('You have entered in a faulty row number. Please choose an integer value.')
+		return
+	memories = []
+	with open(filename, 'r') as f:
+		memories = f.readlines()
+	if row <= 0 or row > len(memories):
+		print('You have entered in a faulty row number. Please try again.')
+		return
+	return memories
+
+
+"""
 Given the quicknote_cache file, changes the
 default file held in quicknote_cache
 """
@@ -75,17 +94,14 @@ def parse_binary_args(args):
 Given a dot_name, a filename, and the file_list,
 makes a new note with that name and
 adds the name to file_list
-Returns True if the note already exists
-Returns False otherwise
 """
 def make_note(dot_name, filename, file_list):
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
-		return True 
+		return
 	else:
 		open(dot_name, 'w+')
 		with open(file_list, 'a') as f:
 			f.write(filename + '\n')
 		print('Added new note \'' + filename + '\'')
-		return False 
 

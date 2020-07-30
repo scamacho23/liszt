@@ -40,4 +40,16 @@ with code decomposition; these are `make_note`, `parse_binary_args`,
 `parse_unary_args`, and `request_user_permission`. Added the ability
 to export notes as `.txt` files by adding the `export_note` method.
 
+## **@version 1.0.4** ##
+July 29-30, 2020
+
+Added the CODE_OF_CONDUCT.md file, added the GNU GPL.v3 license,
+renamed memfunc.py and filefunc.py to memory.py and note.py, respectively,
+for reasons of clarity. Added the helper_func.py file to hold the existing
+helper functions `make_note`, `parse_binary_args`, `parse_unary_args`,
+`request_user_permission`, and the new helper function `write_to_quicknote_cache`.
+Added more extensive error handling throughout the software for various faulty
+user inputs (so that the methods simply return instead of python throwing an error).
+Made the install.py file add a '.archive' note upon it's running. 
+
 *Type `remember --version` to view your version of **Quick Note***

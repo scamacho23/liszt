@@ -24,9 +24,12 @@ def background_info():
 	file_list = path.expanduser('~/.quicknote/.filelist')
 	# this holds the name of the current note, as taken from quicknote_cache
 	current_note = path.expanduser('~/.quicknote/.' + note.get_current_note(quicknote_cache))
+	# this file holds a list of archived notes
+	archive_list = path.expanduser('~/.quicknote/.archivelist')
 	files.append(quicknote_cache)
 	files.append(file_list)
 	files.append(current_note)
+	files.append(archive_list)
 	return files
 
 
@@ -34,7 +37,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.3' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.4' + RESET) 
 	print('If you would like to update, run \'brew tap scamacho23/quicknote\'')
 
 
@@ -62,7 +65,12 @@ def get_help():
 	print('If you would like to' + BOLD + ' remove' + RESET + ' the current note, type \'remember --remove-note')
 	print('If you would like to' + BOLD + ' clear' + RESET + ' your current notes, type \'remember --clear-notes\'')	
 	print('If you would like to' + BOLD + ' import' + RESET + ' a note, type \'remember --import-note' + ITALIC + ' file_to_import' + RESET + ' / ' + ITALIC + 'note_name' + RESET + '\'')
-	print('If you would like to' + BOLD + ' export' + RESET + ' a note, type \'remember --export-note' + ITALIC + ' note_to_export' + RESET + ' / ' + ITALIC + 'new_file_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' export' + RESET + ' a note, type \'remember --export-note' + ITALIC + ' note_to_export' + RESET + ' / ' + ITALIC + 'new_file_name' + RESET + '\'\n')
+	print(BOLD + 'ARCHIVE' + RESET + '\n')
+	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular memory, type \'remember --archive' + ITALIC + ' row_number' + RESET + '\'')
+	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular note, type \'remember --archive-note' + ITALIC + ' note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' archive' + RESET + ' the current note, type \'remember --archive-note')
+	
 
 
 """
@@ -84,6 +92,7 @@ def main():
 	quicknote_cache = files[0]
 	file_list = files[1]
 	current_note = files[2]
+	archive_list = files[3]
 	
 	# removing unwanted new-line characters
 	if quicknote_cache[-1] == '\n':
@@ -111,16 +120,27 @@ def main():
 			print(note.get_current_note(quicknote_cache))
 		elif command == '--clear-notes':
 			note.clear_notes(file_list, current_note, quicknote_cache)
-		# this is for removing the default note
+		# this is for removing the current note
 		elif command == '--remove-note':
 			print('This functionality is currently under maintenance. Please try again later.')
 			return
-			note.remove_note(note.get_current_note(quicknote_cache), file_list)
+			# note.remove_note(note.get_current_note(quicknote_cache), file_list)
+		# this is for archiving the current note
+		elif command == '--archive-note':
+			print('This functionality is currently under maintenance. Please try again later.')
+			return
+			# note.archive_note(note.get_current_note(quicknote_cache), file_list)
+		elif command == '--list-archive':
+			print('This functionality is currently under maintenance. Please try again later.')
+			return
+			# note.list_archived_note(note.get_current_note(quicknote_cache), file_list)
 		else:
 			mem.add_memory(current_note, args)
 	elif len(args) >= 1:
 		if command == '--remove':
-			mem.remove_memory(current_note, int(args[1])) 
+			mem.remove_memory(current_note, int(args[1])) # this will break if the entered value is not an integer 
+		elif command == '--archive':
+			mem.archive_memory(current_note, int(args[1])) # this will break if the entered value is not an integer
 		elif command == '--add-note':
 			note.add_note(args[1:], file_list)
 		elif command == '--change-note':
@@ -130,6 +150,10 @@ def main():
 		# this is for removing any note
 		elif command == '--remove-note':
 			note.remove_note(args[1:], file_list)	
+		# this is for archiving any note
+		elif command == '--archive-note':
+			# note.remove_note(args[1:], file_list)	
+			return
 		elif command == '--import-note':
 			note.import_note(args[1:], file_list)
 		elif command == '--export-note':

@@ -28,12 +28,12 @@ def import_note(args, file_list):
 	old_name = pair[0]
 	new_name = pair[1]
 	# confirm that imported file is a '.txt'; return otherwise
-	if not old_name[-4:] == '.txt':
+	if old_name[-4:] != '.txt':
 		print(BOLD + 'Quick Note' + RESET + ' only allows for the importation of \'.txt\' files as notes. Please try again.')
 		return
 	new_note = path.expanduser('~/.quicknote/.' + new_name)
 	new_note_exists = hf.make_note(new_note, new_name, file_list)	
-	if not new_note_exists: 
+	if not new_note_exists == None: 
 		shutil.copyfile(old_name, new_note)
 
 
@@ -69,10 +69,11 @@ def export_note(args, file_list):
 """
 Given the name of a note, moves the name
 of the note from the .filelist file and
-adds it to the .archived file
+adds it to the .archivelist file
 """
 def archive_note():
-	pass
+	with open(file_list, 'r') as f:
+		pass	
 
 
 """
@@ -123,7 +124,7 @@ def remove_note(args, file_list):
 				files = f.readlines()
 			with open(file_list, "w") as f:
 				for filename in files:
-					if not filename.strip('\n') == filename_to_remove:
+					if filename.strip('\n') != filename_to_remove:
 						f.write(filename)
 			print('Removed note \'' + filename_to_remove + '\'')
 		else:
@@ -149,7 +150,7 @@ def clear_notes(file_list, current_note, quicknote_cache):
 		with open(file_list, 'w') as f:
 			f.write('default')
 			f.write('archive')
-		if not current_note == 'default':	
+		if current_note != 'default':	
 			hf.write_to_quicknote_cache(quicknote_cache, 'default')
 		print('Cleared all user notes from Quick Note cache')
 
@@ -207,7 +208,7 @@ def rename_note(args, file_list, quicknote_cache):
 		return
 	with open(file_list, "w") as f:
 		for filename in files:
-			if not filename.strip('\n') == old_name:
+			if filename.strip('\n') != old_name:
 				f.write(filename)
 		f.write(new_name + '\n')
 	hf.write_to_quicknote_cache(quicknote_cache, new_name)
