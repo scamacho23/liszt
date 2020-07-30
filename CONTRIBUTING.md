@@ -12,6 +12,8 @@ below [Style Standards](#Style-Standards)
 *These are in no particular order*
 
 - Comment *thoroughly*
+- Make sure to error-check liberally (especially on user input)
+- Handle edge-cases appropriately
 - Use `"""` commenting above function definitions
 - Use *single-quotes* for strings 
 - Use *tabs*, **not** *spaces*

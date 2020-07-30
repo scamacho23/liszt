@@ -88,6 +88,10 @@ def import_note(args, file_list):
 	pair = parse_binary_args(args)
 	old_name = pair[0]
 	new_name = pair[1]
+	# confirm that imported file is a '.txt'; return otherwise
+	if not old_name[-4:] == '.txt':
+		print(BOLD + 'Quick Note' + RESET + ' only allows for the importation of \'.txt\' files as notes. Please try again.')
+		return
 	new_note = path.expanduser('~/.quicknote/.' + new_name)
 	new_note_exists = make_note(new_note, new_name, file_list)	
 	if not new_note_exists: 
@@ -108,10 +112,12 @@ def export_note(args, file_list):
 	with open(file_list, 'r') as f:
 		files = f.readlines()
 		name_with_newline = note_name + '\n'
-		if not name_with_newline  in files:
+		# confirm that a note actually exists with the given name
+		if not name_with_newline in files:
 			print('There is no note with name \'' + note_name + '\'. Please try again.')
 			return
 	note_name = path.expanduser('~/.quicknote/.' + note_name)
+	# confirm that there is not an exists '.txt' file in the working directory with the same name
 	if path.isfile(filename):
 		print('A file with this name already exists in your working directory. Please pick a different name.')
 	else:
@@ -146,7 +152,7 @@ Prints the list of current memory files
 def list_notes(file_list):
 	counter = 1
 	if path.getsize(file_list) == 0:
-		print('You have no notes')
+		print('You have no notes at the moment. Start by adding a new note or by importing one from a \'.txt.\' file.')
 		return
 	with open(file_list, 'r') as f:
 		for filename in f:
@@ -178,7 +184,7 @@ def remove_note(args, file_list):
 						f.write(filename)
 			print('Removed note \'' + filename_to_remove + '\'')
 		else:
-			print("The file does not exist")
+			print('The note you are trying to remove does not exist. Please try again.')
 
 
 """
@@ -253,6 +259,9 @@ def rename_note(args, file_list):
 	files = []
 	with open(file_list, "r") as f:
 		files = f.readlines()
+	# confirm that the note to change actually exists
+	if not old_name.strip('\n') in files:
+		print('The note you are trying to rename does not exist. Please try again.')
 	with open(file_list, "w") as f:
 		for filename in files:
 			if not filename.strip('\n') == old_name:

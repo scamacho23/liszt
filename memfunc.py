@@ -14,10 +14,16 @@ Given a filename and a row number,
 removes the memory at that row number
 """
 def remove_memory(filename, row):
+	if not isinstance(row, int):
+		print('You have entered in a faulty row number. Please choose an integer value.')
+		return
 	memories = []
 	with open(filename, "r") as f:
 		memories = f.readlines()
-	print('Removed memory \'' + memories[row - 1][:-1] + '\'')
+	if row <= 0 or row >= len(memories):
+		print('You have entered in a faulty row number. Please try again.')
+		return
+	print('Removed memory \'' + memories[row - 1].strip('\n') + '\'')
 	del memories[row - 1]
 	with open(filename, "w") as f:
 		for memory in memories:
