@@ -15,41 +15,46 @@ RESET = '\033[0m'
 
 
 """
-Makes an empty dot folder in the user's home directory, in which their notes will be stored
+Makes an empty dot folder in the user's home directory, in which their notes will be stored.
+Makes a folder inside of that folder, in which background Quick Note information will be stored.
 """
-def make_memory_folder():
-	dir_path = path.expanduser('~/.quicknote')
-	os.mkdir(dir_path)
+def make_background_folders():
+	quicknote = path.expanduser('~/.quicknote')
+	os.mkdir(quicknote)
+	background = path.expanduser('~/.quicknote/.background')
+	os.mkdir(background)
+	notes = path.expanduser('~/.quicknote/.notes')
+	os.mkdir(notes)
+	archived_notes = path.expanduser('~/.quicknote/.archive_notes')
+	os.mkdir(archived_notes)
 
 
 """
-Makes a file to contain the names of all of the users note-files
+Makes a file to contain the name of the current note
 """
 def make_background_files():
-	file_list = path.expanduser('~/.quicknote/.filelist')
-	with open(file_list, 'w+') as f:
-		f.write('default')
-		f.write('archive')
-	quicknote_cache = path.expanduser('~/.quicknote/.quicknote_cache')
-	open(quicknote_cache, 'w+')
-	archive_list = path.expanduser('~/.quicknote/.archivelist')
-
+	prefix = path.expanduser('~/.quicknote/')
+	quicknote_cache = prefix + '.background/.quicknote_cache'
+	default_file = prefix + '.notes/.default'
+	with open(quicknote_cache, 'w+') as f:
+		f.write(default_file)
 		 
+
 """
 Makes the default note file
 and the archive note file
 """
 def make_defaults():
-	default_file = path.expanduser('~/.quicknote/.default')
-	open(default_file, 'w+')
-	archive_file = path.expanduser('~/.quicknote/.archive')
-	open(archive_file, 'w+')
+	default_note = path.expanduser('~/.quicknote/.notes/.default')
+	open(default_note, 'w+')
+	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
+	open(archive_note, 'w+')
 
 
 def main():
 	args = sys.argv[1:]
 	if len(args) == 0:
-		make_memory_folder()
+		make_background_folders()
 		make_background_files()
 		make_defaults()
 		print(BOLD + 'Quick Note' + RESET + ' installation successful')

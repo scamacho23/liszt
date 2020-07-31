@@ -20,6 +20,7 @@ def remove_memory(filename, row):
 	memories = hf.check_row(filename, row)	
 	if memories == None:
 		return
+	row = int(row)
 	memory_to_remove = memories[row - 1].strip('\n')
 	del memories[row - 1]
 	with open(filename, 'w') as f:
@@ -81,10 +82,11 @@ memory at that row and adds it to
 the '.archive' memory file
 """
 def archive_memory(filename, row):
-	archive_note = path.expanduser('~/.quicknote/.archive')
+	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
 	memories = hf.check_row(filename, row)
 	if memories == None:
 		return
+	row = int(row)
 	memory_to_archive = memories[row - 1]
 	del memories[row - 1]
 	with open(filename, 'w') as f:

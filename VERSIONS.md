@@ -50,6 +50,7 @@ helper functions `make_note`, `parse_binary_args`, `parse_unary_args`,
 `request_user_permission`, and the new helper function `write_to_quicknote_cache`.
 Added more extensive error handling throughout the software for various faulty
 user inputs (so that the methods simply return instead of python throwing an error).
-Made the install.py file add a '.archive' note upon it's running. 
+Made the install.py file add a '.archive' note upon it's running. Added the helper 
+function `check_row` to helper_func.py and added `archive_memory` to memory.py
 
 *Type `remember --version` to view your version of **Quick Note***

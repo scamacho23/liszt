@@ -10,15 +10,32 @@ from os import path
 
 
 """
+Given the path to a directory, returns a list containing
+the files in that directory 
+"""
+def read_directory(dir_name):
+	files = []
+	for filename in os.listdir(dir_name):
+		if path.isfile(filename):
+			files.append(filename)
+	return files
+
+
+"""
 Given a filename and a row number,
 confirms that the entered row is a 
 valid row number. Returns the contents 
 of the note as a list 
 """
 def check_row(filename, row):
-	if not isinstance(row, int):
+	if not row.isnumeric():
 		print('You have entered in a faulty row number. Please choose an integer value.')
 		return
+	row = float(row)	
+	if not row.is_integer():
+		print('You have entered in a faulty row number. Please choose an integer value.')
+		return
+	row = int(row)
 	memories = []
 	with open(filename, 'r') as f:
 		memories = f.readlines()
@@ -72,7 +89,7 @@ the words to the left and right of
 the '/'
 """
 def parse_binary_args(args):
-	if len(args) == 1:
+	if len(args) == 1 or not '/' in args:
 		print('You haven\'t entered enough information. Please try again.')
 		return
 	old_name = ''
@@ -87,6 +104,9 @@ def parse_binary_args(args):
 		new_name += args[counter] + ' '
 		counter += 1 		
 	new_name = new_name.strip()
+	if len(new_name) == 0:
+		print('You haven\'t entered enough information. Please try again.')
+		return	
 	return (old_name, new_name)
 
 
@@ -95,13 +115,11 @@ Given a dot_name, a filename, and the file_list,
 makes a new note with that name and
 adds the name to file_list
 """
-def make_note(dot_name, filename, file_list):
+def make_note(dot_name, filename):
 	if path.isfile(dot_name):
 		print('A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.')
-		return
+		# return 0 to signify failure
+		return 0
 	else:
-		open(dot_name, 'w+')
-		with open(file_list, 'a') as f:
-			f.write(filename + '\n')
-		print('Added new note \'' + filename + '\'')
+		open(dot_name, 'w+').close()
 
