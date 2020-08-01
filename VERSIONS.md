@@ -53,4 +53,13 @@ user inputs (so that the methods simply return instead of python throwing an err
 Made the install.py file add a '.archive' note upon it's running. Added the helper 
 function `check_row` to helper_func.py and added `archive_memory` to memory.py
 
+## **@version 1.0.5** ##
+July 31, 2020
+
+Removed the filelist and archivelist files, and replaced them with using `os.listdir()`
+to read the contents of files. Changed the install.py file to add a .notes directory and
+a .archive_notes folder in the .quicknote directory. Changed quicknote_cache to data_file.json,
+so that it will be easier to store information about the current file and other related/important
+information. Rewired most functions to adopt the filelist and quicknote_cache removal changes
+
 *Type `remember --version` to view your version of **Quick Note***

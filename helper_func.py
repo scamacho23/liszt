@@ -7,6 +7,7 @@
 import sys
 import os.path
 from os import path
+import json
 
 
 """
@@ -14,9 +15,13 @@ Given the path to a directory, returns a list containing
 the files in that directory 
 """
 def read_directory(dir_name):
+	prefix = path.expanduser('~/.quicknote/.notes/')
 	files = []
 	for filename in os.listdir(dir_name):
+		filename = prefix + filename
 		if path.isfile(filename):
+			last_slash_index = filename.rfind('/')	
+			filename = filename[last_slash_index + 2:] 
 			files.append(filename)
 	return files
 
@@ -49,13 +54,11 @@ def check_row(filename, row):
 Given the quicknote_cache file, changes the
 default file held in quicknote_cache
 """
-def write_to_quicknote_cache(quicknote_cache, filename):
-	cache_info = [] 
-	with open(quicknote_cache, 'r') as f:
-		cache_info = f.readlines()
-		cache_info[0] = filename
-	with open(quicknote_cache, 'w') as f:
-		f.writelines(cache_info)
+def write_to_data_file(data_file, filename):
+	data = {}
+	data['current_note'] = filename
+	with open(data_file, 'w') as f:
+		json.dump(data, f)
 	
 
 """
