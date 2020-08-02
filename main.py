@@ -41,7 +41,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.5' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.6' + RESET) 
 	print('If you would like to update, run \'brew tap scamacho23/quicknote\'')
 
 
@@ -58,7 +58,9 @@ def get_help():
 	print('If you would like to' + BOLD + ' add' + RESET + ' a memory, type \'remember' + ITALIC + ' your_memory' + RESET + '\'')
 	print('If you would like to' + BOLD + ' view' + RESET + ' current memories, type \'remember --list\'')
 	print('If you would like to' + BOLD + ' clear' + RESET + ' your current memories, type \'remember --clear\'')	
-	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'\n')
+	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'')
+	print('If you would like to' + BOLD + ' move' + RESET + ' a memory to another note, type \'remember --move' + ITALIC + ' row_number other_note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' copy' + RESET + ' a memory to another note, type \'remember --copy' + ITALIC + ' row_number other_note_name' + RESET + '\'\n')
 	print(BOLD + 'NOTES' + RESET + '\n')
 	print('If you would like to' + BOLD + ' add' + RESET + ' a note, type \'remember --add-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' view' + RESET + ' current notes, type \'remember --list-notes\'')
@@ -87,8 +89,11 @@ Prints some random info about Quick Note
 """
 def info():
 	print(BOLD + 'Quick Note' + RESET + ' is an open-source note-taking software designed for personal use')
-	print('If you need help, type \'remember --help\'')
+	print('If you need help, type \'remember --help\'\n')
+	print(BOLD + 'Quick Note' + RESET + ' uses the GNU General Public License v3, so you can edit, distribute, and otherwise meddle with any of the source code.')
+	print('The only thing you can\'t do is take this software and make it closed-source and try to sell it. ' + BOLD + 'Quick Note' + RESET + ' was designed to be free for everyone, forever.')
 	# print a random quote??
+
 
 """
 Handles command line arguments and redirects to appropriate
@@ -164,6 +169,10 @@ def main():
 			note.import_note(args[1:])
 		elif command == '--export-note':
 			note.export_note(args[1:])
+		elif command == '--move-memory':
+			mem.move_memory(current_note, args[1], args[2:])
+		elif command == '--copy-memory':
+			mem.copy_memory(current_note, args[1], args[2:])
 		else:
 			mem.add_memory(current_note, args)
 

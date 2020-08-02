@@ -54,7 +54,7 @@ Made the install.py file add a '.archive' note upon it's running. Added the help
 function `check_row` to helper_func.py and added `archive_memory` to memory.py
 
 ## **@version 1.0.5** ##
-July 31, 2020
+July 31-August 1, 2020
 
 Removed the filelist and archivelist files, and replaced them with using `os.listdir()`
 to read the contents of files. Changed the install.py file to add a .notes directory and
@@ -64,5 +64,11 @@ information. Rewired most functions to adopt the filelist and quicknote_cache re
 the ability to archive notes with `archive_note`, and added the ability to reverse archiving with
 `un_archive_note`. Added the ability to clear archived notes with `clear_archive_notes`, and added
 the ability list archived notes with `list_archive_notes`.
+
+## **@version 1.0.6** ##
+August 2, 2020
+
+Added `move_memory` and `copy_memory`. Added the helper function `write_to_file` to helper_func.py.
+Added the memory-helper functions `change_memory` and `append_memory` to memory.py.
 
 *Type `remember --version` to view your version of **Quick Note***

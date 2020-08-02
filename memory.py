@@ -13,19 +13,82 @@ RESET = '\033[0m'
 
 
 """
-Given a filename and a row number,
-removes the memory at that row number
+Given a memory and the name of a 
+note, appends the memory to the
+end of the note
 """
-def remove_memory(filename, row):
-	memories = hf.check_row(filename, row)	
+def append_memory(memory, note):
+	with open(note, 'a') as f:
+		memory += '\n'
+		f.write(memory)
+
+
+"""
+Given the current_note and a row number,
+removes the memory at that row and returns
+its value
+"""
+def change_memory(current_note, row):
+	memories = hf.check_row(current_note, row)	
 	if memories == None:
 		return
 	row = int(row)
 	memory_to_remove = memories[row - 1].strip('\n')
 	del memories[row - 1]
-	with open(filename, 'w') as f:
-		for memory in memories:
-			f.write(memory)
+	note.write_to_note(current_note, memories)
+	return memory_to_remove
+
+
+"""
+Given the name of a note and
+a row number, moves the memory
+at that row number in the current
+note to the given note
+"""
+def move_memory(current_note, row, args):
+	note = hf.parse_unary_args(args)
+	note_path = path.expanduser('~/.quicknote/.notes/.' + note)
+	if not path.isfile(note_path):
+		print('The note you are trying to add to does not exist. Please try again.')	
+		return
+	memory_to_move = change_memory(current_note, row)	
+	if memory_to_move == None:
+		return
+	append_memory(memory_to_move, note_path)
+	print('Moved \'' + memory_to_move + '\' to \'' + note + '\'')
+		
+
+"""
+Given the name of a note and
+a row number, copies the memory
+at that row number in the current
+note to the given note
+"""
+def copy_memory(current_note, row, args):
+	note = hf.parse_unary_args(args)
+	note_path = path.expanduser('~/.quicknote/.notes/.' + note)
+	if not path.isfile(note_path):
+		print('The note you are trying to add to does not exist. Please try again.')
+		return
+	memories = hf.check_row(current_note, row)	
+	if memories == None:
+		return
+	row = int(row)
+	memory_to_copy = memories[row - 1].strip('\n')
+	append_memory(memory_to_copy, note_path)
+	print('Copied \'' + memory_to_copy + '\' to \'' + note + '\'')
+
+
+"""
+Given a note and a row number,
+removes the memory at that row number
+"""
+def remove_memory(note, row):
+	if not path.isfile(note):
+		return
+	memory_to_remove = change_memory(note, row)	
+	if memory_to_remove == None:
+		return
 	print('Removed memory \'' + memory_to_remove + '\'')
 
 
@@ -48,12 +111,10 @@ Given a filename and a list of words,
 adds those words (as a single line) to
 the end of the file
 """
-def add_memory(filename, args):
-	with open(filename, 'a') as f:
-		temp_memory = hf.parse_unary_args(args) 
-		memory = temp_memory + '\n'
-		f.write(memory)
-		print('Remembered \'', temp_memory, '\'', sep='')
+def add_memory(note, args):
+	memory = hf.parse_unary_args(args)
+	append_memory(memory, note)
+	print('Remembered \'' + memory + '\'')
 
 
 """

@@ -18,6 +18,18 @@ RESET = '\033[0m'
 
 
 """
+Given the name of a note
+and a list of memories, 
+adds all the memories to the
+note
+"""
+def write_to_note(note, memories):
+	with open(note, 'w') as to_write:
+		for memory in memories:
+			to_write.write(memory)
+
+
+"""
 Given the name of a .txt file,
 makes a copy of that file as a .file
 to be used as a new note
