@@ -90,9 +90,6 @@ def archive_note(args, current_note, data_file):
 				hf.write_to_data_file(data_file, path.expanduser('~/.quicknote/.notes/.default'))
 
 
-	
-
-
 """
 Given the name of a note, moves the note
 from the .archive_notes directory to the
@@ -123,7 +120,7 @@ def add_note(args):
 
 
 """
-Prints the list of current memory files
+Prints the list of current notes
 """
 def list_notes(notes):
 	counter = 1
@@ -131,6 +128,20 @@ def list_notes(notes):
 		print('You have no notes at the moment. Start by adding a new note or by importing one from a \'.txt.\' file.')
 		return
 	for note in notes:
+		note = str(counter) + '. ' + note
+		print(note)	
+		counter += 1
+
+
+"""
+Prints the list of archived notes  
+"""
+def list_archive_notes(archive_notes): # this is a complete copy of list_notes, so maybe just delete and use list_notes
+	counter = 1
+	if len(archive_notes) == 0:
+		print('You have no archived notes at the moment.')
+		return
+	for note in archive_notes:
 		note = str(counter) + '. ' + note
 		print(note)	
 		counter += 1
@@ -180,9 +191,19 @@ def clear_notes(notes, current_note, data_file):
 
 
 """
+Clears all archived notes
 """
-def clear_archive_notes():
-	pass
+def clear_archive_notes(archive_notes):
+	prompt = 'Are you sure you want to clear all of your archived notes?' + BOLD + ' There is no going back (y/n): ' + RESET
+	decision = hf.request_user_permission(prompt)
+	if decision == 'n':
+		print('Clearing of archived notes aborted')
+	elif decision == 'y':
+		for note in archive_notes:
+			note_path = path.expanduser('~/.quicknote/.archive_notes/.' + note)
+			if path.isfile(note_path):
+				os.remove(note_path)
+		print('Cleared all archived user notes from Quick Note cache')
 
 
 """

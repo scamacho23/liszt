@@ -15,10 +15,9 @@ Given the path to a directory, returns a list containing
 the files in that directory 
 """
 def read_directory(dir_name):
-	prefix = path.expanduser('~/.quicknote/.notes/')
 	files = []
 	for filename in os.listdir(dir_name):
-		filename = prefix + filename
+		filename = path.join(dir_name, filename)
 		if path.isfile(filename):
 			last_slash_index = filename.rfind('/')	
 			filename = filename[last_slash_index + 2:] 

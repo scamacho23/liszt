@@ -101,7 +101,7 @@ def main():
 	data_file = files[0]
 	current_note = files[1].strip('\n')
 	notes = files[2]
-	archive_list = files[3]
+	archive_notes = files[3]
 
 	last_slash_index = current_note.rfind('/')	
 	current_note_name = current_note[last_slash_index + 2:] 
@@ -125,6 +125,8 @@ def main():
 			print(current_note_name)
 		elif command == '--clear-notes':
 			note.clear_notes(notes, current_note_name, data_file)
+		elif command == '--clear-archived-notes':
+			note.clear_archive_notes(archive_notes)
 		# this is for removing the current note
 		elif command == '--remove-note':
 			print('This functionality is currently under maintenance. Please try again later.')
@@ -135,10 +137,8 @@ def main():
 			print('This functionality is currently under maintenance. Please try again later.')
 			return
 			# note.archive_note(note.get_current_note(quicknote_cache), file_list)
-		elif command == '--list-archive':
-			print('This functionality is currently under maintenance. Please try again later.')
-			return
-			# note.list_archived_note(note.get_current_note(quicknote_cache), file_list)
+		elif command == '--list-archived-notes':
+			note.list_archive_notes(archive_notes)
 		else:
 			mem.add_memory(current_note, args)
 	elif len(args) >= 1:

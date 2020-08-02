@@ -62,6 +62,7 @@ a .archive_notes folder in the .quicknote directory. Changed quicknote_cache to 
 so that it will be easier to store information about the current file and other related/important
 information. Rewired most functions to adopt the filelist and quicknote_cache removal changes. Added
 the ability to archive notes with `archive_note`, and added the ability to reverse archiving with
-`un_archive_note`.
+`un_archive_note`. Added the ability to clear archived notes with `clear_archive_notes`, and added
+the ability list archived notes with `list_archive_notes`.
 
 *Type `remember --version` to view your version of **Quick Note***
