@@ -60,6 +60,8 @@ Removed the filelist and archivelist files, and replaced them with using `os.lis
 to read the contents of files. Changed the install.py file to add a .notes directory and
 a .archive_notes folder in the .quicknote directory. Changed quicknote_cache to data_file.json,
 so that it will be easier to store information about the current file and other related/important
-information. Rewired most functions to adopt the filelist and quicknote_cache removal changes
+information. Rewired most functions to adopt the filelist and quicknote_cache removal changes. Added
+the ability to archive notes with `archive_note`, and added the ability to reverse archiving with
+`un_archive_note`.
 
 *Type `remember --version` to view your version of **Quick Note***

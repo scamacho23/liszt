@@ -41,7 +41,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.4' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.5' + RESET) 
 	print('If you would like to update, run \'brew tap scamacho23/quicknote\'')
 
 
@@ -75,6 +75,11 @@ def get_help():
 	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular memory, type \'remember --archive' + ITALIC + ' row_number' + RESET + '\'')
 	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular note, type \'remember --archive-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' archive' + RESET + ' the current note, type \'remember --archive-note\'')
+	print('If you would like to' + BOLD + ' unarchive' + RESET + ' a particular note, type \'remember --unarchive-note' + ITALIC + ' note_name' + RESET + '\'')
+	print('If you would like to' + BOLD + ' view' + RESET + ' your archived notes, type \'remember --list-archived-notes\'')
+	print('If you would like to' + BOLD + ' clear' + RESET + ' your archived notes, type \'remember --clear-archived-notes\'')	
+	
+	
 	
 
 """
@@ -152,8 +157,9 @@ def main():
 			note.remove_note(args[1:], current_note_name, data_file)
 		# this is for archiving any note
 		elif command == '--archive-note':
-			# note.remove_note(args[1:], file_list)	
-			return
+			note.archive_note(args[1:], current_note_name, data_file)	
+		elif command == '--unarchive-note':
+			note.un_archive_note(args[1:])
 		elif command == '--import-note':
 			note.import_note(args[1:])
 		elif command == '--export-note':

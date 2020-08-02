@@ -68,14 +68,46 @@ def export_note(args):
 
 
 """
-Given the name of a note, moves the name
-of the note from the .filelist file and
-adds it to the .archivelist file
+Given the name of a note, moves the note
+rom the .notes directory and add it to the
+.archive_notes directory 
 """
-def archive_note(note_list):
-	with open(note_list, 'r') as f:
-		pass
-			
+def archive_note(args, current_note, data_file):
+	note_to_archive = hf.parse_unary_args(args)
+	note_path = path.expanduser('~/.quicknote/.notes/.' + note_to_archive)
+	
+	if not path.isfile(note_path):
+		print('The note you are trying to archive does not exist. Please try again.')	
+		return
+	# prevent the user from archiving 'archive' or 'default'
+	if note_to_archive == 'archive' or note_to_archive == 'default':
+		print('\'archive\' and \'default\' may not be archived. Please try again.')
+		return
+	new_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_archive)
+	os.rename(note_path, new_path) 
+	print('Archived \'' + note_to_archive + '\'')
+	if current_note != 'default':
+				hf.write_to_data_file(data_file, path.expanduser('~/.quicknote/.notes/.default'))
+
+
+	
+
+
+"""
+Given the name of a note, moves the note
+from the .archive_notes directory to the
+.notes directory.
+"""
+def un_archive_note(args):
+	note_to_un_archive = hf.parse_unary_args(args)
+	note_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_un_archive)
+	
+	if not path.isfile(note_path):
+		print('The note you are trying to un-archive does not exist. Please try again.')	
+		return
+	new_path = path.expanduser('~/.quicknote/.notes/.' + note_to_un_archive)
+	os.rename(note_path, new_path) 
+	print('Un-archived \'' + note_to_un_archive + '\'')
 
 
 """
