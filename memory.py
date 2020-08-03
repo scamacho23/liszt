@@ -132,9 +132,9 @@ def list_memories(note_path, note_name):
 	num_memories = sum(1 for memory in open(note_path, 'r'))
 	with open(note_path, 'r') as to_read:
 		counter = 1
-		print('Found ' + str(num_memories) + ' memories on \'' + note_name + '\'')
+		print(BOLD + ITALIC + 'Found ' + str(num_memories) + ' memories on \'' + note_name + '\'' + RESET)
 		for memory in to_read:
-			memory = str(counter) + '. ' + memory.strip('\n') 
+			memory = BOLD + str(counter) + '. ' + RESET + memory.strip('\n') 
 			print(memory)
 			counter += 1
 

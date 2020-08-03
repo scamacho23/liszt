@@ -14,6 +14,7 @@ import helper_func as hf
 
 # Color Definiitons
 BOLD = '\033[1m'
+ITALIC = '\033[5m'
 RESET = '\033[0m'
 
 
@@ -139,9 +140,9 @@ def list_notes(notes):
 	if len(notes) == 0:
 		print('You have no notes at the moment. Start by adding a new note or by importing one from a \'.txt.\' file.')
 		return
-	print('Found ' + str(len(notes)) + ' notes')
+	print(BOLD + ITALIC + 'Found ' + str(len(notes)) + ' notes' + RESET)
 	for note in notes:
-		note = str(counter) + '. ' + note
+		note = BOLD + str(counter) + '. ' + RESET + note
 		print(note)	
 		counter += 1
 
@@ -154,9 +155,9 @@ def list_archive_notes(archive_notes): # this is a complete copy of list_notes, 
 	if len(archive_notes) == 0:
 		print('You have no archived notes at the moment.')
 		return
-	print('Found ' + str(len(archive_notes)) + ' archived note(s)')
+	print(BOLD + ITALIC + 'Found ' + str(len(archive_notes)) + ' archived note(s)' + RESET)
 	for note in archive_notes:
-		note = str(counter) + '. ' + note
+		note = BOLD + str(counter) + '. ' + RESET + note
 		print(note)	
 		counter += 1
 
