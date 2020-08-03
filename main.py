@@ -4,6 +4,8 @@ import sys
 import json
 import os.path
 from os import path
+import time
+from datetime import datetime
 # the below imports are quicknote .py files
 import memory as mem
 import helper_func as hf
@@ -42,7 +44,22 @@ Prints the user's version of Quick Note
 """
 def get_version():
 	print(BOLD + 'Quick Note v.1.0.6' + RESET) 
-	print('If you would like to update, run \'brew tap scamacho23/quicknote\'')
+	print('If you would like to update, type \'remember --update')
+
+
+"""
+Prompts the user to update Quick Note
+every month
+"""
+def update_quick_note():
+	print(datetime.now())
+	# Save last date of update in data_file
+	# Ask the user to update every month
+	# they should be able to update on their own as well
+	# make a send_update_message func to ask for update
+	# make install.py add the data of install to the data_file
+	# make a get_current_time func or something
+	# or a func to write date_time to data_file
 
 
 """
@@ -102,6 +119,7 @@ Handles command line arguments and redirects to appropriate
 helper functions. Should be further decomposed
 """
 def main():
+	# send_update_message()
 	args = sys.argv[1:]
 	files = background_info()
 
@@ -120,6 +138,8 @@ def main():
 	if len(args) == 1:
 		if command == '--list':
 			mem.list_memories(current_note, current_note_name)
+		elif command == '--update':
+			update_quick_note(data_file)
 		elif command == '--clear':
 			mem.clear_memories(current_note)
 		elif command == '--help':

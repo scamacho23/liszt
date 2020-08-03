@@ -8,6 +8,33 @@ import sys
 import os.path
 from os import path
 import json
+import time
+from datetime import datetime
+
+
+"""
+Given the data_file, saves the current
+datetime to the data_file
+"""
+def save_datetime(data_file):
+	data = {}
+	with open(data_file, 'r') as read_from:
+		data = json.load(read_from)	
+	data['last_update_date'] = datetime.now() 
+	with open(data_file, 'w') as write_to:
+		json.dump(data, write_to)
+
+
+"""
+Given the data_file, returns the last
+update date of Quick Note on the user's
+machine
+"""
+def get_last_update_date(data_file):
+	data = {}
+	with open(data_file, 'r') as read_from:
+		data = json.load(read_from)	
+	return data['last_update_date']
 
 
 """
@@ -55,9 +82,11 @@ default file held in quicknote_cache
 """
 def write_to_data_file(data_file, filename):
 	data = {}
+	with open(data_file, 'r') as read_from:
+		data = json.load(read_from)	
 	data['current_note'] = filename
-	with open(data_file, 'w') as f:
-		json.dump(data, f)
+	with open(data_file, 'w') as write_to:
+		json.dump(data, write_to)
 	
 
 """

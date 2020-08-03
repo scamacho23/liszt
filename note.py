@@ -97,6 +97,9 @@ def archive_note(args, current_note, data_file):
 		print('\'archive\' and \'default\' may not be archived. Please try again.')
 		return
 	new_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_archive)
+	if path.isfile(new_path):
+		print('You already have an archived note named \'' + note_to_archive + '\'. Please try again. (hint: rename something)')
+		return
 	os.rename(note_path, new_path) 
 	print('Archived \'' + note_to_archive + '\'')
 	if current_note != 'default':
@@ -116,6 +119,9 @@ def un_archive_note(args):
 		print('The note you are trying to un-archive does not exist. Please try again.')	
 		return
 	new_path = path.expanduser('~/.quicknote/.notes/.' + note_to_un_archive)
+	if path.isfile(new_path):
+		print('You already have a note named \'' + note_to_un_archive + '\'. Please try again. (hint: rename something)')
+		return
 	os.rename(note_path, new_path) 
 	print('Un-archived \'' + note_to_un_archive + '\'')
 
@@ -128,7 +134,9 @@ as the default file for memories
 def add_note(args):
 	note_name = hf.parse_unary_args(args) 
 	dot_name = path.expanduser('~/.quicknote/.notes/.' + note_name)
-	hf.make_note(dot_name, note_name)
+	return_value = hf.make_note(dot_name, note_name)
+	if return_value == None:
+		return
 	print('Added new note \'' + note_name + '\'')
 
 
@@ -224,8 +232,8 @@ def clear_archive_notes(archive_notes):
 Returns the name of the current working note
 """
 def get_current_note(data_file):
-	with open(data_file, 'r') as f:
-		data = json.load(f)
+	with open(data_file, 'r') as read_from:
+		data = json.load(read_from)
 		return data['current_note'] 
 
 

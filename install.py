@@ -7,6 +7,7 @@
 import sys
 import os.path
 from os import path
+import helper_func as hf
 
 
 # Color Definitions
@@ -34,10 +35,13 @@ Makes a file to contain the name of the current note
 """
 def make_background_files():
 	prefix = path.expanduser('~/.quicknote/')
-	quicknote_cache = prefix + '.background/.quicknote_cache'
+	data_file = prefix + '.background/data_file.json'
 	default_file = prefix + '.notes/.default'
-	with open(quicknote_cache, 'w+') as f:
-		f.write(default_file)
+	data = {'current_note': '', 'last_update_date': ''}
+	with open(data_file, 'w') as initial_open:
+		json.dump(data, initial_open)
+	hf.write_to_data_file(data_file, default_file)
+	hf.save_datetime(data_file)
 		 
 
 """
