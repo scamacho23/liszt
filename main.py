@@ -51,6 +51,12 @@ def get_version():
 Prompts the user to update Quick Note
 every month
 """
+
+
+"""
+Given the data_file, updates the user's
+version of Quick Note
+"""
 def update_quick_note():
 	print(datetime.now())
 	# Save last date of update in data_file
