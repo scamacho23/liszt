@@ -59,6 +59,7 @@ def get_help():
 	print('If you would like to' + BOLD + ' view' + RESET + ' current memories, type \'remember --list\'')
 	print('If you would like to' + BOLD + ' clear' + RESET + ' your current memories, type \'remember --clear\'')	
 	print('If you would like to' + BOLD + ' remove' + RESET + ' a particular memory, type \'remember --remove' + ITALIC + ' row_number' + RESET + '\'')
+	print('If you would like to' + BOLD + ' remove' + RESET + ' the last memory entered on a note, type \'remember --remove\'')
 	print('If you would like to' + BOLD + ' move' + RESET + ' a memory to another note, type \'remember --move' + ITALIC + ' row_number other_note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' copy' + RESET + ' a memory to another note, type \'remember --copy' + ITALIC + ' row_number other_note_name' + RESET + '\'\n')
 	print(BOLD + 'NOTES' + RESET + '\n')
@@ -75,6 +76,7 @@ def get_help():
 	print(BOLD + 'ARCHIVE' + RESET)
 	print(ITALIC + 'Archived notes do not receive the same functionality as regular notes. To rename, remove, export, etc. archived notes, please unarchive them first.' + RESET + '\n')
 	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular memory, type \'remember --archive' + ITALIC + ' row_number' + RESET + '\'')
+	print('If you would like to' + BOLD + ' archive' + RESET + ' the last memory entered on a note, type \'remember --archive\'')
 	print('If you would like to' + BOLD + ' archive' + RESET + ' a particular note, type \'remember --archive-note' + ITALIC + ' note_name' + RESET + '\'')
 	print('If you would like to' + BOLD + ' archive' + RESET + ' the current note, type \'remember --archive-note\'')
 	print('If you would like to' + BOLD + ' unarchive' + RESET + ' a particular note, type \'remember --unarchive-note' + ITALIC + ' note_name' + RESET + '\'')
@@ -132,16 +134,11 @@ def main():
 			note.clear_notes(notes, current_note_name, data_file)
 		elif command == '--clear-archived-notes':
 			note.clear_archive_notes(archive_notes)
-		# this is for removing the current note
 		elif command == '--remove-note':
-			print('This functionality is currently under maintenance. Please try again later.')
-			return
-			# note.remove_note(note.get_current_note(quicknote_cache), file_list)
+			note.remove_note(current_note_name, current_note_name, data_file)
 		# this is for archiving the current note
 		elif command == '--archive-note':
-			print('This functionality is currently under maintenance. Please try again later.')
-			return
-			# note.archive_note(note.get_current_note(quicknote_cache), file_list)
+			note.archive_note(current_note_name, current_note_name, data_file)
 		elif command == '--list-archived-notes':
 			note.list_archive_notes(archive_notes)
 		else:

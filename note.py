@@ -166,22 +166,21 @@ Given a filename, removes a file with that name
 if it exists
 """
 def remove_note(args, current_note, data_file):
-	filename_to_remove = hf.parse_unary_args(args)
-	if filename_to_remove.lower() == 'archive' or filename_to_remove.lower() == 'default':
+	note_to_remove = hf.parse_unary_args(args)
+	if note_to_remove.lower() == 'archive' or note_to_remove.lower() == 'default':
 		print('Sorry. The \'default\' and \'archive\' notes cannot be removed. However, they can be cleared of their contents.')
 		return
-	prompt = 'Are you sure you want to remove the note \'' + filename_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
+	prompt = 'Are you sure you want to remove \'' + note_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
 	decision = hf.request_user_permission(prompt)
 	if decision == 'n':
 		print('Note removal aborted')
 	elif decision == 'y': # this probably isn't necessary (i.e. don't need to check, could be an else)
-		file_to_remove = path.expanduser('~/.quicknote/.notes/.' + filename_to_remove)
-		files = []
-		if path.isfile(file_to_remove):
-			os.remove(file_to_remove)
-			if current_note != 'default':
+		note_path_to_remove = path.expanduser('~/.quicknote/.notes/.' + note_to_remove)
+		if path.isfile(note_path_to_remove):
+			os.remove(note_path_to_remove)
+			if current_note == note_to_remove:
 				hf.write_to_data_file(data_file, path.expanduser('~/.quicknote/.notes/.default'))
-			print('Removed note \'' + filename_to_remove + '\'')
+			print('Removed note \'' + note_to_remove + '\'')
 		else:
 			print('The note you are trying to remove does not exist. Please try again.')
 

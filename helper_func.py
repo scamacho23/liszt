@@ -77,6 +77,8 @@ parses them and returns the
 found word
 """
 def parse_unary_args(args):
+	if type(args) == str:
+		return args.strip()
 	if len(args) == 1:
 		return args[0].strip()
 	word = ''
