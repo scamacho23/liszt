@@ -118,22 +118,24 @@ def add_memory(note, args):
 
 
 """
-Given a filename, lists the current memories
-held by that file
+Given a the name of a note, lists the current memories
+held by that note 
 """
-def list_memories(filename):
-	if not path.isfile(filename):
+def list_memories(note_path, note_name):
+	if not path.isfile(note_path):
 		print('Hmmm. The current note doesn\'t seem to be working. Please try again later.')
 		print('If the current note continues to fail to open, please submit a help ticket by emailing us at quicknote.v1@gmail.com')
 		return
-	elif path.getsize(filename) == 0:
+	if path.getsize(note_path) == 0:
 		print('You have no memories on this note')
 		return
-	with open(filename, 'r') as f:
+	num_memories = sum(1 for memory in open(note_path, 'r'))
+	with open(note_path, 'r') as to_read:
 		counter = 1
-		for memory in f:
-			memory = str(counter) + '. ' + memory 
-			print(memory, end='')
+		print('Found ' + str(num_memories) + ' memories on \'' + note_name + '\'')
+		for memory in to_read:
+			memory = str(counter) + '. ' + memory.strip('\n') 
+			print(memory)
 			counter += 1
 
 

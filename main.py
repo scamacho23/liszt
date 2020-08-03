@@ -117,7 +117,7 @@ def main():
 	command = args[0]
 	if len(args) == 1:
 		if command == '--list':
-			mem.list_memories(current_note)
+			mem.list_memories(current_note, current_note_name)
 		elif command == '--clear':
 			mem.clear_memories(current_note)
 		elif command == '--help':

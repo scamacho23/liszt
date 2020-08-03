@@ -69,6 +69,9 @@ the ability list archived notes with `list_archive_notes`.
 August 2, 2020
 
 Added `move_memory` and `copy_memory`. Added the helper function `write_to_file` to helper_func.py.
-Added the memory-helper functions `change_memory` and `append_memory` to memory.py.
+Added the memory-helper functions `change_memory` and `append_memory` to memory.py. Added functionality
+so that when user types `remember --list`, the number of memories found is displayed before the actual
+memories. Implemented a similar functionality for `remember --list-notes` and `remember --list-archived-notes`,
+so that these methods first print the number of notes found.
 
 *Type `remember --version` to view your version of **Quick Note***
