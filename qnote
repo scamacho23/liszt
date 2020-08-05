@@ -758,61 +758,61 @@ def main():
 	command = args[0]
 	if len(args) == 1:
 		if command == '--list':
-			mem.list_memories(current_note, current_note_name)
+			list_memories(current_note, current_note_name)
 		elif command == '--update':
 			update_quick_note(data_file)
 		elif command == '--clear':
-			mem.clear_memories(current_note)
+			clear_memories(current_note)
 		elif command == '--help':
 			get_help()
 		elif command == '--version':
 			get_version()
 		elif command == '--list-notes':
-			note.list_notes(notes) 
+			list_notes(notes) 
 		elif command == '--current-note':
 			print(current_note_name)
 		elif command == '--clear-notes':
-			note.clear_notes(notes, current_note_name, data_file)
+			clear_notes(notes, current_note_name, data_file)
 		elif command == '--clear-archived-notes':
-			note.clear_archive_notes(archive_notes)
+			clear_archive_notes(archive_notes)
 		elif command == '--remove-note':
-			note.remove_note(current_note_name, current_note_name, data_file)
+			remove_note(current_note_name, current_note_name, data_file)
 		# this is for archiving the current note
 		elif command == '--archive-note':
-			note.archive_note(current_note_name, current_note_name, data_file)
+			archive_note(current_note_name, current_note_name, data_file)
 		elif command == '--list-archived-notes':
-			note.list_archive_notes(archive_notes)
+			list_archive_notes(archive_notes)
 		else:
-			mem.add_memory(current_note, args)
+			add_memory(current_note, args)
 	elif len(args) >= 1:
 		if command == '--remove':
-			mem.remove_memory(current_note, args[1])
+			remove_memory(current_note, args[1])
 		elif command == '--archive':
-			mem.archive_memory(current_note, args[1])
+			archive_memory(current_note, args[1])
 		elif command == '--add-note':
-			note.add_note(args[1:])
+			add_note(args[1:])
 		elif command == '--change-note':
-			note.change_note(args[1:], current_note, data_file)
+			change_note(args[1:], current_note, data_file)
 		elif command == '--rename-note':
-			note.rename_note(args[1:], current_note, data_file)
+			rename_note(args[1:], current_note, data_file)
 		# this is for removing any note
 		elif command == '--remove-note':
-			note.remove_note(args[1:], current_note_name, data_file)
+			remove_note(args[1:], current_note_name, data_file)
 		# this is for archiving any note
 		elif command == '--archive-note':
-			note.archive_note(args[1:], current_note_name, data_file)	
+			archive_note(args[1:], current_note_name, data_file)	
 		elif command == '--unarchive-note':
-			note.un_archive_note(args[1:])
+			un_archive_note(args[1:])
 		elif command == '--import-note':
-			note.import_note(args[1:])
+			import_note(args[1:])
 		elif command == '--export-note':
-			note.export_note(args[1:])
+			export_note(args[1:])
 		elif command == '--move-memory':
-			mem.move_memory(current_note, args[1], args[2:])
+			move_memory(current_note, args[1], args[2:])
 		elif command == '--copy-memory':
-			mem.copy_memory(current_note, args[1], args[2:])
+			copy_memory(current_note, args[1], args[2:])
 		else:
-			mem.add_memory(current_note, args)
+			add_memory(current_note, args)
 
 
 if __name__ == '__main__':
