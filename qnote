@@ -740,7 +740,7 @@ def main():
 
 	# confirm that necessary .quicknote folder exists
 	quicknote = path.expanduser('~/.quicknote')
-	if not path.isfile(quicknote):
+	if not path.isdir(quicknote):
 		install()
 		
 
