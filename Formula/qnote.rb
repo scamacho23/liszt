@@ -8,10 +8,6 @@ class Qnote < Formula
 
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
     bin.install "qnote"
   end
 
