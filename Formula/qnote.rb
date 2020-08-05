@@ -8,7 +8,7 @@ class Qnote < Formula
 
   def install
     bin.install "qnote"
-    system("echo hello")
+    system "echo hello"
   end
 
 end
