@@ -9,7 +9,6 @@ class Qnote < Formula
 
   def install
     bin.install "qnote"
-    system Dir.mkdir("testing")
   end
 
 end
