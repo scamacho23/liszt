@@ -1,4 +1,4 @@
-Class qnote < Formula
+class Qnote < Formula
   desc "Software to save command line arguments as 'memories'"
   homepage "https://github.com/scamacho23/homebrew-quicknote"
   url "https://github.com/scamacho23/homebrew-quicknote/archive/v1.0.6.tar.gz"
