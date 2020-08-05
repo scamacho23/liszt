@@ -8,7 +8,6 @@ class Qnote < Formula
 
   def install
     bin.install "qnote"
-    echo "Hello There"
   end
 
 end
