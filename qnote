@@ -41,11 +41,11 @@ def make_background_files():
 	prefix = path.expanduser('~/.quicknote/')
 	data_file = prefix + '.background/data_file.json'
 	default_file = prefix + '.notes/.default'
-	data = {'current_note': '', 'last_update_date': ''}
+	data = {'current_note': ''}
 	with open(data_file, 'w') as initial_open:
 		json.dump(data, initial_open)
 	write_to_data_file(data_file, default_file)
-	save_datetime(data_file)
+	# save_datetime(data_file)
 		 
 
 """
