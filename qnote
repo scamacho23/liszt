@@ -734,15 +734,14 @@ Handles command line arguments and redirects to appropriate
 helper functions. Should be further decomposed
 """
 def main():
-	# send_update_message()
-	args = sys.argv[1:]
-	files = background_info()
-
 	# confirm that necessary .quicknote folder exists
 	quicknote = path.expanduser('~/.quicknote')
 	if not path.isdir(quicknote):
 		install()
-		
+
+	# send_update_message()
+	args = sys.argv[1:]
+	files = background_info()
 
 	data_file = files[0]
 	current_note = files[1].strip('\n')
