@@ -597,7 +597,6 @@ def change_note(args, current_note, data_file):
 		return
 	
 	write_to_data_file(data_file, filename)
-	print('Changed current note to \'' + note_name + '\'')
 
 
 """
@@ -653,7 +652,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.16' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.17' + RESET) 
 
 
 """
@@ -666,54 +665,54 @@ def get_help():
 	print('\'Notes\' are files where we store your thoughts')
 	print('\'Memories\' are the individual entries in each note\n')
 	print(BOLD + 'MEMORIES' + RESET + '\n')
-	print(BOLD + 'qnote ' + ITALIC + 'your_memory' + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a memory')
+	print(BOLD + ITALIC + 'your_memory' + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a memory')
 	print('     Usage: \'qnote Hello World!\'')
-	print(BOLD + 'qnote -l' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'memories on the current note')
+	print(BOLD + '-l' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'memories on the current note')
 	print('     Usage: \'qnote -l\'')
-	print(BOLD + 'qnote -cl' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'memories on the current note')
+	print(BOLD + '-cl' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'memories on the current note')
 	print('     Usage: \'qnote -cl\'')
-	print(BOLD + 'qnote -rm ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote --list' + RESET + '\')')
+	print(BOLD + '-rm ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote -l' + RESET + '\')')
 	print('     Usage: \'qnote -rm 3\'')
-	print(BOLD + 'qnote -m ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'moving ' + RESET + 'the memory at that row number in the current note to another note')
+	print(BOLD + '-m ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'moving ' + RESET + 'the memory at that row number in the current note to another note')
 	print('     Usage: \'qnote -m 3 shopping list\'')
-	print(BOLD + 'qnote -c ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'copying ' + RESET + 'the memory at that row number in the current note to another note')
+	print(BOLD + '-c ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'copying ' + RESET + 'the memory at that row number in the current note to another note')
 	print('     Usage: \'qnote -c 3 shopping list\'\n')
 	print(BOLD + 'NOTES' + RESET + '\n')
-	print(BOLD + 'qnote -an ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a new note with the given name')
+	print(BOLD + '-an ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a new note with the given name')
 	print('     Usage: \'qnote -an shopping list\'')
-	print(BOLD + 'qnote -ln' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'current notes')
+	print(BOLD + '-ln' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'current notes')
 	print('     Usage: \'qnote -ln\'')
-	print(BOLD + 'qnote -cn' + RESET + ' --> for ' + BOLD + 'viewing ' + RESET + 'the name of the current note')
+	print(BOLD + '-cn' + RESET + ' --> for ' + BOLD + 'viewing ' + RESET + 'the name of the current note')
 	print('     Usage: \'qnote -cn\'')
-	print(BOLD + 'qnote -chn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'changing ' + RESET + 'to the note with the given name')
+	print(BOLD + '-chn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'changing ' + RESET + 'to the note with the given name')
 	print('     Usage: \'qnote -chn To Do\'')
-	print(BOLD + 'qnote -rnn ' + ITALIC + 'note_name' + RESET + BOLD + ' / ' + ITALIC + 'new_name' + RESET + ' --> for ' + BOLD + 'renaming ' + RESET + 'the given note')
+	print(BOLD + '-rnn ' + ITALIC + 'note_name' + RESET + BOLD + ' / ' + ITALIC + 'new_name' + RESET + ' --> for ' + BOLD + 'renaming ' + RESET + 'the given note')
 	print('     Usage: \'qnote -rnn To Do / Done\'')
-	print(BOLD + 'qnote -rmn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the note with the given name')
+	print(BOLD + '-rmn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the note with the given name')
 	print('     Usage: \'qnote -rmn To Do\'')
-	print(BOLD + 'qnote -rmn ' + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the current note')
+	print(BOLD + '-rmn ' + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the current note')
 	print('     Usage: \'qnote -rmn\'')
-	print(BOLD + 'qnote -cln' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your current notes')
+	print(BOLD + '-cln' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your current notes')
 	print('     Usage: \'qnote -cln\'')
-	print(BOLD + 'qnote -dn' + ITALIC + 'note_to_duplicate' + RESET + BOLD + ' / ' + ITALIC + 'new_note_name' + RESET + ' --> for ' + BOLD + 'duplicating ' + RESET + 'existing notes')
+	print(BOLD + '-dn' + ITALIC + ' note_to_duplicate' + RESET + BOLD + ' / ' + ITALIC + 'new_note_name' + RESET + ' --> for ' + BOLD + 'duplicating ' + RESET + 'existing notes')
 	print('     Usage: \'qnote -dn random / general\'')
-	print(BOLD + 'qnote -in ' + ITALIC + 'file_to_import' + RESET + BOLD + ' / ' + ITALIC + 'note_name' + RESET + ' --> for ' + BOLD + 'importing ' + RESET + '\'.txt\' files as notes')
+	print(BOLD + '-in ' + ITALIC + 'file_to_import' + RESET + BOLD + ' / ' + ITALIC + 'note_name' + RESET + ' --> for ' + BOLD + 'importing ' + RESET + '\'.txt\' files as notes')
 	print('     Usage: \'qnote -in random.txt / Assorted Tasks\'')
-	print(BOLD + 'qnote -en ' + ITALIC + 'note_to_export' + RESET + BOLD + ' / ' + ITALIC + 'new_file_name' + RESET + ' --> for ' + BOLD + 'exporting ' + RESET + 'notes as \'.txt\' files')
+	print(BOLD + '-en ' + ITALIC + 'note_to_export' + RESET + BOLD + ' / ' + ITALIC + 'new_file_name' + RESET + ' --> for ' + BOLD + 'exporting ' + RESET + 'notes as \'.txt\' files')
 	print('     Usage: \'qnote -en Assorted Tasks / nextweek\'\n')
 	print(BOLD + 'ARCHIVE' + RESET)
 	print(ITALIC + 'Archived notes do not receive the same functionality as regular notes. To rename, remove, export, etc. archived notes, please unarchive them first.' + RESET + '\n')
-	print(BOLD + 'qnote -a ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote --list' + RESET + '\')')
+	print(BOLD + '-a ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote -l' + RESET + '\')')
 	print('     Usage: \'qnote -a 3\'')
-	print(BOLD + 'qnote -an ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the note with the given name')
+	print(BOLD + '-arn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the note with the given name')
 	print('     Usage: \'qnote -an To Do\'')
-	print(BOLD + 'qnote -an ' + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the current note')
+	print(BOLD + '-arn ' + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the current note')
 	print('     Usage: \'qnote -an\'')
-	print(BOLD + 'qnote -unan ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'unarchiving ' + RESET + 'the note with the given name')
+	print(BOLD + '-unan ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'unarchiving ' + RESET + 'the note with the given name')
 	print('     Usage: \'qnote -unan To Do\'')
-	print(BOLD + 'qnote -lan' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'archived notes')
+	print(BOLD + '-lan' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'archived notes')
 	print('     Usage: \'qnote -lan\'')
-	print(BOLD + 'qnote -clan' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your archived notes')
+	print(BOLD + '-clan' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your archived notes')
 	print('     Usage: \'qnote -clan\'')
 
 
@@ -790,14 +789,15 @@ def main():
 			elif command == '-an':
 				add_note(args[1:], current_note, data_file)
 			elif command == '-chn':
-				change_note(args[1:], current_note, data_file)
+				change_note(args[1:], current_note, data_file)			
+				print('Changed current note to \'' + note_name + '\'')
 			elif command == '-rnn':
 				rename_note(args[1:], current_note, data_file)
 			# this is for removing any note
 			elif command == '-rmn':
 				remove_note(args[1:], current_note_name, data_file)
 			# this is for archiving any note
-			elif command == '-an':
+			elif command == '-arn':
 				archive_note(args[1:], current_note_name, data_file)	
 			elif command == '-unan':
 				un_archive_note(args[1:])
