@@ -81,4 +81,9 @@ These versions were spent developing the brew tap and install functionality. In 
 (which contains the contents of all the files in `files`, although those will become deprecated in time). Also,
 added the `Formula` directory for holding the `qnote.rb` formula.
 
+## **@version 1.0.15 ** ##
+August 6, 2020
+
+Fixed bugs in qnote file.
+
 *Type `remember --version` to view your version of **Quick Note***

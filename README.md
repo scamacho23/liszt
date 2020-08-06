@@ -4,7 +4,7 @@
 keep ideas clear in separate notes**
 
 ## Installation
-In your command line, enter `brew tap scamacho23/quicknote` to download the tap of **Quick Note**
+In your command line, enter `brew tap scamacho23/quicknote` to download the tap of **Quick Note**. 
 Next, enter `brew install qnote`, which should install `qnote` on your machine.
 *If you are having issues with installation, send an email to quicknote.v1@gmail.com*
 
