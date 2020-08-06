@@ -74,4 +74,11 @@ so that when user types `remember --list`, the number of memories found is displ
 memories. Implemented a similar functionality for `remember --list-notes` and `remember --list-archived-notes`,
 so that these methods first print the number of notes found.
 
+## **@versions 1.0.7 --> 1.0.14 ** ##
+August 3-5, 2020
+
+These versions were spent developing the brew tap and install functionality. In the process, added the qnote file
+(which contains the contents of all the files in `files`, although those will become deprecated in time). Also,
+added the `Formula` directory for holding the `qnote.rb` formula.
+
 *Type `remember --version` to view your version of **Quick Note***

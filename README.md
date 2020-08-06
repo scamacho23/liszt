@@ -1,15 +1,12 @@
 # Quick Note
 
 **Quick Note makes it easy to jot down notes in the command line, and
-keep clear ideas in separate notes**
+keep ideas clear in separate notes**
 
 ## Installation
-In your command line, enter `brew tap scamacho23/quicknote` to get a beta of **Quick Note**
-
-At the moment, you will also need to add an alias to your `.bashrc` or `.zshrc` (depending on if 
-you use bash or zsh) that reads as follows:
-
-`alias remember='python3 path/to/quicknote/in/homebrew'`
+In your command line, enter `brew tap scamacho23/quicknote` to download the tap of **Quick Note**
+Next, enter `brew install qnote`, which should install `qnote` on your machine.
+*If you are having issues with installation, send an email to quicknote.v1@gmail.com*
 
 ## Contributing to the Project
 For more information, see the `CONTRIBUTING.md` file.
