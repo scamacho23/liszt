@@ -91,11 +91,17 @@ to qnote.
 August 6, 2020
 
 Add `duplicate_note`. Shorten length of commands (instead of full words, mostly initials). Also removed double-dash from
-commands and replaced with single dash
+commands and replaced with single dash.
 
 ## **@version 1.0.17 ** ##
 August 6, 2020
 
-Change help menu
+Changed design of help menu. Removed `archive_memory` functionality from `homebrew` version. 
+
+## **@version 1.0.18 ** ##
+August 6, 2020
+
+Added blue arrows to help menu display. Changed functionality of default note so that it
+acts more as a placeholder than a real note.
 
 *Type `remember --version` to view your version of **Quick Note***

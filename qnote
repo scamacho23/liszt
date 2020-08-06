@@ -12,6 +12,7 @@ import shutil
 # Color Definitions
 BOLD = '\033[1m'
 ITALIC = '\033[3m'
+BLUE = '\033[34m'
 RESET = '\033[0m'
 
 
@@ -46,13 +47,10 @@ def make_background_files():
 
 """
 Makes the default note file
-and the archive note file
 """
 def make_defaults():
 	default_note = path.expanduser('~/.quicknote/.notes/.default')
 	open(default_note, 'w+')
-	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
-	open(archive_note, 'w+')
 
 
 def install():
@@ -224,6 +222,9 @@ def move_memory(current_note, row, args):
 	if not path.isfile(note_path):
 		print('The note you are trying to add to does not exist. Please try again.')	
 		return
+	if note == 'default':
+		print('Sorry. \'default\' is off limits.')	
+		return
 	memory_to_move = change_memory(current_note, row)	
 	if memory_to_move == None:
 		return
@@ -242,6 +243,9 @@ def copy_memory(current_note, row, args):
 	note_path = path.expanduser('~/.quicknote/.notes/.' + note)
 	if not path.isfile(note_path):
 		print('The note you are trying to add to does not exist. Please try again.')
+		return
+	if note == 'default':
+		print('Sorry. \'default\' is off limits.')	
 		return
 	memories = check_row(current_note, row)	
 	if memories == None:
@@ -312,27 +316,6 @@ def list_memories(note_path, note_name):
 			counter += 1
 
 
-"""
-Given a row number, removes the
-memory at that row and adds it to
-the '.archive' memory file
-"""
-def archive_memory(filename, row):
-	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
-	memories = check_row(filename, row)
-	if memories == None:
-		return
-	row = int(row)
-	memory_to_archive = memories[row - 1]
-	del memories[row - 1]
-	with open(filename, 'w') as f:
-		for memory in memories:
-			f.write(memory)
-	with open(archive_note, 'a') as f:
-		f.write(memory_to_archive)
-	print('Archived memory \'' + memory_to_archive.strip('\n') + '\'')
-
-
 # NOTE METHODS
 """
 Given the name of a note
@@ -362,6 +345,10 @@ def duplicate_note(args):
 	# confirm that a note actually exists with the given name
 	if not path.isfile(existing_path):
 		print('There is no note with name \'' + existing_note + '\'. Please try again.')
+		return
+	# prevent the user from duplicating default
+	if existing_note == 'default':
+		print('Sorry. \'default\' is off limits.')
 		return
 	new_note_exists = make_note(new_path, new_note)	
 	if new_note_exists != None: 
@@ -411,6 +398,10 @@ def export_note(args):
 	if not path.isfile(note_path):
 		print('There is no note with name \'' + note_name + '\'. Please try again.')
 		return
+	# prevent the user from exporting default
+	if note_name == 'default':
+		print('Sorry. \'default\' is off limits.')
+		return
 	# confirm that there is not an existing '.txt' file in the working directory with the same name
 	if path.isfile(filename):
 		print('A file with this name already exists in your working directory. Please pick a different name.')
@@ -432,9 +423,9 @@ def archive_note(args, current_note, data_file):
 	if not path.isfile(note_path):
 		print('The note you are trying to archive does not exist. Please try again.')	
 		return
-	# prevent the user from archiving 'archive' or 'default'
-	if note_to_archive == 'archive' or note_to_archive == 'default':
-		print('\'archive\' and \'default\' may not be archived. Please try again.')
+	# prevent the user from archiving 'default'
+	if note_to_archive == 'default':
+		print('\'default\' may not be archived. Please try again.')
 		return
 	new_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_archive)
 	if path.isfile(new_path):
@@ -489,11 +480,12 @@ def list_notes(notes):
 	if len(notes) == 0:
 		print('You have no notes at the moment. Start by adding a new note or by importing one from a \'.txt.\' file.')
 		return
-	print(BOLD + ITALIC + 'Found ' + str(len(notes)) + ' notes' + RESET)
+	print(BOLD + ITALIC + 'Found ' + str(len(notes) - 1) + ' notes' + RESET)
 	for note in notes:
-		note = BOLD + str(counter) + '. ' + RESET + note
-		print(note)	
-		counter += 1
+		if note != 'default':
+			note = BOLD + str(counter) + '. ' + RESET + note
+			print(note)	
+			counter += 1
 
 
 """
@@ -517,8 +509,8 @@ if it exists
 """
 def remove_note(args, current_note, data_file):
 	note_to_remove = parse_unary_args(args)
-	if note_to_remove.lower() == 'archive' or note_to_remove.lower() == 'default':
-		print('Sorry. The \'default\' and \'archive\' notes cannot be removed. However, they can be cleared of their contents.')
+	if note_to_remove.lower() == 'default':
+		print('Sorry. \'default\' note cannot be removed.')
 		return
 	prompt = 'Are you sure you want to remove \'' + note_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
 	decision = request_user_permission(prompt)
@@ -546,7 +538,7 @@ def clear_notes(notes, current_note, data_file):
 	elif decision == 'y':
 		for note in notes:
 			note_path = path.expanduser('~/.quicknote/.notes/.' + note)
-			if path.isfile(note_path) and (note != 'archive' and note != 'default'):
+			if path.isfile(note_path) and note != 'default':
 				os.remove(note_path)
 		if current_note != 'default':
 			write_to_data_file(data_file, path.expanduser('~/.quicknote/.notes/.default'))
@@ -591,12 +583,24 @@ def change_note(args, current_note, data_file):
 	if current_note == filename:
 		print('The note you are trying to change to is already the current note.')
 		return
-
+	# stop if the user is trying to change to the default note
+	if note_name == 'default':
+		print('Sorry. \'default\' is off limits.')
+		return
 	if not path.isfile(filename):
 		print('Hmmm. The note you entered doesn\'t seem to exist. Please try again.')
 		return
-	
+	if current_note[-7:] == 'default':
+		new_name = input('The note you have been writing to must be named before you can change notes. Please enter a name (ENTER to delete the current note): ')
+		if new_name != '':
+			dot_name = path.expanduser('~/.quicknote/.notes/.' + new_name)
+			return_value = make_note(dot_name, new_name)
+			if return_value == None:
+				return
+			shutil.copyfile(current_note, dot_name)
+		open(current_note, 'w').close()	
 	write_to_data_file(data_file, filename)
+	return note_name
 
 
 """
@@ -615,9 +619,9 @@ def rename_note(args, current_note, data_file):
 	if not path.isfile(old_path):
 		print('The note you are trying to rename does not exist. Please try again.')
 		return
-	# prevent the user from renaming 'archive' or 'default'
-	if old_name == 'archive' or old_name == 'default':
-		print('\'archive\' and \'default\' are reserved names. Please try again.')
+	# prevent the user from renaming 'default'
+	if old_name == 'default':
+		print('\'default\' cannote be renamed. Please try again.')
 		return
 	os.rename(old_path, new_path)
 	counter = 0
@@ -652,7 +656,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.17' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.18' + RESET) 
 
 
 """
@@ -660,60 +664,55 @@ Prints some help/usage information
 """
 def get_help():
 	get_version()
+	arrow = BOLD + BLUE + '  ==>' + RESET
 	print('\n', end='')
 	print(BOLD + 'GENERAL' + RESET + '\n')
 	print('\'Notes\' are files where we store your thoughts')
 	print('\'Memories\' are the individual entries in each note\n')
 	print(BOLD + 'MEMORIES' + RESET + '\n')
-	print(BOLD + ITALIC + 'your_memory' + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a memory')
+	print(BOLD + ITALIC + 'your_memory' + RESET + arrow + ' for ' + BOLD + 'adding ' + RESET + 'a memory')
 	print('     Usage: \'qnote Hello World!\'')
-	print(BOLD + '-l' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'memories on the current note')
+	print(BOLD + '-l' + RESET + arrow + ' for ' + BOLD + 'listing ' + RESET + 'memories on the current note')
 	print('     Usage: \'qnote -l\'')
-	print(BOLD + '-cl' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'memories on the current note')
+	print(BOLD + '-cl' + RESET + arrow + ' for ' + BOLD + 'clearing ' + RESET + 'memories on the current note')
 	print('     Usage: \'qnote -cl\'')
-	print(BOLD + '-rm ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote -l' + RESET + '\')')
-	print('     Usage: \'qnote -rm 3\'')
-	print(BOLD + '-m ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'moving ' + RESET + 'the memory at that row number in the current note to another note')
+	print(BOLD + '-r ' + ITALIC + 'row_number'  + RESET + arrow + ' for ' + BOLD + 'removing ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote -l' + RESET + '\')')
+	print('     Usage: \'qnote -r 3\'')
+	print(BOLD + '-m ' + ITALIC + 'row_number other_note_name'  + RESET + arrow + ' for ' + BOLD + 'moving ' + RESET + 'the memory at that row number in the current note to another note')
 	print('     Usage: \'qnote -m 3 shopping list\'')
-	print(BOLD + '-c ' + ITALIC + 'row_number other_note_name'  + RESET + ' --> for ' + BOLD + 'copying ' + RESET + 'the memory at that row number in the current note to another note')
+	print(BOLD + '-c ' + ITALIC + 'row_number other_note_name'  + RESET + arrow + ' for ' + BOLD + 'copying ' + RESET + 'the memory at that row number in the current note to another note')
 	print('     Usage: \'qnote -c 3 shopping list\'\n')
 	print(BOLD + 'NOTES' + RESET + '\n')
-	print(BOLD + '-an ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'adding ' + RESET + 'a new note with the given name')
-	print('     Usage: \'qnote -an shopping list\'')
-	print(BOLD + '-ln' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'current notes')
+	print(BOLD + '-a ' + ITALIC + 'note_name'  + RESET + arrow + ' for ' + BOLD + 'adding ' + RESET + 'a new note with the given name')
+	print('     Usage: \'qnote -a shopping list\'')
+	print(BOLD + '-ln' + RESET + arrow + ' for ' + BOLD + 'listing ' + RESET + 'current notes')
 	print('     Usage: \'qnote -ln\'')
-	print(BOLD + '-cn' + RESET + ' --> for ' + BOLD + 'viewing ' + RESET + 'the name of the current note')
-	print('     Usage: \'qnote -cn\'')
-	print(BOLD + '-chn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'changing ' + RESET + 'to the note with the given name')
-	print('     Usage: \'qnote -chn To Do\'')
-	print(BOLD + '-rnn ' + ITALIC + 'note_name' + RESET + BOLD + ' / ' + ITALIC + 'new_name' + RESET + ' --> for ' + BOLD + 'renaming ' + RESET + 'the given note')
-	print('     Usage: \'qnote -rnn To Do / Done\'')
-	print(BOLD + '-rmn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the note with the given name')
-	print('     Usage: \'qnote -rmn To Do\'')
-	print(BOLD + '-rmn ' + RESET + ' --> for ' + BOLD + 'removing ' + RESET + 'the current note')
-	print('     Usage: \'qnote -rmn\'')
-	print(BOLD + '-cln' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your current notes')
+	print(BOLD + '-n' + RESET + arrow + ' for ' + BOLD + 'viewing ' + RESET + 'the name of the current note')
+	print('     Usage: \'qnote -n\'')
+	print(BOLD + '-ch ' + ITALIC + 'note_name'  + RESET + arrow + ' for ' + BOLD + 'changing ' + RESET + 'to the note with the given name')
+	print('     Usage: \'qnote -ch To Do\'')
+	print(BOLD + '-rn ' + ITALIC + 'note_name' + RESET + BOLD + ' / ' + ITALIC + 'new_name' + RESET + arrow + ' for ' + BOLD + 'renaming ' + RESET + 'the given note')
+	print('     Usage: \'qnote -rn To Do / Done\'')
+	print(BOLD + '-rm ' + ITALIC + 'note_name'  + RESET + arrow + ' for ' + BOLD + 'removing ' + RESET + 'the note with the given name (if no name given, removes the current note)')
+	print('     Usage: \'qnote -rm To Do\'')
+	print(BOLD + '-cln' + RESET + arrow + ' for ' + BOLD + 'clearing ' + RESET + 'your current notes')
 	print('     Usage: \'qnote -cln\'')
-	print(BOLD + '-dn' + ITALIC + ' note_to_duplicate' + RESET + BOLD + ' / ' + ITALIC + 'new_note_name' + RESET + ' --> for ' + BOLD + 'duplicating ' + RESET + 'existing notes')
-	print('     Usage: \'qnote -dn random / general\'')
-	print(BOLD + '-in ' + ITALIC + 'file_to_import' + RESET + BOLD + ' / ' + ITALIC + 'note_name' + RESET + ' --> for ' + BOLD + 'importing ' + RESET + '\'.txt\' files as notes')
+	print(BOLD + '-dp' + ITALIC + ' note_to_duplicate' + RESET + BOLD + ' / ' + ITALIC + 'new_note_name' + RESET + arrow + ' for ' + BOLD + 'duplicating ' + RESET + 'existing notes')
+	print('     Usage: \'qnote -dp random / general\'')
+	print(BOLD + '-in ' + ITALIC + 'file_to_import' + RESET + BOLD + ' / ' + ITALIC + 'note_name' + RESET + arrow + ' for ' + BOLD + 'importing ' + RESET + '\'.txt\' files as notes')
 	print('     Usage: \'qnote -in random.txt / Assorted Tasks\'')
-	print(BOLD + '-en ' + ITALIC + 'note_to_export' + RESET + BOLD + ' / ' + ITALIC + 'new_file_name' + RESET + ' --> for ' + BOLD + 'exporting ' + RESET + 'notes as \'.txt\' files')
-	print('     Usage: \'qnote -en Assorted Tasks / nextweek\'\n')
+	print(BOLD + '-ex ' + ITALIC + 'note_to_export' + RESET + BOLD + ' / ' + ITALIC + 'new_file_name' + RESET + arrow + ' for ' + BOLD + 'exporting ' + RESET + 'notes as \'.txt\' files')
+	print('     Usage: \'qnote -ex Assorted Tasks / nextweek\'\n')
 	print(BOLD + 'ARCHIVE' + RESET)
 	print(ITALIC + 'Archived notes do not receive the same functionality as regular notes. To rename, remove, export, etc. archived notes, please unarchive them first.' + RESET + '\n')
-	print(BOLD + '-a ' + ITALIC + 'row_number'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the memory at that row number in the current note (row number can be retrieved from \'' + BOLD + 'qnote -l' + RESET + '\')')
-	print('     Usage: \'qnote -a 3\'')
-	print(BOLD + '-arn ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the note with the given name')
-	print('     Usage: \'qnote -an To Do\'')
-	print(BOLD + '-arn ' + RESET + ' --> for ' + BOLD + 'archiving ' + RESET + 'the current note')
-	print('     Usage: \'qnote -an\'')
-	print(BOLD + '-unan ' + ITALIC + 'note_name'  + RESET + ' --> for ' + BOLD + 'unarchiving ' + RESET + 'the note with the given name')
-	print('     Usage: \'qnote -unan To Do\'')
-	print(BOLD + '-lan' + RESET + ' --> for ' + BOLD + 'listing ' + RESET + 'archived notes')
-	print('     Usage: \'qnote -lan\'')
-	print(BOLD + '-clan' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your archived notes')
-	print('     Usage: \'qnote -clan\'')
+	print(BOLD + '-ar ' + ITALIC + 'note_name'  + RESET + arrow + ' for ' + BOLD + 'archiving ' + RESET + 'the note with the given name (if no name given, archives the curent note)')
+	print('     Usage: \'qnote -ar To Do\'')
+	print(BOLD + '-unar ' + ITALIC + 'note_name'  + RESET + arrow + ' for ' + BOLD + 'unarchiving ' + RESET + 'the note with the given name')
+	print('     Usage: \'qnote -unar To Do\'')
+	print(BOLD + '-lar' + RESET + arrow + ' for ' + BOLD + 'listing ' + RESET + 'archived notes')
+	print('     Usage: \'qnote -lar\'')
+	print(BOLD + '-clar' + RESET + arrow + ' for ' + BOLD + 'clearing ' + RESET + 'your archived notes')
+	print('     Usage: \'qnote -clar\'')
 
 
 """
@@ -759,53 +758,52 @@ def main():
 				list_memories(current_note, current_note_name)
 			elif command == '-cl':
 				clear_memories(current_note)
-			elif command == '-help':
+			elif command == '-help' or command == '-h':
 				get_help()
-			elif command == '-version':
+			elif command == '-version' or command == '-v':
 				get_version()
 			elif command == '-ln':
 				list_notes(notes) 
-			elif command == '-cn':
+			elif command == '-n':
 				print(current_note_name)
 			elif command == '-cln':
 				clear_notes(notes, current_note_name, data_file)
-			elif command == '-clan':
+			elif command == '-clar':
 				clear_archive_notes(archive_notes)
-			elif command == '-rmn':
+			elif command == '-rm':
 				remove_note(current_note_name, current_note_name, data_file)
 			# this is for archiving the current note
-			elif command == '-an':
+			elif command == '-ar':
 				archive_note(current_note_name, current_note_name, data_file)
-			elif command == '-lan':
+			elif command == '-lar':
 				list_archive_notes(archive_notes)
 			else:
 				print('qnote error: command \'' + command + '\' not recognized. Please try again.')
 				exit(1)
 		elif len(args) >= 1:
-			if command == '-rm':
+			if command == '-r':
 				remove_memory(current_note, args[1])
 			elif command == '-a':
-				archive_memory(current_note, args[1])
-			elif command == '-an':
 				add_note(args[1:], current_note, data_file)
-			elif command == '-chn':
-				change_note(args[1:], current_note, data_file)			
-				print('Changed current note to \'' + note_name + '\'')
-			elif command == '-rnn':
+			elif command == '-ch':
+				note_name = change_note(args[1:], current_note, data_file)			
+				if note_name != None:
+					print('Changed current note to \'' + note_name + '\'')
+			elif command == '-rn':
 				rename_note(args[1:], current_note, data_file)
 			# this is for removing any note
-			elif command == '-rmn':
+			elif command == '-rm':
 				remove_note(args[1:], current_note_name, data_file)
 			# this is for archiving any note
-			elif command == '-arn':
+			elif command == '-ar':
 				archive_note(args[1:], current_note_name, data_file)	
-			elif command == '-unan':
+			elif command == '-unar':
 				un_archive_note(args[1:])
 			elif command == '-in':
 				import_note(args[1:])
-			elif command == '-en':
+			elif command == '-ex':
 				export_note(args[1:])
-			elif command == '-dn':
+			elif command == '-dp':
 				duplicate_note(args[1:])
 			elif command == '-m':
 				move_memory(current_note, args[1], args[2:])
