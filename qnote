@@ -347,6 +347,31 @@ def write_to_note(note, memories):
 
 
 """
+Given the name of a note,
+duplicates that note and names
+the new note the desired name
+"""
+def duplicate_note(args):
+	pair = parse_binary_args(args)
+	if pair == None:
+		return
+	existing_note = pair[0]
+	new_note = pair[1]
+	existing_path = path.expanduser('~/.quicknote/.notes/.' + existing_note)
+	new_path = path.expanduser('~/.quicknote/.notes/.' + new_note)
+	# confirm that a note actually exists with the given name
+	if not path.isfile(existing_path):
+		print('There is no note with name \'' + existing_note + '\'. Please try again.')
+		return
+	new_note_exists = make_note(new_path, new_note)	
+	if new_note_exists != None: 
+		shutil.copyfile(existing_path, new_path)
+		print('Successfully duplicated \'' + existing_note + '\' as \'' + new_note + '\'')
+	else:		
+		print('Could not duplicate \'' + existing_note + '\'. Please try again.')
+
+
+"""
 Given the name of a .txt file,
 makes a copy of that file as a .file
 to be used as a new note
@@ -381,7 +406,6 @@ def export_note(args):
 		return
 	note_name = pair[0]
 	filename = pair[1] + '.txt'
-	files = []
 	note_path = path.expanduser('~/.quicknote/.notes/.' + note_name)
 	# confirm that a note actually exists with the given name
 	if not path.isfile(note_path):
@@ -447,12 +471,13 @@ Given a filename, adds a dot file with
 the given name, which will then be set 
 as the default file for memories
 """
-def add_note(args):
+def add_note(args, current_note, data_file):
 	note_name = parse_unary_args(args) 
 	dot_name = path.expanduser('~/.quicknote/.notes/.' + note_name)
 	return_value = make_note(dot_name, note_name)
 	if return_value == None:
 		return
+	change_note(note_name, current_note, data_file) 
 	print('Added new note \'' + note_name + '\'')
 
 
@@ -628,7 +653,7 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.15' + RESET) 
+	print(BOLD + 'Quick Note v.1.0.16' + RESET) 
 
 
 """
@@ -670,6 +695,8 @@ def get_help():
 	print('     Usage: \'qnote --remove-note\'')
 	print(BOLD + 'qnote --clear-notes ' + RESET + ' --> for ' + BOLD + 'clearing ' + RESET + 'your current notes')
 	print('     Usage: \'qnote --clear-notes\'')
+	print(BOLD + 'qnote --duplicate-note ' + ITALIC + 'note_to_duplicate' + RESET + BOLD + ' / ' + ITALIC + 'new_note_name' + RESET + ' --> for ' + BOLD + 'duplicating ' + RESET + 'existing notes')
+	print('     Usage: \'qnote --duplicate-note random / general\'')
 	print(BOLD + 'qnote --import-note ' + ITALIC + 'file_to_import' + RESET + BOLD + ' / ' + ITALIC + 'note_name' + RESET + ' --> for ' + BOLD + 'importing ' + RESET + '\'.txt\' files as notes')
 	print('     Usage: \'qnote --import-note random.txt / Assorted Tasks\'')
 	print(BOLD + 'qnote --export-note ' + ITALIC + 'note_to_export' + RESET + BOLD + ' / ' + ITALIC + 'new_file_name' + RESET + ' --> for ' + BOLD + 'exporting ' + RESET + 'notes as \'.txt\' files')
@@ -760,7 +787,7 @@ def main():
 			elif command == '--archive':
 				archive_memory(current_note, args[1])
 			elif command == '--add-note':
-				add_note(args[1:])
+				add_note(args[1:], current_note, data_file)
 			elif command == '--change-note':
 				change_note(args[1:], current_note, data_file)
 			elif command == '--rename-note':
@@ -777,6 +804,8 @@ def main():
 				import_note(args[1:])
 			elif command == '--export-note':
 				export_note(args[1:])
+			elif command == '--duplicate-note':
+				duplicate_note(args[1:])
 			elif command == '--move-memory':
 				move_memory(current_note, args[1], args[2:])
 			elif command == '--copy-memory':
