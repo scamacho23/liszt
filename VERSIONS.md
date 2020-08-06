@@ -93,4 +93,9 @@ August 6, 2020
 Add `duplicate_note`. Shorten length of commands (instead of full words, mostly initials). Also removed double-dash from
 commands and replaced with single dash
 
+## **@version 1.0.17 ** ##
+August 6, 2020
+
+Change help menu
+
 *Type `remember --version` to view your version of **Quick Note***
