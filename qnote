@@ -209,6 +209,7 @@ def make_note(dot_name, filename):
 		return
 	else:
 		open(dot_name, 'w+').close()
+		return 1
 
 
 """
@@ -623,7 +624,7 @@ def rename_note(args, current_note, data_file):
 	os.rename(old_path, new_path)
 	counter = 0
 	if old_path == current_note:
-		write_to_quicknote_cache(data_file, new_path)
+		write_to_data_file(data_file, new_path)
 	print('Renamed \'' + old_name + '\' to \'' + new_name + '\'')	
 
 
@@ -652,8 +653,8 @@ def background_info():
 Prints the user's version of Quick Note
 """
 def get_version():
-	print(BOLD + 'Quick Note v.1.0.8' + RESET) 
-	print('If you would like to update, type \'remember --update')
+	print(BOLD + 'Quick Note v.1.0.14' + RESET) 
+	print('If you would like to update, type \'remember --update\'')
 
 
 """
@@ -759,7 +760,7 @@ def main():
 		if command == '--list':
 			list_memories(current_note, current_note_name)
 		elif command == '--update':
-			update_quick_note(data_file)
+			update_quick_note()
 		elif command == '--clear':
 			clear_memories(current_note)
 		elif command == '--help':
