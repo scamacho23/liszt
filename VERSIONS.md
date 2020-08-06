@@ -84,6 +84,13 @@ added the `Formula` directory for holding the `qnote.rb` formula.
 ## **@version 1.0.15 ** ##
 August 6, 2020
 
-Fixed bugs in qnote file.
+Fixed bugs in qnote file stemming from the collapse of main.py, install.py, note.py, memory.py, and helper_func.py in
+to qnote.
+
+## **@version 1.0.16 ** ##
+August 6, 2020
+
+Add `duplicate_note`. Shorten length of commands (instead of full words, mostly initials). Also removed double-dash from
+commands and replaced with single dash
 
 *Type `remember --version` to view your version of **Quick Note***
