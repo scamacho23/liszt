@@ -31,6 +31,35 @@ def write_to_note(note, memories):
 
 
 """
+Given the name of a note,
+duplicates that note and names
+the new note the desired name
+"""
+def duplicate_note(args):
+	pair = hf.parse_binary_args(args)
+	if pair == None:
+		return
+	existing_note = pair[0]
+	new_note = pair[1]
+	existing_path = path.expanduser('~/.quicknote/.notes/.' + existing_note)
+	new_path = path.expanduser('~/.quicknote/.notes/.' + new_note)
+	# confirm that a note actually exists with the given name
+	if not path.isfile(existing_path):
+		print('There is no note called \'' + existing_note + '\'. Please try again.')
+		return
+	# prevent the user from duplicating default
+	if existing_note == 'default':
+		hf.print_default_error()
+		return
+	new_note_exists = hf.make_note(new_path, new_note)	
+	if new_note_exists != None: 
+		shutil.copyfile(existing_path, new_path)
+		print('Successfully duplicated \'' + existing_note + '\' as \'' + new_note + '\'')
+	else:		
+		print('Could not duplicate \'' + existing_note + '\'. Please try again.')
+
+
+"""
 Given the name of a .txt file,
 makes a copy of that file as a .file
 to be used as a new note
@@ -65,11 +94,14 @@ def export_note(args):
 		return
 	note_name = pair[0]
 	filename = pair[1] + '.txt'
-	files = []
 	note_path = path.expanduser('~/.quicknote/.notes/.' + note_name)
 	# confirm that a note actually exists with the given name
 	if not path.isfile(note_path):
 		print('There is no note with name \'' + note_name + '\'. Please try again.')
+		return
+	# prevent the user from exporting default
+	if note_name == 'default':
+		hf.print_default_error()
 		return
 	# confirm that there is not an existing '.txt' file in the working directory with the same name
 	if path.isfile(filename):
@@ -92,9 +124,9 @@ def archive_note(args, current_note, data_file):
 	if not path.isfile(note_path):
 		print('The note you are trying to archive does not exist. Please try again.')	
 		return
-	# prevent the user from archiving 'archive' or 'default'
-	if note_to_archive == 'archive' or note_to_archive == 'default':
-		print('\'archive\' and \'default\' may not be archived. Please try again.')
+	# prevent the user from archiving 'default'
+	if note_to_archive == 'default':
+		hf.print_default_error()
 		return
 	new_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_archive)
 	if path.isfile(new_path):
@@ -137,6 +169,7 @@ def add_note(args):
 	return_value = hf.make_note(dot_name, note_name)
 	if return_value == None:
 		return
+	change_note(note_name, current_note, data_file) 
 	print('Added new note \'' + note_name + '\'')
 
 
@@ -146,28 +179,14 @@ Prints the list of current notes
 def list_notes(notes):
 	counter = 1
 	if len(notes) == 0:
-		print('You have no notes at the moment. Start by adding a new note or by importing one from a \'.txt.\' file.')
 		return
 	print(BOLD + ITALIC + 'Found ' + str(len(notes)) + ' notes' + RESET)
 	for note in notes:
-		note = BOLD + str(counter) + '. ' + RESET + note
-		print(note)	
-		counter += 1
-
-
-"""
-Prints the list of archived notes  
-"""
-def list_archive_notes(archive_notes): # this is a complete copy of list_notes, so maybe just delete and use list_notes
-	counter = 1
-	if len(archive_notes) == 0:
-		print('You have no archived notes at the moment.')
-		return
-	print(BOLD + ITALIC + 'Found ' + str(len(archive_notes)) + ' archived note(s)' + RESET)
-	for note in archive_notes:
-		note = BOLD + str(counter) + '. ' + RESET + note
-		print(note)	
-		counter += 1
+		if note != 'default':
+			note = BOLD + str(counter) + '. ' + RESET + note
+			print(note)	
+			counter += 1
+	return 0
 
 
 """
@@ -176,8 +195,8 @@ if it exists
 """
 def remove_note(args, current_note, data_file):
 	note_to_remove = hf.parse_unary_args(args)
-	if note_to_remove.lower() == 'archive' or note_to_remove.lower() == 'default':
-		print('Sorry. The \'default\' and \'archive\' notes cannot be removed. However, they can be cleared of their contents.')
+	if note_to_remove.lower() == 'default':
+		hf.print_default_error()
 		return
 	prompt = 'Are you sure you want to remove \'' + note_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
 	decision = hf.request_user_permission(prompt)
@@ -205,7 +224,7 @@ def clear_notes(notes, current_note, data_file):
 	elif decision == 'y':
 		for note in notes:
 			note_path = path.expanduser('~/.quicknote/.notes/.' + note)
-			if path.isfile(note_path) and (note != 'archive' and note != 'default'):
+			if path.isfile(note_path) and note != 'default':
 				os.remove(note_path)
 		if current_note != 'default':
 			hf.write_to_data_file(data_file, path.expanduser('~/.quicknote/.notes/.default'))
@@ -250,11 +269,22 @@ def change_note(args, current_note, data_file):
 	if current_note == filename:
 		print('The note you are trying to change to is already the current note.')
 		return
-
+	# stop if the user is trying to change to the default note
+	if note_name == 'default':
+		print_default_error()
+		return
 	if not path.isfile(filename):
 		print('Hmmm. The note you entered doesn\'t seem to exist. Please try again.')
 		return
-	
+	if current_note[-7:] == 'default':
+		new_name = input('The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ')
+		if new_name != '':
+			dot_name = path.expanduser('~/.quicknote/.notes/.' + new_name)
+			return_value = hf.make_note(dot_name, new_name)
+			if return_value == None:
+				return
+			shutil.copyfile(current_note, dot_name)
+		open(current_note, 'w').close()	
 	hf.write_to_data_file(data_file, filename)
 	print('Changed current note to \'' + note_name + '\'')
 
@@ -275,13 +305,12 @@ def rename_note(args, current_note, data_file):
 	if not path.isfile(old_path):
 		print('The note you are trying to rename does not exist. Please try again.')
 		return
-	# prevent the user from renaming 'archive' or 'default'
-	if old_name == 'archive' or old_name == 'default':
-		print('\'archive\' and \'default\' are reserved names. Please try again.')
+	# prevent the user from renaming 'default'
+	if old_name == 'default':
+		print_default_error()
 		return
 	os.rename(old_path, new_path)
-	counter = 0
 	if old_path == current_note:
-		hf.write_to_quicknote_cache(data_file, new_path)
+		hf.write_to_data_file(data_file, new_path)
 	print('Renamed \'' + old_name + '\' to \'' + new_name + '\'')	
 

@@ -102,6 +102,7 @@ Changed design of help menu. Removed `archive_memory` functionality from `homebr
 August 6, 2020
 
 Added blue arrows to help menu display. Changed functionality of default note so that it
-acts more as a placeholder than a real note.
+acts more as a placeholder than a real note. Updated original files in `files` directory
+to mirror `qnote` file in root.
 
 *Type `remember --version` to view your version of **Quick Note***

@@ -10,6 +10,21 @@ from datetime import datetime
 from os import path
 
 
+def print_default_error():
+    """
+    Prints the default refusal of access command
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """	
+    print('Sorry. \'default\' is off limits.')
+
+
 def save_datetime(data_file):
     """
     Given the data_file, saves the current datetime to the data_file
@@ -112,19 +127,19 @@ def check_row(filename, row):
 
 def write_to_data_file(data_file, filename):
     """
-    Given the quicknote_cache file, changes the default file held in quicknote_cache
+    Given the data_file.json file and a filename, changes the filename held in data_file 
 
     Parameters
     ----------
     data_file: str
-        qnote cache file
+        name of the data_file.json file
     filename
-        Name of the file
+        Name of the file to set as the current file
 
     Returns
     -------
     None:
-        Changes the default file held in quicknote_cache
+        Changes the current file held in data_file.json 
     """
     data = {}
     with open(data_file, 'r') as read_from:
@@ -215,24 +230,26 @@ def parse_binary_args(args):
 
 def make_note(dot_name, filename):
     """
-    Given a dot_name, a filename, and the file_list, makes a new note with that name and adds the name to file_list
+    Given a dot_name and a filename, makes a new note with that name
 
     Parameters
     ----------
     dot_name: str
-        Dot name
+       Path to the file 
     filename : str
         Name of the file
 
     Returns
     -------
-    None
-        Makes a new note with that name and adds the name to file_list
+    None or 1
+        Makes a new note with the given name
+    None suggests an error in creating the note
+    1 suggests that make_note succesffuly created the new note
     """
     if path.isfile(dot_name):
         print('A note with this name already exists. Please choose a different name, delete the other note, '
               'or rename the other note.')
-        # return 0 to signify failure
-        return 0
+        return 
     else:
         open(dot_name, 'w+').close()
+        return 1

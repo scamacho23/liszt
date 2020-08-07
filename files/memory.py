@@ -51,6 +51,9 @@ def move_memory(current_note, row, args):
 	if not path.isfile(note_path):
 		print('The note you are trying to add to does not exist. Please try again.')	
 		return
+	if note == 'default':
+		print_default_error()
+		return
 	memory_to_move = change_memory(current_note, row)	
 	if memory_to_move == None:
 		return
@@ -69,6 +72,9 @@ def copy_memory(current_note, row, args):
 	note_path = path.expanduser('~/.quicknote/.notes/.' + note)
 	if not path.isfile(note_path):
 		print('The note you are trying to add to does not exist. Please try again.')
+		return
+	if note == 'default':
+		print_default_error()
 		return
 	memories = hf.check_row(current_note, row)	
 	if memories == None:
@@ -137,25 +143,4 @@ def list_memories(note_path, note_name):
 			memory = BOLD + str(counter) + '. ' + RESET + memory.strip('\n') 
 			print(memory)
 			counter += 1
-
-
-"""
-Given a row number, removes the
-memory at that row and adds it to
-the '.archive' memory file
-"""
-def archive_memory(filename, row):
-	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
-	memories = hf.check_row(filename, row)
-	if memories == None:
-		return
-	row = int(row)
-	memory_to_archive = memories[row - 1]
-	del memories[row - 1]
-	with open(filename, 'w') as f:
-		for memory in memories:
-			f.write(memory)
-	with open(archive_note, 'a') as f:
-		f.write(memory_to_archive)
-	print('Archived memory \'' + memory_to_archive.strip('\n') + '\'')
 

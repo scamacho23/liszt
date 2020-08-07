@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # This file installs the .quicknote
-# folder in the user's home directory,
-# and adds the file_list, quicknote_cache
-# default and archive files to that folder
-
+# directory, the .notes directory,
+# the .background directory, and
+# the .archive_notes directory
+# to the user's home directory.
+# Adds the data_file to the .background
+# directory and adds the .default note
+# to the .notes directory
 import sys
 import os.path
 from os import path
@@ -37,11 +40,10 @@ def make_background_files():
 	prefix = path.expanduser('~/.quicknote/')
 	data_file = prefix + '.background/data_file.json'
 	default_file = prefix + '.notes/.default'
-	data = {'current_note': '', 'last_update_date': ''}
+	data = {'current_note': ''}
 	with open(data_file, 'w') as initial_open:
 		json.dump(data, initial_open)
 	hf.write_to_data_file(data_file, default_file)
-	hf.save_datetime(data_file)
 		 
 
 """
@@ -51,8 +53,6 @@ and the archive note file
 def make_defaults():
 	default_note = path.expanduser('~/.quicknote/.notes/.default')
 	open(default_note, 'w+')
-	archive_note = path.expanduser('~/.quicknote/.notes/.archive')
-	open(archive_note, 'w+')
 
 
 def main():
@@ -62,7 +62,6 @@ def main():
 		make_background_files()
 		make_defaults()
 		print(BOLD + 'Quick Note' + RESET + ' installation successful')
-		print('Current note set to \'default\'')
 	else:
 		print(BOLD + 'Quick Note' + RESET + ' installation unsuccesfful. Please try again')
 
