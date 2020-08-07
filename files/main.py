@@ -178,7 +178,7 @@ def main():
 			elif command == '-a':
 				mem.add_note(args[1:], current_note, data_file)
 			elif command == '-ch':
-				mem.note_name = change_note(args[1:], current_note, data_file)			
+				note_name = note.change_note(args[1:], current_note, data_file)			
 				if note_name != None:
 					print('Changed current note to \'' + note_name + '\'')
 			elif command == '-rn':
