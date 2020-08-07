@@ -57,11 +57,18 @@ def install():
 	make_background_folders()
 	make_background_files()
 	make_defaults()
-	print(BOLD + 'Quick Note' + RESET + ' installation successful')
-	print('Current note set to \'default\'')
+	print(BOLD + 'Quick Note' + RESET + ' installation successful\n')
 
 
 # HELPER METHODS
+"""
+Prints the default refusal of
+access command
+"""
+def print_default_error():
+	print('Sorry. \'default\' is off limits.')
+
+
 """
 Given the path to a directory, returns a list containing
 the files in that directory 
@@ -223,7 +230,7 @@ def move_memory(current_note, row, args):
 		print('The note you are trying to add to does not exist. Please try again.')	
 		return
 	if note == 'default':
-		print('Sorry. \'default\' is off limits.')	
+		print_default_error()
 		return
 	memory_to_move = change_memory(current_note, row)	
 	if memory_to_move == None:
@@ -245,7 +252,7 @@ def copy_memory(current_note, row, args):
 		print('The note you are trying to add to does not exist. Please try again.')
 		return
 	if note == 'default':
-		print('Sorry. \'default\' is off limits.')	
+		print_default_error()
 		return
 	memories = check_row(current_note, row)	
 	if memories == None:
@@ -344,11 +351,11 @@ def duplicate_note(args):
 	new_path = path.expanduser('~/.quicknote/.notes/.' + new_note)
 	# confirm that a note actually exists with the given name
 	if not path.isfile(existing_path):
-		print('There is no note with name \'' + existing_note + '\'. Please try again.')
+		print('There is no note called \'' + existing_note + '\'. Please try again.')
 		return
 	# prevent the user from duplicating default
 	if existing_note == 'default':
-		print('Sorry. \'default\' is off limits.')
+		print_default_error()
 		return
 	new_note_exists = make_note(new_path, new_note)	
 	if new_note_exists != None: 
@@ -396,11 +403,11 @@ def export_note(args):
 	note_path = path.expanduser('~/.quicknote/.notes/.' + note_name)
 	# confirm that a note actually exists with the given name
 	if not path.isfile(note_path):
-		print('There is no note with name \'' + note_name + '\'. Please try again.')
+		print('There is no note called \'' + note_name + '\'. Please try again.')
 		return
 	# prevent the user from exporting default
 	if note_name == 'default':
-		print('Sorry. \'default\' is off limits.')
+		print_default_error()
 		return
 	# confirm that there is not an existing '.txt' file in the working directory with the same name
 	if path.isfile(filename):
@@ -425,7 +432,7 @@ def archive_note(args, current_note, data_file):
 		return
 	# prevent the user from archiving 'default'
 	if note_to_archive == 'default':
-		print('\'default\' may not be archived. Please try again.')
+		print_default_error()
 		return
 	new_path = path.expanduser('~/.quicknote/.archive_notes/.' + note_to_archive)
 	if path.isfile(new_path):
@@ -510,7 +517,7 @@ if it exists
 def remove_note(args, current_note, data_file):
 	note_to_remove = parse_unary_args(args)
 	if note_to_remove.lower() == 'default':
-		print('Sorry. \'default\' note cannot be removed.')
+		print_default_error()
 		return
 	prompt = 'Are you sure you want to remove \'' + note_to_remove + '\'?' + BOLD + ' There is no going back (y/n): ' + RESET
 	decision = request_user_permission(prompt)
@@ -585,13 +592,13 @@ def change_note(args, current_note, data_file):
 		return
 	# stop if the user is trying to change to the default note
 	if note_name == 'default':
-		print('Sorry. \'default\' is off limits.')
+		print_default_error()
 		return
 	if not path.isfile(filename):
 		print('Hmmm. The note you entered doesn\'t seem to exist. Please try again.')
 		return
 	if current_note[-7:] == 'default':
-		new_name = input('The note you have been writing to must be named before you can change notes. Please enter a name (ENTER to delete the current note): ')
+		new_name = input('The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ')
 		if new_name != '':
 			dot_name = path.expanduser('~/.quicknote/.notes/.' + new_name)
 			return_value = make_note(dot_name, new_name)
@@ -621,7 +628,7 @@ def rename_note(args, current_note, data_file):
 		return
 	# prevent the user from renaming 'default'
 	if old_name == 'default':
-		print('\'default\' cannote be renamed. Please try again.')
+		print_default_error()
 		return
 	os.rename(old_path, new_path)
 	counter = 0
