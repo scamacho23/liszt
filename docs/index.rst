@@ -10,6 +10,13 @@ Welcome to Quick Note's documentation!
 make taking small notes from the command line as
 easy as possible.
 
+Quick Note in Action
+--------------------
+*In your terminal*
+
+.. image:: images/qnote_sample.png
+  :width: 800
+
 Installation
 ------------
 
