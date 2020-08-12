@@ -277,14 +277,17 @@ def change_note(args, current_note, data_file):
 		print('Hmmm. The note you entered doesn\'t seem to exist. Please try again.')
 		return
 	if current_note[-7:] == 'default':
-		new_name = input('The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ')
-		if new_name != '':
-			dot_name = path.expanduser('~/.quicknote/.notes/.' + new_name)
-			return_value = hf.make_note(dot_name, new_name)
-			if return_value == None:
-				return
-			shutil.copyfile(current_note, dot_name)
-		open(current_note, 'w').close()	
+		with open(current_note, 'r') as to_read:
+			memories = to_read.readlines()
+			if len(memories) > 0:
+				new_name = input('The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ')
+				if new_name != '':
+					dot_name = path.expanduser('~/.quicknote/.notes/.' + new_name)
+					return_value = hf.make_note(dot_name, new_name)
+				if return_value == None:
+					return
+				shutil.copyfile(current_note, dot_name)
+				open(current_note, 'w').close()	
 	hf.write_to_data_file(data_file, filename)
 	print('Changed current note to \'' + note_name + '\'')
 
