@@ -53,32 +53,36 @@ int main(int argc, char* argv[]) {
 		args[i - 2] = *argv[i];	
 	} 
 	int numArgs = argc - 2;
-	if (command[0] == "-") {
-		if (numArgs == 1) {
-			if (command == "-l") {
+	if (strcmp(command, "-l") == 0) {
+		printf("Trying to do the list thing i guess\n");
+	}
+	if (strcmp(&command[0], "-") == 0) {
+		if (numArgs == 0) {
+			if (strcmp(command, "-l") == 0) {
+				printf("LIST\n");
 				// mem.list_memories(current_note, current_note_name)
-			} else if (*command == "-cl") {
+			} else if (strcmp(command, "-cl") == 0) {
 				// mem.clear_memories(current_note)
-			} else if (*command == "-help" || command == "-h") {
+			} else if (strcmp(command, "-help") == 0 || strcmp(command, "-h") == 0) {
 				// get_help()
-			} else if (*command == "-version" || command == "-v") {
+			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
 				// get_version()
-			} else if (*command == "-ln") {
+			} else if (strcmp(command, "-ln") == 0) {
 				// return_value = note.list_notes(notes) 
 				// if return_value == None:
 				//	print("You have no notes at the moment. Start by adding a new note or by importing one from a \".txt.\' file.')
-			} else if (*command == "-n") {
+			} else if (strcmp(command, "-n") == 0) {
 				// print(current_note_name)
-			} else if (*command == "-cln") {
+			} else if (strcmp(command, "-cln") == 0) {
 				// note.clear_notes(notes, current_note_name, data_file)
-			} else if (*command == "-clar") {
+			} else if (strcmp(command, "-clar") == 0) {
 				// note.clear_archive_notes(archive_notes)
-			} else if (*command == "-rm") {
+			} else if (strcmp(command, "-rm") == 0) {
 				// note.remove_note(current_note_name, current_note_name, data_file)
 			// this is for archiving the current note
-			} else if (*command == "-ar") {
+			} else if (strcmp(command, "-ar") == 0) {
 			//	note.archive_note(current_note_name, current_note_name, data_file)
-			} else if (*command == "-lar") {
+			} else if (strcmp(command, "-lar") == 0) {
 			//	return_value = note.list_notes(archive_notes)
 			//	if return_value == None:
 			//		print("You have no archived notes at the moment.")
@@ -88,7 +92,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		else if (numArgs >= 1) {
-			if (*command == "-r") {
+			if (strcmp(command, "-r") == 0) {
 			
 			}
 		}
