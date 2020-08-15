@@ -20,7 +20,7 @@ RESET = '\033[0m'
 
 
 """
-Returns access to the .quicknote_cache file, the .archive_notes and .notes directories
+Returns access to the data_file.json file, the .archive_notes and .notes directories
 """
 def background_info():
 	files = []
@@ -124,7 +124,6 @@ def main():
 	if not path.isdir(quicknote):
 		install.main()
 
-	# send_update_message()
 	args = sys.argv[1:]
 	files = background_info()
 
