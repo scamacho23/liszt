@@ -60,19 +60,13 @@ void listMemories(char* notePath, char* noteName) {
 
 	FILE* toRead;
 	toRead = fopen(notePath, "r");
-	char newline = fgetc(toRead);
-	int counter = 0;
-	while (newline != EOF) {
-	 	char* currentLine = "\0";
-	 	while (newline != '\n') {
-	 		strncat(currentLine, &newline, 1);
-			newline = fgetc(toRead);
-		}
-		
-		printf("\033[1m%d.\033[0m %s\n", counter, currentLine); 
-		newline = fgetc(toRead);
+	int counter = 1;
+	char memory[256];
+
+	while (fgets(memory, sizeof(memory), toRead)) {
+		printf("\033[1m%d.\033[0m %s", counter, memory); 
 		counter++;
-	}
+	}	
 
 	fclose(toRead);
 }

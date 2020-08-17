@@ -132,10 +132,10 @@ int main(int argc, char* argv[]) {
 	}
 	
 	// This is just testing that commands are coming in properly
-	if (argc >= 2) {
-		strcat(command, "\n");
-		printf("Command: %s", command);
-	}
+	// if (argc >= 2) {
+	//		strcat(command, "\n");
+	//	printf("Command: %s", command);
+	//}
 	
 
 	return 0;
