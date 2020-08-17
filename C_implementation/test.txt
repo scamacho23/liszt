@@ -1,0 +1,2 @@
+hello there my name is simon
+i am trying to write liszt in c
