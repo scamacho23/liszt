@@ -2,7 +2,7 @@
 /*
  * This file contains function declarations
  * for memory manipulation for the Liszt project.
- * See memory.cpp for the definitions.
+ * See memory.c for the definitions.
  */
 
 

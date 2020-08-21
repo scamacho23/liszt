@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "memory.h"
+#include "helper_func.h"
 
 
 int getFileSize(char* filename) {
@@ -20,13 +21,14 @@ int getFileSize(char* filename) {
 void appendMemory(char* memory, char* note) {
 	FILE *toWrite;
 	toWrite = fopen(note, "a");
-	strcat(memory, "\n");
-	fprintf(toWrite, "%s", memory);
+	fprintf(toWrite, "%s\n", memory);
 	fclose(toWrite);
 }
 
 
-char* changeMemory(char* currentNote, char* row);
+char* changeMemory(char* currentNote, char* row) {
+	return currentNote;	
+}
 
 
 void moveMemory(char* currentNote, char* row, char args[]);

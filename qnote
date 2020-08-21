@@ -176,9 +176,8 @@ def parse_binary_args(args):
 
 
 """
-Given a dot_name, a filename, and the file_list,
-makes a new note with that name and
-adds the name to file_list
+Given a dot_name, a filename,
+makes a new note with that name 
 """
 def make_note(dot_name, filename):
 	if path.isfile(dot_name):
