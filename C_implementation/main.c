@@ -21,14 +21,15 @@ const char* RESET = "\033[0m";
  * of the archive and notes directories (i.e. the full paths of each file 
  * in those directories)
  */
-void backgroundInfo(char* dataFilePath, char* currentNotePath, char* notes[], int* numNotes, char* archive[], int* numArchive) {
+void backgroundInfo(char* dataFilePath, char* currentNotePath, char* currentNoteName, char* notes[], int* numNotes, char* archive[], int* numArchive) {
 	// Get data_file.json
 	wordexp_t dataFile;
-	wordexp("~/.liszt/background/data_file.json", &dataFile, 0);
+	// while json-c is being figured out, data_file will act as data_file.json
+	wordexp("~/.liszt/background/data_file", &dataFile, 0);
 	dataFilePath = dataFile.we_wordv[0];
 
 	// Get current note
-	// char* currentNotePath = getCurrentNote(dataFilePath);
+ 	getCurrentNote(dataFilePath, currentNotePath, currentNoteName);
 
 	// Get current notes
 	wordexp_t notesDir;
@@ -167,24 +168,14 @@ int main(int argc, char* argv[]) {
 	// The following does not work properly
 	char dataFilePath[100];
 	char currentNotePath[100];
+	char currentNoteName[100];
 	char* notes[256];
 	int numNotes = 0;
 	char* archive[256];
 	int numArchive = 0;
-	backgroundInfo(dataFilePath, currentNotePath, notes, &numNotes, archive, &numArchive);
+	backgroundInfo(dataFilePath, currentNotePath, currentNoteName, notes, &numNotes, archive, &numArchive);
+
 	
-	if (strcmp(command, "-bi") == 0) {
-		printf("NOTES\n");
-		for (int i = 0; i < numNotes; i++) {
-			printf("%s\n", notes[i]);
-		}
-		printf("ARCHIVE\n");
-		for (int i = 0; i < numArchive; i++) {
-			printf("%s\n", archive[i]);
-		}
-
-	}
-
 
 	// the following is not quite right
 	char args[256];
@@ -195,29 +186,25 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	// The following is not quite right;
-	for (int i = 2; i < argc; i++) {
-		args[i - 2] = *argv[i];	
-	} 
 	
-	int numArgs = argc - 2;
 	
 	if (command[0] == '-') {
-		if (numArgs == 0) {
+		if (argc == 2) {
 			if (strcmp(command, "-l") == 0) {
-				listMemories("test.txt", "test");
+				listMemories(currentNotePath, currentNoteName);
 			} else if (strcmp(command, "-cl") == 0) {
-				// mem.clear_memories(current_note)
+				clearMemories(currentNotePath);
 			} else if (strcmp(command, "-help") == 0 || strcmp(command, "-h") == 0) {
 				getHelp();
 			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
-				// get_version()
+				getVersion();
 			} else if (strcmp(command, "-ln") == 0) {
-				// return_value = note.list_notes(notes) 
-				// if return_value == None:
-				//	print("You have no notes at the moment. Start by adding a new note or by importing one from a \".txt.\' file.')
+				char* shortName = " ";
+				wordexp_t notes;
+				wordexp("~/.liszt/notes", &notes, 0);
+				printDirectory(notes.we_wordv[0], shortName);
 			} else if (strcmp(command, "-n") == 0) {
-				// print(current_note_name)
+				printf("%s\n", currentNoteName);
 			} else if (strcmp(command, "-cln") == 0) {
 				// note.clear_notes(notes, current_note_name, data_file)
 			} else if (strcmp(command, "-clar") == 0) {
@@ -228,17 +215,17 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-ar") == 0) {
 			//	note.archive_note(current_note_name, current_note_name, data_file)
 			} else if (strcmp(command, "-lar") == 0) {
-				printf("LIST ARCHIVE NOTES\n");
-			//	return_value = note.list_notes(archive_notes)
-			//	if return_value == None:
-			//		print("You have no archived notes at the moment.")
+				char* shortName = " archived ";
+				wordexp_t archive;
+				wordexp("~/.liszt/archive", &archive, 0);
+				printDirectory(archive.we_wordv[0], shortName);
 			} else {
-			//	printf("lst error: command '%s' not recognized. Please try again.\n", command);
-			//	exit(1);
+				printf("lst error: command '%s' not recognized. Please try again.\n", command);
+				exit(1);
 			}
-		} else if (numArgs >= 1) {
+		} else if (argc > 2) {
 			if (strcmp(command, "-r") == 0) {
-				printf("REMOVE MEMORY\n");	
+			//	printf("REMOVE MEMORY\n");	
 			} else if (strcmp(command, "-a") == 0) {
 				// mem.clear_memories(current_note)
 			} else if (strcmp(command, "-ch") == 0 || strcmp(command, "-h") == 0) {
@@ -266,92 +253,11 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-c") == 0) {
 				// nothing
 			} else {
-			//	printf("lst error: command '%s' not recognized. Please try again.\n", command);	
-			//	exit(1);
+				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
+				exit(1);
 			}
 		}	
-	} else {
-		// mem.add_memory(current_note, args)
-	}
-	
-
-
-	// EVERYTHING BELOW IS TESTING FUNCTIONS. NEEDS TO BE DELETED	
-	// test parseUnaryArgs
-	int result = 0;
-	if (strcmp(command, "-pu") == 0) {
-		char word[256];
-		parseUnaryArgs(word, argv, argc);
-		printf("Your args: %s\n", word);
-	}
-
-	// test parseBinaryArgs
-	if (strcmp(command, "-pb") == 0) {
-		char first[256];
-		char second[256];
-		result = parseBinaryArgs(first, second, argv, argc);
-		if (result == 0) {
-			printf("First Word: %s\n", first);
-			printf("Second Word: %s\n", second);
-		}
-	}
-
-
-
-	// test readDirectory
-	if (strcmp(command, "-rd") == 0) {
-		char* files[256];
-		int numFiles = 0;
-		wordexp_t lisztDir;
-		wordexp("~/.liszt/notes", &lisztDir, 0);	
-		// printf("%s\n", lisztDir.we_wordv[0]);
-		readDirectory(lisztDir.we_wordv[0], files, &numFiles);
-		for (int i = 0; i < numFiles; i++) {
-			printf("%s\n", files[i]);
-		}
-	}	
-
-	if (strcmp(command, "-cr") == 0) {
-		char* filename = "test.txt";
-		char ** memories = malloc(256 * sizeof(char *));
-		for(int i = 0; i < 256; i++){
-			memories[i] = malloc(256 * sizeof(char));
-		}
-		int numMemories = 0;
-        int result = 0;
-			// int result = checkRow(filename, argv[2], &memories, &numMemories); 
-		if (result == 1) {
-			return 0;
-		}
-		printf("%s", memories[0]);
-		free(memories);
-		// for (int i = 0; i < numMemories; i++) {
-			// printf("%s\n", memories[i]);
-		//}
-	}
-
-	if (strcmp(command, "-mn") == 0) {
-		wordexp_t filepath;
-		wordexp("~/.liszt/notes/random", &filepath, 0);	
-		int result = makeNote(filepath.we_wordv[0]);
-		if (result == 1) {
-			printf("Successfully created a new note called random");
-		}
-	}
-
-	if (strcmp(command, "-up") == 0) {
-		char* prompt = "If you are seeing this, it may be working? (y/n): ";
-		char decision[256];
-		requestUserPermission(prompt, decision);
-		printf("%s\n", decision);
-	}
-	makeDirectories();
-	
-	// This is just testing that commands are coming in properly
-	// if (argc >= 2) {
-	//		strcat(command, "\n");
-	//	printf("Command: %s", command);
-	//}
+	} else addMemory(currentNotePath, argv, argc);
 	
 
 	return 0;

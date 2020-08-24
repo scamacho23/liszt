@@ -59,7 +59,7 @@ void clearMemories(char* note);
  * adds those words (as a single line) to
  * the end of the note
  */
-void addMemory(char* note, char args[]);
+void addMemory(char* note, char* args[], int numArgs);
 
 
 /*

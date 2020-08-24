@@ -11,6 +11,20 @@
  * writeToDataFile() --- requires JSON completion 
  */
 
+
+int getFileSize(char* filename) {
+	FILE* toRead;
+	char newline;
+	int numLines = 0;
+	toRead = fopen(filename, "r");
+	while ((newline = fgetc(toRead)) != EOF) {
+		if (newline == '\n') numLines++;
+	}
+	fclose(toRead);
+	return numLines;
+}
+
+
 void printDefaultError() {
 	printf("Sorry. 'default' is off limits.\n");
 }
@@ -30,7 +44,36 @@ void readDirectory(char* dirName, char* files[], int* numFiles) {
 		}
 		closedir(directory);
 	}
-} 
+}
+
+
+void printDirectory(char* dirName, char* shortName) {
+	DIR* directory;
+	struct dirent* dir;
+	directory = opendir(dirName);
+	if (directory) {
+		int counter = 0; // for counting the number of files
+		while ((dir = readdir(directory)) != NULL) {
+			if (dir->d_type == DT_REG) {
+				counter++;
+			}
+		}
+		if (!counter) {
+			printf("You have no notes at the moment.\n");
+			return;
+		}
+		printf("\033[1mFound %d%snotes\033[0m\n", counter, shortName);
+		rewinddir(directory);
+		int index = 1;
+		while ((dir = readdir(directory)) != NULL) {
+			if (dir->d_type == DT_REG) {
+				printf("\033[1m%d.\033[0m %s\n", index, dir->d_name);
+				index++;
+			}
+		}
+		closedir(directory);
+	}
+}  
 
 
 // int checkRow(char* filename, char* charRow, char*** memories, int* numMemories) {
@@ -61,12 +104,16 @@ void readDirectory(char* dirName, char* files[], int* numFiles) {
 // 	return 1;
 // }
 
-void writeToDataFile(char* dataFile, char* filename);
+void writeToDataFile(char* dataFile, char* filename) {
+	// The below is a stand-in until json-c has been figured out
+	FILE* toWrite;
+	toWrite = fopen(dataFile, "w");
+	fprintf(toWrite, "%s", filename);
+	fclose(toWrite);
+}
 
 
 void requestUserPermission(char* prompt, char* decision) {
-	printf("%s", prompt);
-	scanf("%s", decision);
 	while (strcmp(decision, "y") != 0 && strcmp(decision, "n") != 0) {
 		printf("%s", prompt);
 		scanf("%s", decision);
@@ -74,7 +121,8 @@ void requestUserPermission(char* prompt, char* decision) {
 }
 	
 
-void parseUnaryArgs(char* word, char* args[], int numArgs) {
+int parseUnaryArgs(char* word, char* args[], int numArgs) {
+	if (numArgs == 2) return 1; // just exit if it's a single word
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(word, args[2]);
 	if (numArgs >= 4) strcat(word, " ");
@@ -82,6 +130,7 @@ void parseUnaryArgs(char* word, char* args[], int numArgs) {
 		strcat(word, args[i]);	
 		if (numArgs > i + 1) strcat(word, " ");
 	}
+	return 0;
 }
 
 

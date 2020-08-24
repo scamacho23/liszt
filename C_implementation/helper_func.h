@@ -7,6 +7,13 @@
 
 
 /*
+ * Given the name of a file, returns the int
+ * value of the number of lines in the file
+ */
+int getFileSize(char* filename);
+
+
+/*
  * Prints the default refusal of access command
  */
 void printDefaultError();
@@ -19,6 +26,9 @@ void printDefaultError();
  */
 void readDirectory(char* dirName, char* files[], int* numFiles);
 
+
+
+void printDirectory(char* dirName, char* shortName);
 
 /*
  * Given a filename and a row number, 
@@ -45,8 +55,9 @@ void requestUserPermission(char* prompt, char* decision);
 
 /*
  * Given an array of arguments, parses them and returns the found word
+ * Returns 0 if successful, -1 if not
  */
-void parseUnaryArgs(char* word, char* args[], int numArgs);
+int parseUnaryArgs(char* word, char* args[], int numArgs);
 
 
 /*

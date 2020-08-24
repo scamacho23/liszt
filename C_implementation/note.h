@@ -54,10 +54,9 @@ void addNote(char* args[]);
 
 
 /*
- * Prints the list of current notes.
- * Returns 0 if successful, -1 if not
+ * Prints the list of notes from the given path.
  */
-int listNotes(char* notes[]);
+void listNotes(char* dirPath, char* shortName);
 
 
 /*
@@ -79,9 +78,9 @@ void clearArchiveNotes(char* archivedNotes[]);
 
 
 /*
- * Returns the name of the current working note
+ * Returns the name and path of the current working note
  */
-void getCurrentNote(char* dataFile, char* currentNote);
+void getCurrentNote(char* dataFile, char* currentNotePath, char* currentNoteName);
 
 
 /*

@@ -6,6 +6,15 @@
 #include "helper_func.h"
 
 
+/* ADD MORE DETAIL TO THIS FILE (ALSO MAYBE CHANGE NAME TO CONFIGURE)
+ * AS IN, WHEN this is installing just have it write more stuff to console
+ * so people know what is happening. Also, maybe this file should be called
+ * configure? And maybe there should be a configure command? And maybe people
+ * should get to configure Liszt a little bit to what they like (like change
+ * display colors or something)
+ */
+
+
 int makeDirectories() {
 	struct stat st = {0};
 	
@@ -44,7 +53,7 @@ int makeDirectories() {
 
 	// Make archive_notes directory
 	wordexp_t archiveNotes;
-	wordexp("~/.liszt/archive_notes", &archiveNotes, 0);
+	wordexp("~/.liszt/archive", &archiveNotes, 0);
 	char* archiveNotesPath = archiveNotes.we_wordv[0];
 	mkdir(archiveNotesPath, 0777);
 	if (stat(archiveNotesPath, &st) == -1) {
