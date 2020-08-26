@@ -63,10 +63,9 @@ void addMemory(char* note, char* args[], int numArgs);
 
 
 /*
- * Given a the name of a note, lists the current memories
- * held by that note 
+ * Lists the memories held by the current note
  */
-void listMemories(char* notePath, char* noteName);
+void listMemories();
 
 #include "memory.c"
 

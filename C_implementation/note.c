@@ -18,7 +18,39 @@ void writeToNote(char* note, char* memories[], int numMemories) {
 }
 
 
-void duplicateNote(char* args[]);
+void duplicateNote(char* args[], int numArgs) {
+	char existingNote[256];
+	char newNote[256];
+	int result = parseBinaryArgs(existingNote, newNote, args, numArgs);
+	if (result == -1) return;
+
+	char* dirName = "notes";
+	char existingPath[256];
+	char newPath[256];
+	getNotePath(dirName, existingNote, existingPath);
+	getNotePath(dirName, newNote, newPath);
+
+	// confirm that a note actually exists with the given name
+	struct stat st = {0};
+	if (stat(existingPath, &st) == -1) {
+		printf("There is no note called '%s'. Please try again.\n", existingNote);
+		return;
+	}
+
+	// prevent the user from duplicating default
+	if (strcmp(existingNote, "default") == 0) {
+		printDefaultError();
+		return;
+	}
+	
+	result = makeNote(newPath);
+	if (result == -1) {
+		printf("Could not duplicate '%s'. Please try again.\n", existingNote);
+		return;
+	}
+	copyFile(existingPath, newPath);
+	printf("Successfully duplicated '%s' as '%s'\n", existingNote, newNote);
+}
 
 
 void importNote(char* args[], int numArgs) {
@@ -43,21 +75,15 @@ void importNote(char* args[], int numArgs) {
 		printf("\033[1mLiszt\033[0m only understands '.txt' files at the moment.\n");
 		return;
 	}
-	char* tilde = "~";	
-	wordexp_t newNote;
-	wordexp(tilde, &newNote, 0);
-	
+	char* dirName = "notes";	
 	char fullNotePath[256];
-	strcpy(fullNotePath, newNote.we_wordv[0]);
-	strcat(fullNotePath, "/.liszt/notes/");
-	strcat(fullNotePath, note);
+	getNotePath(dirName, note, fullNotePath);
 
 	result = makeNote(fullNotePath);
 	if (result == 0) {
 		copyFile(import, fullNotePath);	
 		printf("Successfully imported '%s' as '%s'\n", import, note);
 	}
-	wordfree(&newNote);	
 }
 
 
@@ -70,13 +96,9 @@ void exportNote(char* args[], int numArgs) {
 		return;
 	}
 
-	wordexp_t newFile;
-	char* tilde = "~";
-	wordexp(tilde, &newFile, 0);
 	char notePath[256];
-	strcpy(notePath, newFile.we_wordv[0]);
-	strcat(notePath, "/.liszt/notes/");
-	strcat(notePath, note);
+	char* dirName = "notes";
+	getNotePath(dirName, note, notePath);
 	
 	struct stat st = {0};
 	if (stat(notePath, &st) == -1) {
@@ -97,36 +119,103 @@ void exportNote(char* args[], int numArgs) {
 
 	copyFile(notePath, export);
 	printf("Successfully exported '%s' as '%s'\n", note, export);
-	wordfree(&newFile);
 }
 
-void archiveNote(char* args[], char* currentNote, char* dataFile);
+
+void archiveNote(char* args[], int numArgs) {
+	char noteToArchive[256];
+	parseUnaryArgs(noteToArchive, args, numArgs);
+	char* dirName = "notes";
+	char notePath[256];
+	getNotePath(dirName, noteToArchive, notePath);
+
+	struct stat st = {0};	
+
+	if (stat(notePath, &st) == -1) {
+		printf("The note you are trying to archive does not exist. Please try again.\n");
+		return;
+	}
+
+	// prevent the user from archiving 'default'
+	if (strcmp(noteToArchive, "default") == 0) {
+		printDefaultError();
+		return;	
+	}
+
+	dirName = "archive";
+	char newPath[256];
+	getNotePath(dirName, noteToArchive, newPath);
+
+	if (stat(newPath, &st) != -1) {
+		printf("You already have an archived note named '%s'. Please try again. (hint: rename something)\n", noteToArchive);
+		return;
+	}
+
+	copyFile(notePath, newPath);
+	remove(notePath);
+
+	char currentNotePath[256];
+	char currentNoteName[256];
+	getCurrentNote(currentNotePath, currentNoteName);
+
+	if (strcmp(currentNoteName, noteToArchive) == 0) {
+		wordexp_t defaultPath;
+		wordexp("~/.liszt/notes/default", &defaultPath, 0);
+		writeToDataFile(defaultPath.we_wordv[0]);
+	}
+
+	printf("Archived '%s'\n", noteToArchive);
+	
+}
 
 
-void unArchiveNote(char* args[]);
+void unArchiveNote(char* args[], int numArgs) {
+
+
+
+	char noteToUnArchive[256];
+	parseUnaryArgs(noteToUnArchive, args, numArgs);
+	char* dirName = "archive";
+	char notePath[256];
+	getNotePath(dirName, noteToUnArchive, notePath);
+
+	struct stat st = {0};	
+
+	if (stat(notePath, &st) == -1) {
+		printf("The note you are trying to un-archive does not exist. Please try again.\n");
+		return;
+	}
+
+	dirName = "notes";
+	char newPath[256];
+	getNotePath(dirName, noteToUnArchive, newPath);
+
+	if (stat(newPath, &st) != -1) {
+		printf("You already have a note named '%s'. Please try again. (hint: rename something)\n", noteToUnArchive);
+		return;
+	}
+
+	copyFile(notePath, newPath);
+	remove(notePath);
+
+	printf("Un-archived '%s'\n", noteToUnArchive);
+}
 
 
 void addNote(char* args[], int numArgs) {
 	char note[256];
 	char notePath[256];
-	char* tilde = "~";
 	parseUnaryArgs(note, args, numArgs);
 	
-	wordexp_t newNote;
-	wordexp(tilde, &newNote, 0);	
-
-	strcpy(notePath, newNote.we_wordv[0]);
-	strcat(notePath, "/.liszt/notes/");
-	strcat(notePath, note);
+	char* dirName = "notes";
+	getNotePath(dirName, note, notePath);
 
 	int result = makeNote(notePath);
 	if (result == -1) {
 		return;	
 	}
-	// Change to this note, add with addition of changeNote
+	result = changeNoteHelper(note); 
 	printf("Added new note '%s'\n", note);
-	wordfree(&newNote);
-	
 }
 
 
@@ -158,13 +247,9 @@ void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile) {
 	char decision[50];
 	requestUserPermission(prompt, decision);
 	if (strcmp(decision, "y") == 0) {
-		wordexp_t noteToRemovePath;
-		char noteToRemove[256];
-		strcpy(noteToRemove, "~/.liszt/notes/");
-		strcat(noteToRemove, note);
-		wordexp(noteToRemove, &noteToRemovePath, 0);
-
-		char* fullNotePath = noteToRemovePath.we_wordv[0];
+		char* dirName = "notes";
+		char fullNotePath[256];
+		getNotePath(dirName, note, fullNotePath);
 
 		struct stat st = {0};
 		if (stat(fullNotePath, &st) == -1) {
@@ -177,7 +262,7 @@ void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile) {
 			printf("Inside conditional\n");
 			wordexp_t defaultPath;
 			wordexp("~/.liszt/notes/default", &defaultPath, 0);
-			writeToDataFile(dataFile, defaultPath.we_wordv[0]);
+			writeToDataFile(defaultPath.we_wordv[0]);
 		}
 		
 		 printf("Sucessfully removed '%s'\n", note);
@@ -203,19 +288,18 @@ void clearNotes(char* currentNote, char* dataFile) {
 
 		for (int i = 0; i < numNotes; i++) {
 			if (strcmp(notes[i], "default") == 0) continue;
-			wordexp_t notePath;
+			char* dirName = "notes";
 			char note[256];
-			strcpy(note, "~/.liszt/notes/");
-			strcat(note, notes[i]);
-			wordexp(note, &notePath, 0);
-			remove(notePath.we_wordv[0]);	
+			getNotePath(dirName, notes[i], note);
+			remove(note);	
 		}
 		if (strcmp(currentNote, "default") != 0) {
 			wordexp_t defaultPath;
 			wordexp("~/.liszt/notes/default", &defaultPath, 0);
-			writeToDataFile(dataFile, defaultPath.we_wordv[0]);
+			writeToDataFile(defaultPath.we_wordv[0]);
+			wordfree(&defaultPath);
 		}
-			
+		wordfree(&notesDir);	
 		printf("Cleared all user notes for Liszt cache\n");
 	} else printf("Clearing of notes aborted\n");
 }
@@ -224,55 +308,44 @@ void clearNotes(char* currentNote, char* dataFile) {
 void clearArchiveNotes(char* archivedNotes[]);
 
 
-void getCurrentNote(char* dataFile, char* currentNotePath, char* currentNoteName) {
+void getCurrentNote(char* currentNotePath, char* currentNoteName) {
+	char dataFile[256];
+	getDataFile(dataFile);
+
 	FILE* toRead;
 	toRead = fopen(dataFile, "r");
 	fscanf(toRead, "%s", currentNotePath);
 	fclose(toRead);
 	
-	int counter = 0; // for counting the number of slashes passed
-	int index = 0; // for counting the index in the string
-	int pathLength = strlen(currentNotePath);
-	while (counter < 5 && index < pathLength) {
-		if (currentNotePath[index] == '/') {
-			counter++; 
-		}
-		index++;
-	}
-	strncat(currentNoteName, currentNotePath + index, pathLength - index);
-
+	char slash = '/';
+	char* lastSlash = strrchr(currentNotePath, slash);
+	strcpy(currentNoteName, lastSlash + 1);
 }	
 	
 
-int changeNote(char* args[], int numArgs, char* dataFile) {
-
+int changeNoteHelper(char* note) {
+	char dataFile[256];
+	getDataFile(dataFile);
 	char currentNotePath[256];
 	char currentNoteName[256];
-	getCurrentNote(dataFile, currentNotePath, currentNoteName);
+	getCurrentNote(currentNotePath, currentNoteName);
 
-	char note[256];
-	char notePath[256];
-	char* tilde = "~";
-	parseUnaryArgs(note, args, numArgs);
-	// stop if the note to be change to is the current note	
+	// stop if the note to be changed to is the current note	
 	if (strcmp(currentNoteName, note) == 0) {
 		printf("The note you are trying to change to is already the current note.\n");
 		return -1;
 	}
+	// stop if the note to be changed to is 'default'
 	if (strcmp(note, "default") == 0) {
 		printDefaultError();
 		return -1;
 	}
-	
+
 	struct stat st = {0};
-	wordexp_t changeNote;
-	wordexp(tilde, &changeNote, 0);	
-
-	tilde = changeNote.we_wordv[0];
-
-	strcpy(notePath, tilde);
-	strcat(notePath, "/.liszt/notes/");
-	strcat(notePath, note);
+	
+	char* dirName = "notes";
+	char notePath[256];
+	getNotePath(dirName, note, notePath);
 
 	if (stat(notePath, &st) == -1) {
 		printf("Hmmm. The note you entered doesn't seem to exist. Please try again.\n");
@@ -287,13 +360,10 @@ int changeNote(char* args[], int numArgs, char* dataFile) {
 			scanf("%s", newNote);
 			if (strlen(newNote) > 0) {
 				char newNotePath[256];	
-				strcpy(newNotePath, tilde);
-				strcat(newNotePath, "/.liszt/notes/");
-				strcat(newNotePath, newNote);
+				getNotePath(dirName, newNote, newNotePath);
+
 				int result = makeNote(newNotePath);
-				if (result == -1) {
-					return -1;
-				}
+				if (result == -1) return -1;
 				copyFile(currentNotePath, newNotePath);
 				// the following is for clearing 'default'
 				FILE* toClear = fopen(currentNotePath, "w");
@@ -301,11 +371,16 @@ int changeNote(char* args[], int numArgs, char* dataFile) {
 			}
 		}
 	}
-	
-	writeToDataFile(dataFile, notePath);
-	wordfree(&changeNote);
-	printf("Changed current note to '%s'\n", note);
+	writeToDataFile(notePath);
 	return 0;
+}
+
+ 
+void changeNote(char* args[], int numArgs) {
+	char note[256];
+	parseUnaryArgs(note, args, numArgs);
+	int result = changeNoteHelper(note);
+	if (result == 0) printf("Changed current note to '%s'\n", note); 
 }
 
 

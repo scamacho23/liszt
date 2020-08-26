@@ -22,7 +22,34 @@
  * parseUnaryArgs()
  * parseBinaryArgs()
  * copyFile()
+ * getNotePath()
+ * getDataFile();
  */
+
+
+void getDataFile(char* dataFile) {
+	char* dirName = "background";
+	// while json-c is being figured out, data_file will act as data_file.json
+	char* data = "data_file";
+	getNotePath(dirName, data, dataFile);
+}
+
+
+void getNotePath(char* dirName, char* noteName, char* notePath) {
+	char* tilde = "~";	
+	wordexp_t newNote;
+	// expand tilde bc that is user specific
+	wordexp(tilde, &newNote, 0);
+	
+	strcpy(notePath, newNote.we_wordv[0]);
+	strcat(notePath, "/.liszt/");
+	strcat(notePath, dirName);
+	strcat(notePath, "/");
+	strcat(notePath, noteName);
+
+	wordfree(&newNote);	
+
+}
 
 
 void copyFile(char* firstFile, char* secondFile) {
@@ -131,7 +158,9 @@ void printDirectory(char* dirName, char* shortName) {
 // 	return 1;
 // }
 
-void writeToDataFile(char* dataFile, char* filename) {
+void writeToDataFile(char* filename) {
+	char dataFile[256];
+	getDataFile(dataFile);
 	// The below is a stand-in until json-c has been figured out
 	FILE* toWrite;
 	toWrite = fopen(dataFile, "w");

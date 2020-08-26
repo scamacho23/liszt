@@ -29,7 +29,7 @@ void backgroundInfo(char* dataFilePath, char* currentNotePath, char* currentNote
 	dataFilePath = dataFile.we_wordv[0];
 
 	// Get current note
- 	getCurrentNote(dataFilePath, currentNotePath, currentNoteName);
+ 	getCurrentNote(currentNotePath, currentNoteName);
 
 	// Get current notes
 	wordexp_t notesDir;
@@ -174,6 +174,7 @@ int main(int argc, char* argv[]) {
 	char* archive[256];
 	int numArchive = 0;
 	backgroundInfo(dataFilePath, currentNotePath, currentNoteName, notes, &numNotes, archive, &numArchive);
+	
 
 	// Get data_file.json
 	wordexp_t dataFile;
@@ -196,7 +197,7 @@ int main(int argc, char* argv[]) {
 	if (command[0] == '-') {
 		if (argc == 2) {
 			if (strcmp(command, "-l") == 0) {
-				listMemories(currentNotePath, currentNoteName);
+				listMemories();
 			} else if (strcmp(command, "-cl") == 0) {
 				clearMemories(currentNotePath);
 			} else if (strcmp(command, "-help") == 0 || strcmp(command, "-h") == 0) {
@@ -212,7 +213,6 @@ int main(int argc, char* argv[]) {
 				printf("%s\n", currentNoteName);
 			} else if (strcmp(command, "-cln") == 0) {
 				clearNotes(currentNoteName, dataFilePath);
-				// note.clear_notes(notes, current_note_name, data_file)
 			} else if (strcmp(command, "-clar") == 0) {
 				// note.clear_archive_notes(archive_notes)
 			} else if (strcmp(command, "-rm") == 0) {
@@ -236,22 +236,22 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-a") == 0) {
 				addNote(argv, argc);
 			} else if (strcmp(command, "-ch") == 0) {
-				changeNote(argv, argc, dataFilePath);
+				changeNote(argv, argc);
 			} else if (strcmp(command, "-rn") == 0 ) {
 				// get_version()
 			} else if (strcmp(command, "-rm") == 0) {
 				printf("Data File Path: %s\n", dataFilePath);
 				removeNote(argv, argc, currentNoteName, dataFilePath);
 			} else if (strcmp(command, "-ar") == 0) {
-				// print(current_note_name)
+				archiveNote(argv, argc);
 			} else if (strcmp(command, "-unar") == 0) {
-				// note.clear_notes(notes, current_note_name, data_file)
+				unArchiveNote(argv, argc);
 			} else if (strcmp(command, "-in") == 0) {
 				importNote(argv, argc);
 			} else if (strcmp(command, "-ex") == 0) {
 				exportNote(argv, argc);
 			} else if (strcmp(command, "-dp") == 0) {
-			//	note.archive_note(current_note_name, current_note_name, data_file)
+				duplicateNote(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
 			//	return_value = note.list_notes(archive_notes)
 			//	if return_value == None:

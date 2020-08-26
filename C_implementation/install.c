@@ -12,6 +12,8 @@
  * configure? And maybe there should be a configure command? And maybe people
  * should get to configure Liszt a little bit to what they like (like change
  * display colors or something)
+ *
+ * also maybe just one wordexp_t instead of freeing each time
  */
 
 
@@ -28,6 +30,7 @@ int makeDirectories() {
 		printf("Please try again later.\n");
 		return -1;	
 	}
+	wordfree(&liszt);
 	
 	// Make background directory
 	wordexp_t background;
@@ -39,6 +42,7 @@ int makeDirectories() {
 		printf("Please try again later.\n");
 		return -1;	
 	}
+	wordfree(&background);
 
 	// Make notes directory
 	wordexp_t notes;
@@ -50,6 +54,7 @@ int makeDirectories() {
 		printf("Please try again later.\n");
 		return -1;	
 	}
+	wordfree(&notes);
 
 	// Make archive_notes directory
 	wordexp_t archiveNotes;
@@ -61,6 +66,7 @@ int makeDirectories() {
 		printf("Please try again later.\n");
 		return -1;	
 	}
+	wordfree(&archiveNotes);
 	
 	return 0;
 }
@@ -94,11 +100,11 @@ int makeFiles() {
 		return -1;	
 	}
 
-	// Add default as the current file in data_file.json
-	/*
- 		ADD HERE
-	*/
+	writeToDataFile(defaultFilePath);
 
+	wordfree(&dataFile);
+	wordfree(&defaultFile);
+	
 	return 0;
 }	
 

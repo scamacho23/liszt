@@ -7,6 +7,20 @@
 
 
 /*
+ * Finds the path to the data_file
+ */
+void getDataFile(char* dataFile); 
+
+
+/*
+ * Given the dir in which a note is located,
+ * either ~/.liszt/notes or ~/.liszt/archive,
+ * finds the full path to the note 
+ */
+void getNotePath(char* dirName, char* noteName, char* notePath);
+
+
+/*
  * Given two filepaths, copies the text from the
  * first file into the second file
  */
@@ -54,7 +68,7 @@ int checkRow(char* filename, char* charRow, char* memories, int* numMemories);
  * Given the data_file.json file and a filename, 
  * changes the filename held in data_file 
  */
-void writeToDataFile(char* dataFile, char* filename);
+void writeToDataFile(char* filename);
 
 
 /*

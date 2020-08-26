@@ -15,7 +15,7 @@ void writeToNote(char* note, char* memories[], int numMemories);
  * Given the name of a note, duplicates that note and names
  * the new note the desired name.
  */
-void duplicateNote(char* args[]);
+void duplicateNote(char* args[], int numArgs);
 
 
 /*
@@ -36,14 +36,14 @@ void exportNote(char* args[], int numArgs);
  * Given the name of a note, moves the note frrom the ~/.liszt/notes directory 
  * and to the ~/.liszt/archive_notes directory 
  */ 
-void archiveNote(char* args[], char* currentNote, char* dataFile);
+void archiveNote(char* args[], int numArgs);
 
 
 /*
  * Given the name of a note, moves the note frrom the ~/.liszt/archive_notes directory 
  * and to the ~/.liszt/notes directory 
  */ 
-void unArchiveNote(char* args[]);
+void unArchiveNote(char* args[], int numArgs);
 
 
 /*
@@ -74,15 +74,21 @@ void clearArchiveNotes(char* archivedNotes[]);
 /*
  * Returns the name and path of the current working note
  */
-void getCurrentNote(char* dataFile, char* currentNotePath, char* currentNoteName);
+void getCurrentNote(char* currentNotePath, char* currentNoteName);
 
 
 /*
- * Given the name of a note, the current note, and data_file.json,
- * changes the current note to the given note.
+ * Given the name of a note, changes to that note
  * Returns 0 if successful, -1 if not
  */
-int changeNote(char* args[], int numArgs, char* dataFile);
+int changeNoteHelper(char* note);
+
+
+/*
+ * Given the name of a note, changes the 
+ * current note to the given note.
+ */
+void changeNote(char* args[], int numArgs);
 
 
 /*

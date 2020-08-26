@@ -3,6 +3,7 @@
 #include <string.h>
 #include "memory.h"
 #include "helper_func.h"
+#include "note.h"
 // #include "../../json-c/json_object.h"
 
 /*
@@ -68,12 +69,16 @@ void addMemory(char* note, char* args[], int numArgs) {
 }
 
 
-void listMemories(char* notePath, char* noteName) {
+void listMemories() {
+	char notePath[256];
+	char noteName[256];
+	getCurrentNote(notePath, noteName);
+
 	if (access(notePath, F_OK) == -1) {
-		printf("Hmmm. The current note (%s) doesn't seem to be working. Please try again later.\n", noteName);
-		printf("If the current note continues to fail to open, please submit a help ticket by emailing us at quicknote.v1@gmail.com\n");
+		printf("Hmmm. The current note (%s) doesn't seem to exist. How did we get here?\n", noteName);
 		return;
 	}	
+
 	// get the number of lines in the file 
 	int numLines = getFileSize(notePath);
 	if (numLines == 0) {
