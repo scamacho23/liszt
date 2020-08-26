@@ -7,6 +7,13 @@
 
 
 /*
+ * Given two filepaths, copies the text from the
+ * first file into the second file
+ */
+void copyFile(char* firstFile, char* secondFile);
+
+
+/*
  * Given the name of a file, returns the int
  * value of the number of lines in the file
  */
@@ -27,7 +34,10 @@ void printDefaultError();
 void readDirectory(char* dirName, char* files[], int* numFiles);
 
 
-
+/*
+ * Given the path to a directory, prints the names
+ * of the files in that directory (not the paths)
+ */
 void printDirectory(char* dirName, char* shortName);
 
 /*

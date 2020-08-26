@@ -166,7 +166,7 @@ int main(int argc, char* argv[]) {
 
 	// Necessary Info to Grab
 	// The following does not work properly
-	char dataFilePath[100];
+	char* dataFilePath;
 	char currentNotePath[100];
 	char currentNoteName[100];
 	char* notes[256];
@@ -175,7 +175,12 @@ int main(int argc, char* argv[]) {
 	int numArchive = 0;
 	backgroundInfo(dataFilePath, currentNotePath, currentNoteName, notes, &numNotes, archive, &numArchive);
 
-	
+	// Get data_file.json
+	wordexp_t dataFile;
+	// while json-c is being figured out, data_file will act as data_file.json
+	wordexp("~/.liszt/background/data_file", &dataFile, 0);
+	dataFilePath = dataFile.we_wordv[0];
+
 
 	// the following is not quite right
 	char args[256];
@@ -206,6 +211,7 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-n") == 0) {
 				printf("%s\n", currentNoteName);
 			} else if (strcmp(command, "-cln") == 0) {
+				clearNotes(currentNoteName, dataFilePath);
 				// note.clear_notes(notes, current_note_name, data_file)
 			} else if (strcmp(command, "-clar") == 0) {
 				// note.clear_archive_notes(archive_notes)
@@ -221,29 +227,29 @@ int main(int argc, char* argv[]) {
 				printDirectory(archive.we_wordv[0], shortName);
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);
+				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
 				exit(1);
 			}
 		} else if (argc > 2) {
 			if (strcmp(command, "-r") == 0) {
 			//	printf("REMOVE MEMORY\n");	
 			} else if (strcmp(command, "-a") == 0) {
-				// mem.clear_memories(current_note)
-			} else if (strcmp(command, "-ch") == 0 || strcmp(command, "-h") == 0) {
-				// get_help()
+				addNote(argv, argc);
+			} else if (strcmp(command, "-ch") == 0) {
+				changeNote(argv, argc, dataFilePath);
 			} else if (strcmp(command, "-rn") == 0 ) {
 				// get_version()
 			} else if (strcmp(command, "-rm") == 0) {
-				// return_value = note.list_notes(notes) 
-				// if return_value == None:
-				//	print("You have no notes at the moment. Start by adding a new note or by importing one from a \".txt.\' file.')
+				printf("Data File Path: %s\n", dataFilePath);
+				removeNote(argv, argc, currentNoteName, dataFilePath);
 			} else if (strcmp(command, "-ar") == 0) {
 				// print(current_note_name)
 			} else if (strcmp(command, "-unar") == 0) {
 				// note.clear_notes(notes, current_note_name, data_file)
 			} else if (strcmp(command, "-in") == 0) {
-				// note.clear_archive_notes(archive_notes)
+				importNote(argv, argc);
 			} else if (strcmp(command, "-ex") == 0) {
-				// note.remove_note(current_note_name, current_note_name, data_file)
+				exportNote(argv, argc);
 			} else if (strcmp(command, "-dp") == 0) {
 			//	note.archive_note(current_note_name, current_note_name, data_file)
 			} else if (strcmp(command, "-m") == 0) {
@@ -254,6 +260,7 @@ int main(int argc, char* argv[]) {
 				// nothing
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
+				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
 				exit(1);
 			}
 		}	

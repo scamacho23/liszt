@@ -5,11 +5,37 @@
 #include "helper_func.h"
 
 /*
- * TO DO:
+ * METHODS 
+ *
+ * To Do:
  * readDirectory() --- requires array completion
  * checkRow() --- requires array completion
  * writeToDataFile() --- requires JSON completion 
+ * parseUnaryArgs()/parseBinaryArgs() --- strip extra whitespace (grouped because have same issue)
+ *
+ * Seemingly Complete:
+ * getFileSize()
+ * printDefaultError()
+ * printDirectory()
+ * requestUserPermission()
+ * makeNote()
+ * parseUnaryArgs()
+ * parseBinaryArgs()
+ * copyFile()
  */
+
+
+void copyFile(char* firstFile, char* secondFile) {
+	FILE* source, * target;
+	source = fopen(firstFile, "r");
+	target = fopen(secondFile, "w");
+	char filechar;
+	while ((filechar = fgetc(source)) != EOF) {
+		fputc(filechar, target);
+	}
+	fclose(source);
+	fclose(target);
+}
 
 
 int getFileSize(char* filename) {
@@ -58,6 +84,7 @@ void printDirectory(char* dirName, char* shortName) {
 				counter++;
 			}
 		}
+		counter--; // decrement counter bc don't want to include default in the count
 		if (!counter) {
 			printf("You have no notes at the moment.\n");
 			return;
@@ -66,7 +93,7 @@ void printDirectory(char* dirName, char* shortName) {
 		rewinddir(directory);
 		int index = 1;
 		while ((dir = readdir(directory)) != NULL) {
-			if (dir->d_type == DT_REG) {
+			if (dir->d_type == DT_REG && strcmp(dir->d_name, "default") != 0) {
 				printf("\033[1m%d.\033[0m %s\n", index, dir->d_name);
 				index++;
 			}
@@ -137,7 +164,8 @@ int parseUnaryArgs(char* word, char* args[], int numArgs) {
 int parseBinaryArgs(char* first, char* second, char* args[], int numArgs) {
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(first, args[2]);
-	if (numArgs >= 4) strcat(first, " ");
+	if (numArgs >= 4 && strcmp(args[3], "/") != 0) strcat(first, " ");
+	// confirm user entered a first word
 	if (strcmp(args[2], "/") == 0) {
 		printf("You have not entered enough information. Please try again.\n");
 		return -1;
@@ -145,13 +173,10 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs) {
 	int counter = 3;
 	while (counter < numArgs && strcmp(args[counter], "/") != 0) {
 		strcat(first, args[counter]);	
-		if (numArgs > counter + 1) strcat(first, " ");
+		// trying to strip the last space from the first arg... leading to some issues with finding the file
+		if (numArgs > counter + 2 && strcmp(args[counter + 1], "/") != 0) strcat(first, " ");
 		counter++;
 	} 
-	if (counter == numArgs) {
-		printf("You have not entered enough infomration. Please try again.\n");
-		return -1;
-	}
 	counter++;
 	if (counter >= numArgs) {
 		printf("You have not entered enough information. Please try again.\n");
@@ -170,7 +195,7 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs) {
 
 int makeNote(char* filePath) {
 	if (access(filePath, F_OK) != -1) {
-		printf("A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.");
+		printf("A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.\n");
 		return -1;
 	}
 	FILE* toCreate;

@@ -22,14 +22,14 @@ void duplicateNote(char* args[]);
  * Given the name of a .txt file, makes a copy of that file 
  * to be used as a new note
  */
-void importNote(char* args[]);
+void importNote(char* args[], int numArgs);
 
 
 /*
  * Given the name of a note, makes a copy of the note which is then exported
  * to the user's working directory
  */
-void exportNote(char* args[]);
+void exportNote(char* args[], int numArgs);
 
 
 /*
@@ -50,25 +50,19 @@ void unArchiveNote(char* args[]);
  * Given a note-name, adds a file in the ~/.liszt/notes directory with the given name, 
  * which will then be set as the current file for memories
  */
-void addNote(char* args[]);
-
-
-/*
- * Prints the list of notes from the given path.
- */
-void listNotes(char* dirPath, char* shortName);
+void addNote(char* args[], int numArgs);
 
 
 /*
  * Given the name of a note, deletes the note with that name if it exists.
  */
-void removeNote(char* args[], char* currentNote, char* dataFile);
+void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile);
 
 
 /*
  * Clears all available notes besides 'default'
  */
-void clearNotes(char* notes[], char* currentNote, char* dataFile);
+void clearNotes(char* currentNote, char* dataFile);
 
 
 /*
@@ -88,7 +82,7 @@ void getCurrentNote(char* dataFile, char* currentNotePath, char* currentNoteName
  * changes the current note to the given note.
  * Returns 0 if successful, -1 if not
  */
-int changeNote(char* args[], char* currentNote, char* dataFile);
+int changeNote(char* args[], int numArgs, char* dataFile);
 
 
 /*
