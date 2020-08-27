@@ -35,9 +35,11 @@ int getFileSize(char* filename);
 
 
 /*
- * Prints the default refusal of access command
+ * Given the name of a note, checks if it
+ * is default.
+ * Returns 0 if note is note default, -1 if it is
  */
-void printDefaultError();
+int checkDefault(char* note);
 
 
 /*

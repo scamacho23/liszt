@@ -78,8 +78,18 @@ int getFileSize(char* filename) {
 }
 
 
-void printDefaultError() {
-	printf("Sorry. 'default' is off limits.\n");
+int checkDefault(char* note) {
+	char loweredNote[256];
+	strcpy(loweredNote, note);
+	int numChars = strlen(loweredNote);
+	for (int i = 0; i < numChars; i++) {
+		loweredNote[i] = tolower(loweredNote[i]);
+	}
+	if (strcmp(loweredNote, "default") == 0) {
+		printf("Sorry. 'default' is off limits.\n");
+		return -1;
+	}
+	return 0;
 }
 
 
@@ -172,7 +182,7 @@ void writeToDataFile(char* filename) {
 void requestUserPermission(char* prompt, char* decision) {
 	while (strcmp(decision, "y") != 0 && strcmp(decision, "n") != 0) {
 		printf("%s", prompt);
-		scanf("%s", decision);
+		scanf("%99s", decision);
 	}
 }
 	

@@ -82,8 +82,6 @@ void listMemories() {
 	char noteName[256];
 	getCurrentNote(notePath, noteName);
 
-	printf("Note path: %s\n", notePath);	
-
 	if (access(notePath, F_OK) == -1) {
 		printf("Hmmm. The current note (%s) doesn't seem to exist. How did we get here?\n", noteName);
 		return;

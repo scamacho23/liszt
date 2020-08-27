@@ -7,10 +7,6 @@
 #include "note.h"
 #include "helper_func.h"
 
-// TO DO
-// Fix removeNote
-// Fix getCurrentNote displays some hideous chars when running currentNotePath (but still works??)
-
 
 void writeToNote(char* note, char* memories[], int numMemories) {
 	FILE* toWrite;
@@ -42,10 +38,8 @@ void duplicateNote(char* args[], int numArgs) {
 	}
 
 	// prevent the user from duplicating default
-	if (strcmp(existingNote, "default") == 0) {
-		printDefaultError();
-		return;
-	}
+	result = checkDefault(existingNote);
+	if (result == -1) return;
 	
 	result = makeNote(newPath);
 	if (result == -1) {
@@ -65,6 +59,11 @@ void importNote(char* args[], int numArgs) {
 	if (result == -1) {
 		return;
 	}
+
+	// stop the user from even trying to import a note as 'default'
+	result = checkDefault(import);
+	if (result == -1) return;
+
 	if (stat(import, &st) == -1) {
 		printf("Sorry. \033[1mLiszt\033[0m can't find the file you are trying to import\n");
 		return;
@@ -96,9 +95,7 @@ void exportNote(char* args[], int numArgs) {
 	char export[256];
 	int result = parseBinaryArgs(note, export, args, numArgs);
 
-	if (result == -1) {
-		return;
-	}
+	if (result == -1) return;
 
 	char notePath[256];
 	char* dirName = "notes";
@@ -109,10 +106,10 @@ void exportNote(char* args[], int numArgs) {
 		printf("Sorry. \033[1mLiszt\033[0m can't find the note you are trying to export: '%s'. Did you spell the name of the note correctly?\n", note);
 		return;
 	}
-	if (strcmp(note, "default") == 0) {
-		printDefaultError();
-		return;
-	}
+
+	// prevent the user from exporting default
+	result = checkDefault(note);
+	if (result == -1) return;
 	
 	strcat(export, ".txt");
 
@@ -140,11 +137,9 @@ void archiveNote(char* args[], int numArgs) {
 		return;
 	}
 
-	// prevent the user from archiving 'default'
-	if (strcmp(noteToArchive, "default") == 0) {
-		printDefaultError();
-		return;	
-	}
+	// prevent the user from archiving default
+	int result = checkDefault(noteToArchive);
+	if (result == -1) return;
 
 	dirName = "archive";
 	char newPath[256];
@@ -205,11 +200,15 @@ void addNote(char* args[], int numArgs) {
 	char note[256];
 	char notePath[256];
 	parseUnaryArgs(note, args, numArgs);
+
+	// stop the user from even trying to name a note 'default'
+	int result = checkDefault(note);
+	if (result == -1) return;
 	
 	char* dirName = "notes";
 	getNotePath(dirName, note, notePath);
 
-	int result = makeNote(notePath);
+	result = makeNote(notePath);
 	if (result == -1) {
 		return;	
 	}
@@ -227,25 +226,16 @@ void removeNote(char* args[], int numArgs) {
 	getDataFile(dataFile);
 
 	char note[256];
-	int returnVal = parseUnaryArgs(note, args, numArgs);
-	if (returnVal == 1) {
+	int result = parseUnaryArgs(note, args, numArgs);
+	// is the following definitely correct (i.e. for removing the current note??)
+	if (result == 1) {
 		printf("You haven't entered enough infomration. Please try again.\n");
 		return;
 	}
-	// PREVENTING USER FROM DELETING DEFAULT NOT WORKING
-	// char loweredNote[256];
-	// int numChars = strlen(note);
-	// char result = tolower(note[0]);
-	// strcpy(loweredNote, &result);
-	// for (int i = 1; i < numChars; i++) {
-	//	result = tolower(note[i]);
-	//	strcat(loweredNote, &result);
-	//}
-	//if (strcmp(loweredNote, "default") == 0) {
-	//	printDefaultError();
-	//	return;
-	//}
-	// ISSUE WITH DEFAULT ENDS HERE
+	// prevent the user from deleting default
+	result = checkDefault(note);
+	if (result == -1) return;
+	
 	char prompt[256] = "Are you sure you want to remove '";
 	strcat(prompt, note);
 	strcat(prompt, "'?\033[1m There is no going back (y/n): \033[0m");
@@ -263,9 +253,8 @@ void removeNote(char* args[], int numArgs) {
 			return;
 		}
 		remove(fullNotePath);
-		// why am i entering this conditional...
-		if (strcmp(currentNote, "default") != 0) {
-			printf("Inside conditional\n");
+		// if the user is removing the current note
+		if (strcmp(currentNote, note) == 0) {
 			wordexp_t defaultPath;
 			wordexp("~/.liszt/notes/default", &defaultPath, 0);
 			writeToDataFile(defaultPath.we_wordv[0]);
@@ -278,7 +267,6 @@ void removeNote(char* args[], int numArgs) {
 
 
 void clearNotes() {
-
 	char currentNote[256];
 	char currentNotePath[256];
 	getCurrentNote(currentNotePath, currentNote);
@@ -353,14 +341,13 @@ void getCurrentNote(char* currentNotePath, char* currentNoteName) {
 	FILE* toRead;
 	toRead = fopen(dataFile, "r");
 
-	char temp = fgetc(toRead);
-	strncpy(currentNotePath, &temp, 1);
-	temp = fgetc(toRead);
+	char topline[100];
 
-	while (temp != EOF && temp != '\n') { 
-		strncat(currentNotePath, &temp, 1);
-		temp = fgetc(toRead);
-	}
+	fgets(topline, sizeof(topline), toRead);
+	
+	int sizePath = strlen(topline);
+	strncpy(currentNotePath, topline, sizePath);
+	currentNotePath[sizePath] = '\0';
 	
 	fclose(toRead);
 	
@@ -383,10 +370,8 @@ int changeNoteHelper(char* note) {
 		return -1;
 	}
 	// stop if the note to be changed to is 'default'
-	if (strcmp(note, "default") == 0) {
-		printDefaultError();
-		return -1;
-	}
+	int result = checkDefault(note);
+	if (result == -1) return -1;
 
 	struct stat st = {0};
 	
@@ -404,12 +389,14 @@ int changeNoteHelper(char* note) {
 		if (numMemories > 0) {
 			char newNote[256];
 			printf("The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ");
-			scanf("%s", newNote);
-			if (strlen(newNote) > 0) {
+			fgets(newNote, 256, stdin);
+			int length = strlen(newNote);
+			if (length > 0) {
+				newNote[length - 1] = '\0';
 				char newNotePath[256];	
 				getNotePath(dirName, newNote, newNotePath);
 
-				int result = makeNote(newNotePath);
+				result = makeNote(newNotePath);
 				if (result == -1) return -1;
 				copyFile(currentNotePath, newNotePath);
 				// the following is for clearing 'default'
@@ -451,10 +438,9 @@ void renameNote(char* args[], int numArgs) {
 	}
 
 	// prevent the user from renaming 'default'
-	if (strcmp(oldName, "default") == 0) {
-		printDefaultError();
-		return; 	
-	}
+	result = checkDefault(oldName);
+	if (result == -1) return;
+
 	rename(oldPath, newPath);
 
 	char currentNotePath[256];

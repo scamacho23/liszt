@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
 				wordexp("~/.liszt/notes", &notes, 0);
 				printDirectory(notes.we_wordv[0], shortName);
 			} else if (strcmp(command, "-n") == 0) {
-				char* currentNotePath;
+				char currentNotePath[256];
 				char currentNoteName[256];
 				getCurrentNote(currentNotePath, currentNoteName);	
 				printf("%s\n", currentNoteName);
@@ -169,11 +169,12 @@ int main(int argc, char* argv[]) {
 				clearNotes();
 			} else if (strcmp(command, "-clar") == 0) {
 				clearArchiveNotes();
-			} else if (strcmp(command, "-rm") == 0) {
-				// note.remove_note(current_note_name, current_note_name, data_file)
-			// this is for archiving the current note
-			} else if (strcmp(command, "-ar") == 0) {
-			//	note.archive_note(current_note_name, current_note_name, data_file)
+			} else if (strcmp(command, "-rm") == 0) { // this is for removing the current note
+				// NEEDS WORK
+				return 0;
+			} else if (strcmp(command, "-ar") == 0) { // this is for archiving the current note
+				// NEEDS WORK
+				return 0;
 			} else if (strcmp(command, "-lar") == 0) {
 				char* shortName = " archived ";
 				wordexp_t archive;
@@ -186,7 +187,8 @@ int main(int argc, char* argv[]) {
 			}
 		} else if (argc > 2) {
 			if (strcmp(command, "-r") == 0) {
-			//	printf("REMOVE MEMORY\n");	
+				// NEEDS WORK
+				return 0;
 			} else if (strcmp(command, "-a") == 0) {
 				addNote(argv, argc);
 			} else if (strcmp(command, "-ch") == 0) {
@@ -206,8 +208,10 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-dp") == 0) {
 				duplicateNote(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
+				// NEEDS WORK
 				return 0;
 			} else if (strcmp(command, "-c") == 0) {
+				// NEEDS WORK
 				return 0;
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
