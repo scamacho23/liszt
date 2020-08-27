@@ -51,7 +51,7 @@ void removeMemory(char* note, char* row);
  * Given the name of a note, removes all
  * memories from that note
  */
-void clearMemories(char* note);
+void clearMemories();
 
 
 /* 
@@ -59,7 +59,7 @@ void clearMemories(char* note);
  * adds those words (as a single line) to
  * the end of the note
  */
-void addMemory(char* note, char* args[], int numArgs);
+void addMemory(char* args[], int numArgs);
 
 
 /*

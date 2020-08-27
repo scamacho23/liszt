@@ -7,6 +7,10 @@
 #include "note.h"
 #include "helper_func.h"
 
+// TO DO
+// Fix removeNote
+// Fix getCurrentNote displays some hideous chars when running currentNotePath (but still works??)
+
 
 void writeToNote(char* note, char* memories[], int numMemories) {
 	FILE* toWrite;
@@ -151,8 +155,7 @@ void archiveNote(char* args[], int numArgs) {
 		return;
 	}
 
-	copyFile(notePath, newPath);
-	remove(notePath);
+	rename(notePath, newPath);
 
 	char currentNotePath[256];
 	char currentNoteName[256];
@@ -170,9 +173,6 @@ void archiveNote(char* args[], int numArgs) {
 
 
 void unArchiveNote(char* args[], int numArgs) {
-
-
-
 	char noteToUnArchive[256];
 	parseUnaryArgs(noteToUnArchive, args, numArgs);
 	char* dirName = "archive";
@@ -195,8 +195,7 @@ void unArchiveNote(char* args[], int numArgs) {
 		return;
 	}
 
-	copyFile(notePath, newPath);
-	remove(notePath);
+	rename(notePath, newPath);
 
 	printf("Un-archived '%s'\n", noteToUnArchive);
 }
@@ -219,7 +218,14 @@ void addNote(char* args[], int numArgs) {
 }
 
 
-void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile) {
+void removeNote(char* args[], int numArgs) {
+	char currentNote[256];
+	char currentNotePath[256];
+	getCurrentNote(currentNotePath, currentNote);
+	
+	char dataFile[256];
+	getDataFile(dataFile);
+
 	char note[256];
 	int returnVal = parseUnaryArgs(note, args, numArgs);
 	if (returnVal == 1) {
@@ -271,7 +277,15 @@ void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile) {
 }
 
 
-void clearNotes(char* currentNote, char* dataFile) {
+void clearNotes() {
+
+	char currentNote[256];
+	char currentNotePath[256];
+	getCurrentNote(currentNotePath, currentNote);
+	
+	char dataFile[256];
+	getDataFile(dataFile);
+
 	char prompt[] = "Are you sure you want to clear all of your notes?\033[1m There is no going back (y/n): \033[0m";
 	char decision[50];
 	requestUserPermission(prompt, decision);
@@ -300,12 +314,36 @@ void clearNotes(char* currentNote, char* dataFile) {
 			wordfree(&defaultPath);
 		}
 		wordfree(&notesDir);	
-		printf("Cleared all user notes for Liszt cache\n");
+		printf("Cleared all user notes from Liszt cache\n");
 	} else printf("Clearing of notes aborted\n");
 }
 
 
-void clearArchiveNotes(char* archivedNotes[]);
+void clearArchiveNotes() {
+	char prompt[] = "Are you sure you want to clear all of your archived notes?\033[1m There is no going back (y/n): \033[0m";
+	char decision[50];
+	requestUserPermission(prompt, decision);
+	if (strcmp(decision, "y") == 0) {
+		wordexp_t archiveDir;
+		wordexp("~/.liszt/archive", &archiveDir, 0);
+		char* archives[256];
+		int numNotes = 0;
+		readDirectory(archiveDir.we_wordv[0], archives, &numNotes);
+		if (!numNotes) {
+			printf("You have no notes to clear!\n");
+			return;
+		}
+
+		for (int i = 0; i < numNotes; i++) {
+			char* dirName = "archive";
+			char note[256];
+			getNotePath(dirName, archives[i], note);
+			remove(note);	
+		}
+		wordfree(&archiveDir);	
+		printf("Cleared all archived user notes from Liszt cache\n");
+	} else printf("Clearing of notes aborted\n");
+}
 
 
 void getCurrentNote(char* currentNotePath, char* currentNoteName) {
@@ -314,7 +352,16 @@ void getCurrentNote(char* currentNotePath, char* currentNoteName) {
 
 	FILE* toRead;
 	toRead = fopen(dataFile, "r");
-	fscanf(toRead, "%s", currentNotePath);
+
+	char temp = fgetc(toRead);
+	strncpy(currentNotePath, &temp, 1);
+	temp = fgetc(toRead);
+
+	while (temp != EOF && temp != '\n') { 
+		strncat(currentNotePath, &temp, 1);
+		temp = fgetc(toRead);
+	}
+	
 	fclose(toRead);
 	
 	char slash = '/';
@@ -384,6 +431,40 @@ void changeNote(char* args[], int numArgs) {
 }
 
 
-int renameNote(char* args[], char* currentNote, char* dataFile);
+void renameNote(char* args[], int numArgs) {
+	char oldName[256];
+	char newName[256];
+	int result = parseBinaryArgs(oldName, newName, args, numArgs);
+	if (result == -1) return;
+	
+	char* dirName = "notes";	
+	char oldPath[256];
+	char newPath[256];
+	getNotePath(dirName, oldName, oldPath);
+	getNotePath(dirName, newName, newPath);
 
+	// confirm that the note to change actually exists
+	struct stat st = {0};
+	if (stat(oldPath, &st) == -1) {
+		printf("The note you are trying to rename does not exist. Please try again.\n");
+		return;
+	}
+
+	// prevent the user from renaming 'default'
+	if (strcmp(oldName, "default") == 0) {
+		printDefaultError();
+		return; 	
+	}
+	rename(oldPath, newPath);
+
+	char currentNotePath[256];
+	char currentNoteName[256];
+	getCurrentNote(currentNotePath, currentNoteName);
+
+	if (strcmp(oldPath, currentNotePath) == 0) {
+		writeToDataFile(newPath);
+	}
+	
+	printf("Renamed '%s' to '%s'\n", oldName, newName);
+}
 

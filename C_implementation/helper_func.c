@@ -111,7 +111,7 @@ void printDirectory(char* dirName, char* shortName) {
 				counter++;
 			}
 		}
-		counter--; // decrement counter bc don't want to include default in the count
+		if (strcmp(shortName, " ") == 0) counter--; // decrement counter bc don't want to include default in the count
 		if (!counter) {
 			printf("You have no notes at the moment.\n");
 			return;

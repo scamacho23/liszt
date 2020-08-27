@@ -56,19 +56,19 @@ void addNote(char* args[], int numArgs);
 /*
  * Given the name of a note, deletes the note with that name if it exists.
  */
-void removeNote(char* args[], int numArgs, char* currentNote, char* dataFile);
+void removeNote(char* args[], int numArgs);
 
 
 /*
  * Clears all available notes besides 'default'
  */
-void clearNotes(char* currentNote, char* dataFile);
+void clearNotes();
 
 
 /*
  * Clears all archived notes
  */
-void clearArchiveNotes(char* archivedNotes[]);
+void clearArchiveNotes();
 
 
 /*
@@ -94,9 +94,8 @@ void changeNote(char* args[], int numArgs);
 /*
  * Given the name of a note and new name, renames the note
  * to the given name.
- * Returns 0 if successful, -1 if not.
  */
-int renameNote(char* args[], char* currentNote, char* dataFile);
+void renameNote(char* args[], int numArgs);
 
 
 #include "note.c"

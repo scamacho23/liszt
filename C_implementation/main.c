@@ -17,36 +17,6 @@ const char* RESET = "\033[0m";
 
 
 /*
- * Finds the full path to data_file.json and the current note, and the contents 
- * of the archive and notes directories (i.e. the full paths of each file 
- * in those directories)
- */
-void backgroundInfo(char* dataFilePath, char* currentNotePath, char* currentNoteName, char* notes[], int* numNotes, char* archive[], int* numArchive) {
-	// Get data_file.json
-	wordexp_t dataFile;
-	// while json-c is being figured out, data_file will act as data_file.json
-	wordexp("~/.liszt/background/data_file", &dataFile, 0);
-	dataFilePath = dataFile.we_wordv[0];
-
-	// Get current note
- 	getCurrentNote(currentNotePath, currentNoteName);
-
-	// Get current notes
-	wordexp_t notesDir;
-	wordexp("~/.liszt/notes", &notesDir, 0);
-	readDirectory(notesDir.we_wordv[0], notes, numNotes);	
-
-	// Get archive notes
-	wordexp_t archiveDir;
-	wordexp("~/.liszt/archive", &archiveDir, 0);
-	readDirectory(archiveDir.we_wordv[0], archive, numArchive);
-
-	// THIS NEEDS WORK (ARRAYS NOT FUNCTIONING PROPERLY)
-
-}
-
-
-/*
  * Prints the user's version of Liszt
  */
 void getVersion() {
@@ -164,25 +134,6 @@ int main(int argc, char* argv[]) {
 	
 	char* command = argv[1];
 
-	// Necessary Info to Grab
-	// The following does not work properly
-	char* dataFilePath;
-	char currentNotePath[100];
-	char currentNoteName[100];
-	char* notes[256];
-	int numNotes = 0;
-	char* archive[256];
-	int numArchive = 0;
-	backgroundInfo(dataFilePath, currentNotePath, currentNoteName, notes, &numNotes, archive, &numArchive);
-	
-
-	// Get data_file.json
-	wordexp_t dataFile;
-	// while json-c is being figured out, data_file will act as data_file.json
-	wordexp("~/.liszt/background/data_file", &dataFile, 0);
-	dataFilePath = dataFile.we_wordv[0];
-
-
 	// the following is not quite right
 	char args[256];
 
@@ -199,7 +150,7 @@ int main(int argc, char* argv[]) {
 			if (strcmp(command, "-l") == 0) {
 				listMemories();
 			} else if (strcmp(command, "-cl") == 0) {
-				clearMemories(currentNotePath);
+				clearMemories();
 			} else if (strcmp(command, "-help") == 0 || strcmp(command, "-h") == 0) {
 				getHelp();
 			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
@@ -210,11 +161,14 @@ int main(int argc, char* argv[]) {
 				wordexp("~/.liszt/notes", &notes, 0);
 				printDirectory(notes.we_wordv[0], shortName);
 			} else if (strcmp(command, "-n") == 0) {
+				char* currentNotePath;
+				char currentNoteName[256];
+				getCurrentNote(currentNotePath, currentNoteName);	
 				printf("%s\n", currentNoteName);
 			} else if (strcmp(command, "-cln") == 0) {
-				clearNotes(currentNoteName, dataFilePath);
+				clearNotes();
 			} else if (strcmp(command, "-clar") == 0) {
-				// note.clear_archive_notes(archive_notes)
+				clearArchiveNotes();
 			} else if (strcmp(command, "-rm") == 0) {
 				// note.remove_note(current_note_name, current_note_name, data_file)
 			// this is for archiving the current note
@@ -238,10 +192,9 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-ch") == 0) {
 				changeNote(argv, argc);
 			} else if (strcmp(command, "-rn") == 0 ) {
-				// get_version()
+				renameNote(argv, argc);
 			} else if (strcmp(command, "-rm") == 0) {
-				printf("Data File Path: %s\n", dataFilePath);
-				removeNote(argv, argc, currentNoteName, dataFilePath);
+				removeNote(argv, argc);
 			} else if (strcmp(command, "-ar") == 0) {
 				archiveNote(argv, argc);
 			} else if (strcmp(command, "-unar") == 0) {
@@ -253,18 +206,16 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-dp") == 0) {
 				duplicateNote(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
-			//	return_value = note.list_notes(archive_notes)
-			//	if return_value == None:
-			//		print("You have no archived notes at the moment.")
+				return 0;
 			} else if (strcmp(command, "-c") == 0) {
-				// nothing
+				return 0;
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
 				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
 				exit(1);
 			}
 		}	
-	} else addMemory(currentNotePath, argv, argc);
+	} else addMemory(argv, argc);
 	
 
 	return 0;

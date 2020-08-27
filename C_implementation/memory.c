@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "memory.h"
 #include "helper_func.h"
 #include "note.h"
@@ -36,7 +37,11 @@ void copyMemory(char* currentNote, char* row, char args[]);
 void removeMemory(char* note, char* row);
 
 
-void clearMemories(char* note) {
+void clearMemories() {
+	char currentNotePath[256];
+	char note[256];
+	getCurrentNote(currentNotePath, note);
+
 	char prompt[] = "Are you sure you want to clear your memories on your current note? \033[1mThere is no going back (y/n): \033[0m";
 	char decision[50];
 	requestUserPermission(prompt, decision);
@@ -49,7 +54,10 @@ void clearMemories(char* note) {
 }
 
 
-void addMemory(char* note, char* args[], int numArgs) {
+void addMemory(char* args[], int numArgs) {
+	char note[256];
+	char currentNotePath[256];
+	getCurrentNote(note, currentNotePath);
 	char sansFirstWord[256];
 	int result = parseUnaryArgs(sansFirstWord, args, numArgs);
 	if (result == 1) {
@@ -73,6 +81,8 @@ void listMemories() {
 	char notePath[256];
 	char noteName[256];
 	getCurrentNote(notePath, noteName);
+
+	printf("Note path: %s\n", notePath);	
 
 	if (access(notePath, F_OK) == -1) {
 		printf("Hmmm. The current note (%s) doesn't seem to exist. How did we get here?\n", noteName);
