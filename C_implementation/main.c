@@ -7,102 +7,8 @@
 #include "memory.h"
 #include "helper_func.h"
 #include "note.h"
+#include "help.h"
 #include "install.h"
-
-
-// Color Definitions
-const char* BOLD = "\033[1m";
-const char* ITALIC = "\033[3m";
-const char* RESET = "\033[0m";
-
-
-/*
- * Prints the user's version of Liszt
- */
-void getVersion() {
-	printf("\033[1mLiszt v.1.0.19\033[0m\n");
-}
-
-
-/*
- * Prints help and usage information for the various Liszt commands
- */
-void getHelp() {
-	getVersion();
-	char* arrow = "\033[1m\033[34m==>\033[0m";
-	// General concepts of Liszt
-	printf("\n\033[1mGeneral\033[0m\n\n");
-	printf("'Notes' are files where we store your thoughts\n");
-	printf("'Memories' are the individual entries in each note\n\n");	
-	// Memory functionality
-	printf("\033[1mMemories\033[0m\n\n");
-	printf("\033[1m\033[3m<your_memory>\033[0m %s for \033[1madding \033[0ma memory\n", arrow);
-	printf("     Usage: 'lst Hello World!'\n");
-	printf("\033[1m-l\033[0m %s for \033[1mlisting \033[0mmemories on the current note\n", arrow);
-	printf("     Usage: 'lst -l'\n");
-	printf("\033[1m-cl\033[0m %s for \033[1mclearing \033[0mmemories on the current note\n", arrow);
-	printf("     Usage: 'lst -cl'\n");
-	printf("\033[1m-r \033[3m<row_number>\033[0m %s for \033[1mremoving \033[0mthe memory at that row number in the current note (row number can be retrieved from '\033[1mqnote -l\033[0m')\n", arrow);
-	printf("     Usage: 'lst -r 3'\n");
-	printf("\033[1m-m \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mmoving \033[0mthe memory at that row number in the current note to another note\n", arrow);
-	printf("     Usage: 'lst -m 3 shopping list'\n");
-	printf("\033[1m-c \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mcopying \033[0mthe memory at that row number in the current note to another note\n", arrow);
-	printf("     Usage: 'lst -c 3 shopping list'\n\n");
-	// Note functionality
-	printf("\033[1mNOTES\033[0m\n\n");
-	printf("\033[1m-a \033[3m<note_name>\033[0m %s for \033[1madding \033[0ma new note with the given name\n", arrow);
-	printf("     Usage: 'lst -a shopping list'\n");
-	printf("\033[1m-ln \033[0m %s for \033[1mlisting \033[0mcurrent notes\n", arrow);
-	printf("     Usage: 'lst -ln'\n");
-	printf("\033[1m-n \033[0m %s for \033[1mviewing \033[0mthe name of the current note\n", arrow);
-	printf("     Usage: 'lst -n'\n");
-	printf("\033[1m-ch \033[3m<note_name>\033[0m %s for \033[1mchanging \033[0mto the note with the given name\n", arrow);
-	printf("     Usage: 'lst -ch To Do'\n");
-	printf("\033[1m-rn \033[3m<note_name>\033[0m\033[1m / \033[3m<new_name>\033[0m %s for \033[1mrenaming \033[0mthe given note\n", arrow);
-	printf("     Usage: 'lst -rn To Do / Done'\n");
-	printf("\033[1m-rm \033[3m<note_name>\033[0m %s for \033[1mremoving \033[0mthe note with the given name (if no name given, removes the current note)\n", arrow);
-	printf("     Usage: 'lst -rm To Do'\n");
-	printf("\033[1m-cln \033[0m %s for \033[1mclearing \033[0myour current notes\n", arrow);
-	printf("     Usage: 'lst -cln'\n");
-	printf("\033[1m-dp \033[3m<note_to_duplicate>\033[0m\033[1m / \033[3m<new_note_name>\033[0m %s for \033[1mduplicating \033[0mexisting notes\n", arrow);
-	printf("     Usage: 'lst -dp random / general'\n");
-	printf("\033[1m-in \033[3m<file_to_import>\033[0m\033[1m / \033[3m<note_name>\033[0m %s for \033[1mimporting \033[0m'.txt' files as notes\n", arrow);
-	printf("     Usage: 'lst -in random.txt / Assorted Tasks'\n");
-	printf("\033[1m-ex \033[3m<note_to_export>\033[0m\033[1m / \033[3m<new_file_name>\033[0m %s for \033[1mexporting \033[0mnotes as '.txt' files\n", arrow);
-	printf("     Usage: 'lst -ex Assorted Tasks / nextweek'\n");
-	// Archive Functionality
-	printf("\033[1mARCHIVE\033[0m\n");
-	printf("\033[3mArchived notes do not receive the same functionality as regular notes. To rename, remove, export, etc. archived notes, please unarchive them first.\033[0m\n\n");
-	printf("\033[1m-ar \033[3m<note_name>\033[0m %s for \033[1marchiving \033[0mthe note with the given name (if no name given, removes the current note)\n", arrow);
-	printf("     Usage: 'lst -ar To Do'\n");
-	printf("\033[1m-unar \033[3m<note_name>\033[0m %s for \033[1munarchiving \033[0mthe note with the given name\n", arrow);
-	printf("     Usage: 'lst -unar To Do'\n");
-	printf("\033[1m-lar \033[0m %s for \033[1mlisting \033[0marchived notes\n", arrow);
-	printf("     Usage: 'lst -lar'\n");
-	printf("\033[1m-clar \033[0m %s for \033[1mclearing \033[0myour archived notes\n", arrow);
-	printf("     Usage: 'lst -clar'\n");
-}
-	
-
-/*
- * Prints some random info about Liszt 
- */
-void info() {
-	char liszt[14];
-	strcpy(liszt, BOLD);
-
-	strcat(liszt, "Liszt");
-	strcat(liszt, RESET);
-	printf("%s is an open-source note-taking software designed for personal use.\n", liszt);
-
-	printf("If you need help, type 'lst -help'\n");
-	printf("To view your version of %s, type 'lst -version'\n\n", liszt);
-	printf("%s uses the GNU General Public License v3, so you can edit, distribute, and otherwise meddle with any of the source code.\n", liszt);
-	printf("The only thing you can't do is take this software and make it closed-source and try to sell it. %s was designed to be free for everyone, forever.\n\n", liszt);
-	
-	char* random_piece = "Hungarian Rhapsody No. 2 in C-sharp minor";	
-	printf("\033[1mCheckout %s by Franz Liszt!\n\033[0m", random_piece); 
-}
 
 
 /*
@@ -206,6 +112,31 @@ int main(int argc, char* argv[]) {
 				moveMemory(argv, argc);
 			} else if (strcmp(command, "-c") == 0) {
 				copyMemory(argv, argc);
+			} else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
+				if (strcmp(argv[2], "-") == 0) helpAddMemory();
+				else if (strcmp(argv[2], "-l") == 0) helpListMemories(); 
+				else if (strcmp(argv[2], "-cl") == 0) helpClearMemories(); 
+				else if (strcmp(argv[2], "-r") == 0) helpRemoveMemory(); 
+				else if (strcmp(argv[2], "-m") == 0) helpMoveMemory(); 
+				else if (strcmp(argv[2], "-c") == 0) helpCopyMemory(); 
+				else if (strcmp(argv[2], "-a") == 0) helpAddNote(); 
+				else if (strcmp(argv[2], "-ln") == 0) helpListNotes(); 
+				else if (strcmp(argv[2], "-n") == 0) helpCurrentNote(); 
+				else if (strcmp(argv[2], "-ch") == 0) helpChangeNote(); 
+				else if (strcmp(argv[2], "-rn") == 0) helpRenameNote(); 
+				else if (strcmp(argv[2], "-rm") == 0) helpRemoveNote(); 
+				else if (strcmp(argv[2], "-cln") == 0) helpClearNotes(); 
+				else if (strcmp(argv[2], "-dp") == 0) helpDuplicateNote(); 
+				else if (strcmp(argv[2], "-in") == 0) helpImportNote(); 
+				else if (strcmp(argv[2], "-ex") == 0) helpExportNote(); 
+				else if (strcmp(argv[2], "-ar") == 0) helpArchiveNote(); 
+				else if (strcmp(argv[2], "-unar") == 0) helpUnarchiveNote(); 
+				else if (strcmp(argv[2], "-lar") == 0) helpListArchivedNotes(); 
+				else if (strcmp(argv[2], "-clar") == 0) helpClearArchivedNotes(); 
+				else {
+					printf("lst error: command '%s' not recognized for help request. Please try again.\n", argv[2]);	
+					exit(1);
+				}
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
 				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
