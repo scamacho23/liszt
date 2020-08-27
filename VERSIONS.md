@@ -1,8 +1,8 @@
-# **Quick Note Version History** #
+# **Liszt Version History** #
 
 Created on July 24, 2020. 
 
-**Quick Note** is an application to save snippet
+**Liszt** is an application to save snippet
 memories for the user which can
 then be reported back at any point.
  
@@ -74,35 +74,41 @@ so that when user types `remember --list`, the number of memories found is displ
 memories. Implemented a similar functionality for `remember --list-notes` and `remember --list-archived-notes`,
 so that these methods first print the number of notes found.
 
-## **@versions 1.0.7 --> 1.0.14 ** ##
+## **@versions 1.0.7 --> 1.0.14** ##
 August 3-5, 2020
 
 These versions were spent developing the brew tap and install functionality. In the process, added the qnote file
 (which contains the contents of all the files in `files`, although those will become deprecated in time). Also,
 added the `Formula` directory for holding the `qnote.rb` formula.
 
-## **@version 1.0.15 ** ##
+## **@version 1.0.15** ##
 August 6, 2020
 
 Fixed bugs in qnote file stemming from the collapse of main.py, install.py, note.py, memory.py, and helper_func.py in
 to qnote.
 
-## **@version 1.0.16 ** ##
+## **@version 1.0.16** ##
 August 6, 2020
 
 Add `duplicate_note`. Shorten length of commands (instead of full words, mostly initials). Also removed double-dash from
 commands and replaced with single dash.
 
-## **@version 1.0.17 ** ##
+## **@version 1.0.17** ##
 August 6, 2020
 
 Changed design of help menu. Removed `archive_memory` functionality from `homebrew` version. 
 
-## **@version 1.0.18 ** ##
+## **@version 1.0.18** ##
 August 6, 2020
 
 Added blue arrows to help menu display. Changed functionality of default note so that it
 acts more as a placeholder than a real note. Updated original files in `files` directory
 to mirror `qnote` file in root.
 
-*Type `remember --version` to view your version of **Quick Note***
+## **@version 1.0.19** ##
+August 27, 2020
+
+Rewrote the entirety of qnote in C, and changed the name of the projec to *Liszt* to avoid
+naming overlap with an existing command line note editor.
+
+*Type `lst -version` to view your version of **Liszt***
