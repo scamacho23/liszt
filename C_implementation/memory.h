@@ -15,11 +15,11 @@ void appendMemory(char* memory, char* note);
 
 
 /* 
- * Given the current_note and a row number,
- * removes the memory at that row and returns
- * its value
+ * Given a row number, removes the memory 
+ * at that row from a note and saves the 
+ * value at that row number in the note
  */
-char* changeMemory(char* currentNote, char* row);
+int changeMemory(char* charRow, char* memory);
 
 
 /*
@@ -28,7 +28,7 @@ char* changeMemory(char* currentNote, char* row);
  * at that row number in the current
  * note to the given note
  */
-void moveMemory(char* currentNote, char* row, char args[]);
+void moveMemory(char* args[], int numArgs);
 
 
 /*
@@ -37,14 +37,14 @@ void moveMemory(char* currentNote, char* row, char args[]);
  * at that row number in the current
  * note to the given note
  */
-void copyMemory(char* currentNote, char* row, char args[]);
+void copyMemory(char* args[], int numArgs);
 
 
 /*
  * Given a note and a row number,
  * removes the memory at that row number
  */
-void removeMemory(char* note, char* row);
+void removeMemory(char* row);
 
 
 /* 

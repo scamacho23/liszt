@@ -8,16 +8,6 @@
 #include "helper_func.h"
 
 
-void writeToNote(char* note, char* memories[], int numMemories) {
-	FILE* toWrite;
-	toWrite = fopen(note, "w");
-	for (int i = 0; i < numMemories; i++) {
-		fprintf(toWrite, "%s", memories[i]);
-	}
-	fclose(toWrite);
-}
-
-
 void duplicateNote(char* args[], int numArgs) {
 	char existingNote[256];
 	char newNote[256];
@@ -123,7 +113,36 @@ void exportNote(char* args[], int numArgs) {
 }
 
 
+void archiveCurrent() {
+	char currentNotePath[256];
+	char currentNoteName[256];
+	getCurrentNote(currentNotePath, currentNoteName);
+
+	// prevent the user from archiving default
+	int result = checkDefault(currentNoteName);
+	if (result == -1) return;
+	
+	char* dirName = "archive";
+	char newPath[256];
+	getNotePath(dirName, currentNoteName, newPath);
+
+	rename(currentNotePath, newPath);
+
+	// switch current note to default
+	wordexp_t defaultPath;
+	wordexp("~/.liszt/notes/default", &defaultPath, 0);
+	writeToDataFile(defaultPath.we_wordv[0]);
+	wordfree(&defaultPath);
+
+	printf("Archived '%s'\n", currentNoteName);
+}
+
+
 void archiveNote(char* args[], int numArgs) {
+	char currentNotePath[256];
+	char currentNoteName[256];
+	getCurrentNote(currentNotePath, currentNoteName);
+
 	char noteToArchive[256];
 	parseUnaryArgs(noteToArchive, args, numArgs);
 	char* dirName = "notes";
@@ -152,14 +171,11 @@ void archiveNote(char* args[], int numArgs) {
 
 	rename(notePath, newPath);
 
-	char currentNotePath[256];
-	char currentNoteName[256];
-	getCurrentNote(currentNotePath, currentNoteName);
-
 	if (strcmp(currentNoteName, noteToArchive) == 0) {
 		wordexp_t defaultPath;
 		wordexp("~/.liszt/notes/default", &defaultPath, 0);
 		writeToDataFile(defaultPath.we_wordv[0]);
+		wordfree(&defaultPath);
 	}
 
 	printf("Archived '%s'\n", noteToArchive);
@@ -217,6 +233,34 @@ void addNote(char* args[], int numArgs) {
 }
 
 
+void removeCurrent() {
+	char currentNotePath[256];
+	char currentNoteName[256];
+	getCurrentNote(currentNotePath, currentNoteName);
+
+	// prevent the user from archiving default
+	int result = checkDefault(currentNoteName);
+	if (result == -1) return;
+	
+	char prompt[256] = "Are you sure you want to remove '";
+	strcat(prompt, currentNoteName);
+	strcat(prompt, "'?\033[1m There is no going back (y/n): \033[0m");
+ 
+	char decision[50];
+	requestUserPermission(prompt, decision);
+	if (strcmp(decision, "y") == 0) {
+		remove(currentNotePath);
+		// if the user is removing the current note
+		wordexp_t defaultPath;
+		wordexp("~/.liszt/notes/default", &defaultPath, 0);
+		writeToDataFile(defaultPath.we_wordv[0]);
+		wordfree(&defaultPath);	
+
+		printf("Sucessfully removed '%s'\n", currentNoteName);
+	} else printf("Note removal aborted\n");
+}
+
+
 void removeNote(char* args[], int numArgs) {
 	char currentNote[256];
 	char currentNotePath[256];
@@ -227,11 +271,6 @@ void removeNote(char* args[], int numArgs) {
 
 	char note[256];
 	int result = parseUnaryArgs(note, args, numArgs);
-	// is the following definitely correct (i.e. for removing the current note??)
-	if (result == 1) {
-		printf("You haven't entered enough infomration. Please try again.\n");
-		return;
-	}
 	// prevent the user from deleting default
 	result = checkDefault(note);
 	if (result == -1) return;
@@ -258,6 +297,7 @@ void removeNote(char* args[], int numArgs) {
 			wordexp_t defaultPath;
 			wordexp("~/.liszt/notes/default", &defaultPath, 0);
 			writeToDataFile(defaultPath.we_wordv[0]);
+			wordfree(&defaultPath);
 		}
 		
 		 printf("Sucessfully removed '%s'\n", note);

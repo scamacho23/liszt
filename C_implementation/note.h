@@ -4,12 +4,6 @@
  * See note.c for the function definitions.
  */
 
-/*
- * Given the name of a note and an array of memories, 
- * adds all the memories to the note
- */
-void writeToNote(char* note, char* memories[], int numMemories);
-
 
 /*
  * Given the name of a note, duplicates that note and names
@@ -33,8 +27,15 @@ void exportNote(char* args[], int numArgs);
 
 
 /*
- * Given the name of a note, moves the note frrom the ~/.liszt/notes directory 
- * and to the ~/.liszt/archive_notes directory 
+ * Given nothing, moves the current note frrom the ~/.liszt/notes directory 
+ * to the ~/.liszt/archive_notes directory 
+ */ 
+void archiveCurrent();
+
+
+/*
+ * Given the name of a note, moves the note from the ~/.liszt/notes directory 
+ * to the ~/.liszt/archive_notes directory 
  */ 
 void archiveNote(char* args[], int numArgs);
 
@@ -51,6 +52,12 @@ void unArchiveNote(char* args[], int numArgs);
  * which will then be set as the current file for memories
  */
 void addNote(char* args[], int numArgs);
+
+
+/*
+ * Deletes the current note and changes to default
+ */
+void removeCurrent();
 
 
 /*

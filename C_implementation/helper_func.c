@@ -5,27 +5,10 @@
 #include "helper_func.h"
 
 /*
- * METHODS 
- *
- * To Do:
+ * TO DO
  * readDirectory() --- requires array completion
- * checkRow() --- requires array completion
  * writeToDataFile() --- requires JSON completion 
- * parseUnaryArgs()/parseBinaryArgs() --- strip extra whitespace (grouped because have same issue)
- *
- * Seemingly Complete:
- * getFileSize()
- * printDefaultError()
- * printDirectory()
- * requestUserPermission()
- * makeNote()
- * parseUnaryArgs()
- * parseBinaryArgs()
- * copyFile()
- * getNotePath()
- * getDataFile();
  */
-
 
 void getDataFile(char* dataFile) {
 	char* dirName = "background";
@@ -140,33 +123,24 @@ void printDirectory(char* dirName, char* shortName) {
 }  
 
 
-// int checkRow(char* filename, char* charRow, char*** memories, int* numMemories) {
-// 	int row = atoi(charRow);	
-// 	if (row <= 0) {
-//         	printf("You have entered in a faulty row number. Please choose an integer value.\n");
-// 		printf("hint: %s was not valid!\n", charRow);
-// 		return 0;
-// 	}
+int checkRow(char* filename, char* charRow) {
+	int row = atoi(charRow);	
+ 	if (row <= 0) {
+         	printf("You have entered in a faulty row number. Please choose an integer value.\n");
+ 		printf("hint: %s was not valid!\n", charRow);
+ 		return -1;
+ 	}
 
-// 	FILE* toRead = fopen(filename, "r");
-// 	int i = 0;
-// 	while (fgets(&memories[i], sizeof(memories[i]), toRead)) {
-// 		printf("Size of Memory: %lu\n", sizeof(memories[i]));
-// 		i++;
-// 	}
-// 	*numMemories = i;
-// 	if (row > *numMemories) {
-// 		printf("You have entered in a faulty row number.\n");
-// 		return 0;
-// 	}
-// 	fclose(toRead);
-	
-// 	for (int i = 0; i < *numMemories; i++) {
-// 		printf("%s\n", memories[i]);
-// 	}
+	int size = getFileSize(filename);
 
-// 	return 1;
-// }
+ 	if (row > size) {
+ 		printf("You have entered in a faulty row number.\n");
+ 		return -1;
+ 	}
+
+ 	return 0;
+}
+
 
 void writeToDataFile(char* filename) {
 	char dataFile[256];
@@ -186,6 +160,18 @@ void requestUserPermission(char* prompt, char* decision) {
 	}
 }
 	
+
+int parseSpecialArgs(char* filename, char* args[], int numArgs) {
+	// start at 2 to avoid program invocation, command, and row (argv[0], argv[1], and argv[2])
+	if (numArgs >= 4) strcpy(filename, args[3]);
+	if (numArgs > 5) strcat(filename, " ");
+	for (int i = 4; i < numArgs; i++) {
+		strcat(filename, args[i]);	
+		if (numArgs > i + 1) strcat(filename, " ");
+	}
+	return 0;
+}
+
 
 int parseUnaryArgs(char* word, char* args[], int numArgs) {
 	if (numArgs == 2) return 1; // just exit if it's a single word

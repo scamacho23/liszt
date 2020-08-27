@@ -59,11 +59,9 @@ void printDirectory(char* dirName, char* shortName);
 /*
  * Given a filename and a row number, 
  * confirms that the entered row is a valid row number.
- * Populates the given memories array with memories in 
- * the given note.
- * Returns 1 if successful, 0 if not
+ * Returns 0 if successful, -1 if not
  */ 
-int checkRow(char* filename, char* charRow, char* memories, int* numMemories);
+int checkRow(char* filename, char* charRow);
 
 
 /*
@@ -77,6 +75,14 @@ void writeToDataFile(char* filename);
  * Given a prompt, captures the user's answer as either 'y' or 'n'
  */ 
 void requestUserPermission(char* prompt, char* decision);
+
+
+/*
+ * Given an array of arguments, parses them and returns the found row and word
+ * note name
+ * Returns 0 if successful, -1 if not
+ */
+int parseSpecialArgs(char* filename, char* args[], int numArgs);
 
 
 /*

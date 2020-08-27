@@ -125,6 +125,7 @@ int main(int argc, char* argv[]) {
 			exit(1);
 		}
 	}
+	wordfree(&liszt);
 
 	// Return quickly if no arguments supplied (besides program invocation)
 	if (argc == 1) {
@@ -134,17 +135,12 @@ int main(int argc, char* argv[]) {
 	
 	char* command = argv[1];
 
-	// the following is not quite right
-	char args[256];
-
 	// Prevent overload errors on input
 	if (argc - 2 > 256) {
 		printf("Whoa there! That's a lot of information. Try and enter that in smaller pieces.\n");
 		return 0;
 	}
 
-	
-	
 	if (command[0] == '-') {
 		if (argc == 2) {
 			if (strcmp(command, "-l") == 0) {
@@ -160,6 +156,7 @@ int main(int argc, char* argv[]) {
 				wordexp_t notes;
 				wordexp("~/.liszt/notes", &notes, 0);
 				printDirectory(notes.we_wordv[0], shortName);
+				wordfree(&notes);
 			} else if (strcmp(command, "-n") == 0) {
 				char currentNotePath[256];
 				char currentNoteName[256];
@@ -170,25 +167,23 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-clar") == 0) {
 				clearArchiveNotes();
 			} else if (strcmp(command, "-rm") == 0) { // this is for removing the current note
-				// NEEDS WORK
-				return 0;
+				removeCurrent();
 			} else if (strcmp(command, "-ar") == 0) { // this is for archiving the current note
-				// NEEDS WORK
-				return 0;
+				archiveCurrent();
 			} else if (strcmp(command, "-lar") == 0) {
 				char* shortName = " archived ";
 				wordexp_t archive;
 				wordexp("~/.liszt/archive", &archive, 0);
 				printDirectory(archive.we_wordv[0], shortName);
+				wordfree(&archive);
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);
 				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
 				exit(1);
 			}
 		} else if (argc > 2) {
-			if (strcmp(command, "-r") == 0) {
-				// NEEDS WORK
-				return 0;
+			if (strcmp(command, "-r") == 0 && argc == 3) {
+				removeMemory(argv[2]);
 			} else if (strcmp(command, "-a") == 0) {
 				addNote(argv, argc);
 			} else if (strcmp(command, "-ch") == 0) {
@@ -208,11 +203,9 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-dp") == 0) {
 				duplicateNote(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
-				// NEEDS WORK
-				return 0;
+				moveMemory(argv, argc);
 			} else if (strcmp(command, "-c") == 0) {
-				// NEEDS WORK
-				return 0;
+				copyMemory(argv, argc);
 			} else {
 				printf("lst error: command '%s' not recognized. Please try again.\n", command);	
 				printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
@@ -221,7 +214,6 @@ int main(int argc, char* argv[]) {
 		}	
 	} else addMemory(argv, argc);
 	
-
 	return 0;
 }
 	
