@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Quick Note'
+project = 'Liszt'
 copyright = '2020, Simon Camacho'
 author = 'Simon Camacho'
 
 # The full version, including alpha/beta/rc tags
-release = 'v1.0.18'
+release = 'v1.0.20'
 
 
 # -- General configuration ---------------------------------------------------

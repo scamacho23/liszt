@@ -14,7 +14,7 @@ Liszt in Action
 --------------------
 *In your terminal*
 
-.. image:: images/qnote_sample.png
+.. image:: images/lst_sample.png
   :width: 800
 
 Installation
