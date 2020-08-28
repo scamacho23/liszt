@@ -14,8 +14,7 @@ below [Style Standards](#Style-Standards)
 - Comment *thoroughly*
 - Make sure to error-check liberally (especially on user input)
 - Handle edge-cases appropriately
-- Use `"""` commenting above function definitions
-- Use *single-quotes* for strings 
+- Use `\* */` commenting above function definitions
 - Use *tabs*, **not** *spaces*
 - Place **two** empty lines between function definitions 
 
