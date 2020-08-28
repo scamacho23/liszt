@@ -3,6 +3,8 @@
 **Liszt makes it easy to jot down notes in the command line, and
 keep ideas clear in separate notes**
 
+[![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
+
 ## Installation
 In your command line, enter `brew tap scamacho23/liszt` to download the tap of **Liszt**. 
 Next, enter `brew install lst`, which should install `lst` on your machine.
