@@ -10,4 +10,7 @@ class Lst < Formula
     bin.install "lst"
   end
 
+  test do
+    system "#{bin}/lst", "-h"
+  end
 end
