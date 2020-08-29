@@ -4,6 +4,7 @@
 keep ideas clear in separate notes**
 
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
+[License](https://img.shields.io/github/license/scamacho23/homebrew-liszt)
 
 ## Installation
 In your command line, enter `brew tap scamacho23/liszt` to download the tap of **Liszt**. 
