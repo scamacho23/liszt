@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <wordexp.h>
 #include "../headers/helper.h"
 #include "../headers/install.h"
 
