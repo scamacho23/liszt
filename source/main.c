@@ -4,11 +4,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 // The below imports are liszt .h files
-#include "memory.h"
-#include "helper_func.h"
-#include "note.h"
-#include "help.h"
-#include "install.h"
+#include "headers/memory.h"
+#include "headers/helper.h"
+#include "headers/note.h"
+#include "headers/help.h"
+#include "headers/install.h"
 
 #define MAX_LENGTH 256
 

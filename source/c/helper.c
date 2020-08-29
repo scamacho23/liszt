@@ -3,8 +3,8 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include "helper_func.h"
-#include "install.h"
+#include "../headers/helper.h"
+#include "../headers/install.h"
 
 #define MAX_LENGTH 256
 

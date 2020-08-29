@@ -108,6 +108,6 @@ void changeNote(char* args[], int numArgs);
 void renameNote(char* args[], int numArgs);
 
 
-#include "note.c"
+#include "../c/note.c"
 #endif
 

@@ -33,6 +33,6 @@ int makeFiles();
  */
 int install();
 
-#include "install.c"
+#include "../c/install.c"
 #endif
 

@@ -2,9 +2,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "memory.h"
-#include "helper_func.h"
-#include "note.h"
+#include "../headers/memory.h"
+#include "../headers/helper.h"
 // #include "../../json-c/json_object.h"
 
 #define MAX_LENGTH 256

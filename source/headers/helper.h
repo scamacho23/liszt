@@ -161,6 +161,6 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs);
  */
 int makeNote(char* filePath);
 
-#include "helper_func.c"
+#include "../c/helper.c"
 #endif
 
