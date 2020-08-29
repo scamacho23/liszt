@@ -14,6 +14,13 @@ const char LISZT_PIECES[15][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre 
 const char ARROW[] = "\033[1m\033[34m==>\033[0m";
 
 
+void sendHelpError(char* command) {
+	printf("lst error: command '%s' not recognized for help request. Please try again.\n", command);	
+	exit(1);
+}
+
+
+
 void helpAddMemory() {
 	printf("\033[1m\033[3m<your_memory>\033[0m %s for \033[1madding \033[0ma memory\n", ARROW);
 	printf("     Usage: 'lst Hello, World!'\n");
@@ -194,7 +201,7 @@ void info() {
 
 	printf("If you need help in general, type 'lst -help' or 'lst -h'\n");
 	char nameOfCommand[] = "\033[3m<name_of_command>\033[0m";
-	printf("If you need help with a specific command, type 'lst -help %s' or 'lst -h %s', such as for help with adding memories ('lst -h -') or for help with removing a note ('lst -h -rm')\n", nameOfCommand, nameOfCommand);
+	printf("If you need help with a specific command, type 'lst -h %s', such as for help with adding memories ('lst -h -') or removing a note ('lst -h -rm')\n", nameOfCommand);
 	printf("To view your version of %s, type 'lst -version' or 'lst -v'\n\n", lisztName);
 	printf("%s uses the GNU General Public License v3, so you can edit, distribute, and otherwise meddle with any of the source code.\n", lisztName);
 	printf("The only thing you can't do is take this software and make it closed-source and try to sell it. %s was designed to be free for everyone, forever.\n\n", lisztName);

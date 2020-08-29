@@ -7,6 +7,14 @@
 
 
 /*
+ * Given the name of a command, prints an 
+ * error message and exits with a 1 error
+ * code
+ */
+void sendHelpError(char* command);
+
+
+/*
  * Prints help information about adding memories
  */
 void helpAddMemory();

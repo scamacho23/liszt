@@ -7,6 +7,8 @@
 #include "note.h"
 // #include "../../json-c/json_object.h"
 
+#define MAX_LENGTH 256
+
 void appendMemory(char* memory, char* note) {
 	FILE *toWrite;
 	toWrite = fopen(note, "a");
@@ -16,8 +18,8 @@ void appendMemory(char* memory, char* note) {
 
 
 int changeMemory(char* charRow, char* memory) {
-	char currentNoteName[256];
-	char currentNotePath[256];
+	char currentNoteName[MAX_LENGTH];
+	char currentNotePath[MAX_LENGTH];
 	getCurrentNote(currentNotePath, currentNoteName);
 	int result = checkRow(currentNotePath, charRow);
 	if (result == -1) return -1;
@@ -30,12 +32,12 @@ int changeMemory(char* charRow, char* memory) {
 	FILE* target;
 	char dirName[] = "background";
 	char noteName[] = "BRIEF";
-	char notePath[256];
+	char notePath[MAX_LENGTH];
 	getNotePath(dirName, noteName, notePath);
 	target = fopen(notePath, "w");
 
-	char temp[256];
-	char line[256];
+	char temp[MAX_LENGTH];
+	char line[MAX_LENGTH];
 	int counter = 0;
 
 	while (fgets(line, sizeof(line), source)) {
@@ -66,11 +68,11 @@ int changeMemory(char* charRow, char* memory) {
 
 
 void moveMemory(char* args[], int numArgs) {
-	char note[256];
+	char note[MAX_LENGTH];
 	parseSpecialArgs(note, args, numArgs);
 	
 	char dirName[] = "notes";
-	char notePath[256];
+	char notePath[MAX_LENGTH];
 	getNotePath(dirName, note, notePath);
 	
 	struct stat st = {0};
@@ -81,7 +83,7 @@ void moveMemory(char* args[], int numArgs) {
 	int result = checkDefault(note);
 	if (result == -1) return;
 
-	char memoryToMove[256];
+	char memoryToMove[MAX_LENGTH];
 	result = changeMemory(args[2], memoryToMove);
 	if (result == -1) return;
 
@@ -91,15 +93,15 @@ void moveMemory(char* args[], int numArgs) {
 
 
 void copyMemory(char* args[], int numArgs) {
-	char note[256];
+	char note[MAX_LENGTH];
 	parseSpecialArgs(note, args, numArgs);
 
-	char currentNoteName[256];
-	char currentNotePath[256];
+	char currentNoteName[MAX_LENGTH];
+	char currentNotePath[MAX_LENGTH];
 	getCurrentNote(currentNotePath, currentNoteName);
 
 	char dirName[] = "notes";
-	char notePath[256];
+	char notePath[MAX_LENGTH];
 	getNotePath(dirName, note, notePath);
 	
 	struct stat st = {0};
@@ -119,8 +121,8 @@ void copyMemory(char* args[], int numArgs) {
 	FILE* source = fopen(currentNotePath, "r");
 	int counter = 0;
 	
-	char line[256];
-	char temp[256];
+	char line[MAX_LENGTH];
+	char temp[MAX_LENGTH];
 	while (fgets(line, sizeof(line), source)) {
 		if (counter + 1 == row) {
 			strcpy(temp, line);
@@ -132,7 +134,7 @@ void copyMemory(char* args[], int numArgs) {
 
 	fclose(source);
 
-	char memoryToCopy[256];
+	char memoryToCopy[MAX_LENGTH];
 
 	// the following is slightly odd but seems to work	
 	int sizeMemory = strlen(temp);
@@ -145,7 +147,7 @@ void copyMemory(char* args[], int numArgs) {
 
 
 void removeMemory(char* row) {
-	char memoryToRemove[256];
+	char memoryToRemove[MAX_LENGTH];
 	int result = changeMemory(row, memoryToRemove);
 	if (result == -1) return;
 
@@ -154,8 +156,8 @@ void removeMemory(char* row) {
 
 
 void clearMemories() {
-	char currentNotePath[256];
-	char note[256];
+	char currentNotePath[MAX_LENGTH];
+	char note[MAX_LENGTH];
 	getCurrentNote(currentNotePath, note);
 
 	char prompt[] = "Are you sure you want to clear your memories on your current note? \033[1mThere is no going back (y/n): \033[0m";
@@ -169,16 +171,16 @@ void clearMemories() {
 
 
 void addMemory(char* args[], int numArgs) {
-	char note[256];
-	char currentNotePath[256];
+	char note[MAX_LENGTH];
+	char currentNotePath[MAX_LENGTH];
 	getCurrentNote(note, currentNotePath);
-	char sansFirstWord[256];
+	char sansFirstWord[MAX_LENGTH];
 	int result = parseUnaryArgs(sansFirstWord, args, numArgs);
 	if (result == 1) {
 		appendMemory(args[1], note);
 		printf("Remembered '%s'\n", args[1]);
 	} else {
-		char memory[256];
+		char memory[MAX_LENGTH];
 		// The following is because the program considers the first word after program call to be the 'command'
 		// This word must be added back
 		strcpy(memory, args[1]);
@@ -192,8 +194,8 @@ void addMemory(char* args[], int numArgs) {
 
 
 void listMemories() {
-	char notePath[256];
-	char noteName[256];
+	char notePath[MAX_LENGTH];
+	char noteName[MAX_LENGTH];
 	getCurrentNote(notePath, noteName);
 
 	if (access(notePath, F_OK) == -1) {
@@ -212,7 +214,7 @@ void listMemories() {
 	FILE* toRead;
 	toRead = fopen(notePath, "r");
 	int counter = 1;
-	char memory[256];
+	char memory[MAX_LENGTH];
 
 	while (fgets(memory, sizeof(memory), toRead)) {
 		printf("\033[1m%d.\033[0m %s", counter, memory); 

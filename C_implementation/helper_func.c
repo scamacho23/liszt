@@ -2,7 +2,11 @@
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include "helper_func.h"
+#include "install.h"
+
+#define MAX_LENGTH 256
 
 /*
  * TO DO
@@ -10,12 +14,69 @@
  * writeToDataFile() --- requires JSON completion 
  */
 
-void getDataFile(char* dataFile) {
-	char* dirName = "background";
-	// while json-c is being figured out, data_file will act as data_file.json
-	char* data = "data_file";
-	getNotePath(dirName, data, dataFile);
+
+void sendErrorMessage(char* command) {
+	printf("lst error: command '%s' not recognized. Please try again.\n", command);	
+	printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
+	exit(1);
 }
+
+
+void checkInstallation() {
+	struct stat st = {0};
+	wordexp_t liszt;
+	wordexp("~/.liszt", &liszt, 0);
+	char* lisztPath = liszt.we_wordv[0];
+	if (stat(liszt.we_wordv[0], &st) == -1) {
+		// if ~/.liszt does not exist (e.g. user deleted it), create a new one
+		int installation = install();
+		// if installation fails again, hard quit
+		if (installation == -1) {
+			exit(1);
+		}
+	}
+	wordfree(&liszt);
+}
+
+
+void printCurrentNoteName() {
+	char currentNoteName[MAX_LENGTH];
+	getCurrentNoteName(currentNoteName);
+	printf("%s\n", currentNoteName);
+}
+
+
+void getCurrentNoteName(char* currentNoteName) {
+	char currentNotePath[MAX_LENGTH];
+	getCurrentNote(currentNotePath, currentNoteName);
+}
+
+
+void getCurrentNotePath(char* currentNotePath) {
+	char dataFile[MAX_LENGTH];
+	getDataFile(dataFile);
+
+	FILE* toRead;
+	toRead = fopen(dataFile, "r");
+
+	char topline[100];
+
+	fgets(topline, sizeof(topline), toRead);
+	
+	int sizePath = strlen(topline);
+	strncpy(currentNotePath, topline, sizePath);
+	currentNotePath[sizePath] = '\0';
+	
+	fclose(toRead);
+}
+
+
+void getCurrentNote(char* currentNotePath, char* currentNoteName) {
+	getCurrentNotePath(currentNotePath);
+	char slash = '/';
+	char* lastSlash = strrchr(currentNotePath, slash);
+	strcpy(currentNoteName, lastSlash + 1);
+}	
 
 
 void getNotePath(char* dirName, char* noteName, char* notePath) {
@@ -31,7 +92,22 @@ void getNotePath(char* dirName, char* noteName, char* notePath) {
 	strcat(notePath, noteName);
 
 	wordfree(&newNote);	
+}
 
+
+void setToDefault() {
+	wordexp_t defaultPath;
+	wordexp("~/.liszt/notes/default", &defaultPath, 0);
+	writeToDataFile(defaultPath.we_wordv[0]);
+	wordfree(&defaultPath);
+}
+
+
+void getDataFile(char* dataFile) {
+	char* dirName = "background";
+	// while json-c is being figured out, data_file will act as data_file.json
+	char* data = "data_file";
+	getNotePath(dirName, data, dataFile);
 }
 
 
@@ -62,7 +138,7 @@ int getFileSize(char* filename) {
 
 
 int checkDefault(char* note) {
-	char loweredNote[256];
+	char loweredNote[MAX_LENGTH];
 	strcpy(loweredNote, note);
 	int numChars = strlen(loweredNote);
 	for (int i = 0; i < numChars; i++) {
@@ -106,7 +182,7 @@ void printDirectory(char* dirName, char* shortName) {
 		}
 		if (strcmp(shortName, " ") == 0) counter--; // decrement counter bc don't want to include default in the count
 		if (!counter) {
-			printf("You have no notes at the moment.\n");
+			printf("You have no%snotes at the moment.\n", shortName);
 			return;
 		}
 		printf("\033[1mFound %d%snotes\033[0m\n", counter, shortName);
@@ -143,7 +219,7 @@ int checkRow(char* filename, char* charRow) {
 
 
 void writeToDataFile(char* filename) {
-	char dataFile[256];
+	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
 	// The below is a stand-in until json-c has been figured out
 	FILE* toWrite;

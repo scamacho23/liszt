@@ -7,6 +7,59 @@
 
 
 /*
+ * Given the name of a faulty command,
+ * exits the program with a 1 error code
+ * and prints some help information
+ * to the console
+ */
+void sendErrorMessage(char* command);
+
+
+/*
+ * Checks to see if the necessary directory
+ * and file system for Liszt functionality
+ * has been installed on the user's machine.
+ * If not, attempts to install the system.
+ * If installation is unsuccessful, exits
+ * the program with an error code of 1.
+ */
+void checkInstallation();
+
+
+/*
+ * Prints the name of the current note
+ * to the console
+ */
+void printCurrentNoteName();
+
+
+/*
+ * Fills the given currentNoteName char array
+ * with the name of the current note name 
+ */
+void getCurrentNoteName(char* currentNoteName);
+
+
+/*
+ * Fills the given currentNotePath char array
+ * with the name of the current note path
+ */
+void getCurrentNotePath(char* currentNotePath);
+
+
+/*
+ * Returns the name and path of the current working note
+ */
+void getCurrentNote(char* currentNotePath, char* currentNoteName);
+
+
+/*
+ * Sets the current note to 'default'
+ */
+void setToDefault();
+
+
+/*
  * Finds the path to the data_file
  */
 void getDataFile(char* dataFile); 

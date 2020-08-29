@@ -55,6 +55,13 @@ void addNote(char* args[], int numArgs);
 
 
 /*
+ * Given the name of a directory, lists
+ * the notes in that directory
+ */
+void listNotes(char* directory);
+
+
+/*
  * Deletes the current note and changes to default
  */
 void removeCurrent();
@@ -76,12 +83,6 @@ void clearNotes();
  * Clears all archived notes
  */
 void clearArchiveNotes();
-
-
-/*
- * Returns the name and path of the current working note
- */
-void getCurrentNote(char* currentNotePath, char* currentNoteName);
 
 
 /*
