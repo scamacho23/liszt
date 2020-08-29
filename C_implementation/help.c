@@ -5,10 +5,11 @@
 #include "help.h"
 
 
-const char LISZT_PIECES[15][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre Gondola", "Mephisto Waltz No. 1",
+const char LISZT_PIECES[20][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre Gondola", "Mephisto Waltz No. 1",
 				"Piano Sonata in B Minor", "A Faust Symphony", "Piano Concerto No. 1", "Piano Concerto No. 2", 
 				"Totentanz", "Deux Legendes", "Annees de pelerinage", "Liebestraum No. 3", "La Campanella",
-				"Transcendental Etudes", "Consolation No. 3", "Un Sospiro"};
+				"Transcendental Etudes", "Consolation No. 3", "Un Sospiro", "Schwanengesang", "Mazeppa",
+				"Hexameron", "Hunnenschlacht", "Concerto pathetique"};
 						
 
 const char ARROW[] = "\033[1m\033[34m==>\033[0m";
@@ -18,7 +19,6 @@ void sendHelpError(char* command) {
 	printf("lst error: command '%s' not recognized for help request. Please try again.\n", command);	
 	exit(1);
 }
-
 
 
 void helpAddMemory() {
@@ -141,7 +141,7 @@ void helpClearArchivedNotes() {
 
 
 void getVersion() {
-	printf("\033[1mLiszt v.1.0.20\033[0m\n");
+	printf("\033[1mLiszt v1.1.0\033[0m\n");
 }
 
 
@@ -187,12 +187,9 @@ void getHelp() {
 
 void liszt() {
 	srand(time(NULL));
-	int randomPiece = rand() % 15;
+	int randomPiece = rand() % 20;
 	printf("\033[1mCheckout %s by Franz Liszt!\033[0m\n", LISZT_PIECES[randomPiece]); 
 }
-
-
-
 
 
 void info() {
