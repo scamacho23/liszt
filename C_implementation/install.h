@@ -1,4 +1,11 @@
 #pragma once
+#ifndef INSTALL_H
+#define INSTALL_H
+/*
+ * install.h holds the function declarations
+ * for installing the necessary ~/.liszt directory
+ * system. See install.c for the function definitions
+ */
 
 
 /*
@@ -27,4 +34,5 @@ int makeFiles();
 int install();
 
 #include "install.c"
+#endif
 

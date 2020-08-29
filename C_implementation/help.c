@@ -40,7 +40,7 @@ void helpClearMemories() {
 
 
 void helpRemoveMemory() {
-	printf("\033[1m-r \033[3m<row_number>\033[0m %s for \033[1mremoving \033[0mthe memory at that row number in the current note (row number can be retrieved from '\033[1mqnote -l\033[0m')\n", ARROW);
+	printf("\033[1m-r \033[3m<row_number>\033[0m %s for \033[1mremoving \033[0mthe memory at that row number in the current note (row number can be retrieved from '\033[1mlst -l\033[0m')\n", ARROW);
 	printf("     Usage: 'lst -r 3'\n");
 }
 

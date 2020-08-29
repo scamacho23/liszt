@@ -1,4 +1,6 @@
 #pragma once
+#ifndef MEMORY_H
+#define MEMORY_H
 /*
  * This file contains function declarations
  * for memory manipulation for the Liszt project.
@@ -68,4 +70,5 @@ void addMemory(char* args[], int numArgs);
 void listMemories();
 
 #include "memory.c"
+#endif
 

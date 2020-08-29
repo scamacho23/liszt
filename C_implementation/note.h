@@ -1,4 +1,6 @@
 #pragma once
+#ifndef NOTE_H
+#define NOTE_H
 /* note.h contains the function declarations necessary
  * for manipulating notes in the Liszt project.
  * See note.c for the function definitions.
@@ -107,4 +109,5 @@ void renameNote(char* args[], int numArgs);
 
 
 #include "note.c"
+#endif
 

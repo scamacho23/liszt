@@ -1,4 +1,6 @@
 #pragma once
+#ifndef HELP_H
+#define HELP_H
 /* help.h contains the function declarations necessary
  * for getting help for the various functions that come
  * with the Liszt application. See note.h for the function 
@@ -160,4 +162,5 @@ void info();
 
 
 #include "help.c"
+#endif
 

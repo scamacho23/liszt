@@ -1,4 +1,6 @@
 #pragma once
+#ifndef HELPER_FUNC_H
+#define HELPER_FUNC_H
 /*
  * This file contains function declarations 
  * for helper functions for the Liszt project.
@@ -160,4 +162,5 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs);
 int makeNote(char* filePath);
 
 #include "helper_func.c"
+#endif
 
