@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	
+	// save first arg after program invocation as command (will be added back if just adding a memory)
 	char* command = argv[1];
 
 	// Prevent overload errors on input
