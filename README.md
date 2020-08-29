@@ -4,7 +4,7 @@
 keep ideas clear in separate notes**
 
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
-![liszt license](https://img.shields.io/github/license/scamacho23/homebrew-liszt)
+![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
 ![liszt release](https://img.shields.io/badge/release-v1.1.0-informational)
 
 ## Installation
@@ -19,7 +19,7 @@ in helping.
 
 ## Community Information
 For users without `homebrew`, we hope to have a separate installer
-available soon. Still, the project will likely only work for OS X
+available soon. Still, the project will likely only work for macOS
 for the forseeable future. Portability to Linux should not be
 that hard to achieve, but Windows is another matter.
 
