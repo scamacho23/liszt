@@ -7,7 +7,7 @@ class Lst < Formula
   version "1.1.2"
 
   def install
-    system "./configure"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
 
