@@ -1,15 +1,14 @@
 class Lst < Formula
   desc "Software to save command line arguments as 'memories'"
   homepage "https://github.com/scamacho23/homebrew-liszt"
-  url "https://github.com/scamacho23/homebrew-liszt/archive/v1.1.5.tar.gz"
+  url "https://github.com/scamacho23/homebrew-liszt/archive/v1.1.6.tar.gz"
   license "GNU GPL v3"
-  version "1.1.5"
+  version "1.1.6"
+
+  depends_on "cmake" => :build
 
   def install
-    system "aclocal"
-    system "autoconf"
-    system "automake --add-missing"
-    system "./configure", "--prefix=#{prefix}"
+    system "cmake", "source"
     system "make"
     system "make", "install"
   end
