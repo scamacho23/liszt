@@ -11,7 +11,7 @@ class Lst < Formula
     system "cmake", "source"
     system "make"
     # system "make", "install", "PREFIX=#{prefix}"
-    bin.install "lst
+    bin.install "lst"
   end
 
   test do
