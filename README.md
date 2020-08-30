@@ -4,6 +4,7 @@
 keep ideas clear in separate notes**
 
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
 ![liszt release](https://img.shields.io/badge/release-v1.1.0-informational)
 
