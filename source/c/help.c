@@ -141,7 +141,7 @@ void helpClearArchivedNotes() {
 
 
 void getVersion() {
-	printf("\033[1mLiszt v1.1.0\033[0m\n");
+	printf("\033[1mLiszt v1.1.3\033[0m\n");
 }
 
 
