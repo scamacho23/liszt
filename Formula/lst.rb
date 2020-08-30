@@ -1,13 +1,13 @@
 class Lst < Formula
   desc "Software to save command line arguments as 'memories'"
   homepage "https://github.com/scamacho23/homebrew-liszt"
-  url "https://github.com/scamacho23/homebrew-liszt/archive/v1.1.1-alpha.tar.gz"
-  sha256 "7316a0ae2fdfc746718a3f0fc358a3b617877833a2ac911635ec29cbacaaa363"
+  url "https://github.com/scamacho23/homebrew-liszt/archive/v1.1.1-beta.tar.gz"
   license "GNU GPL v3"
-  version "1.1.0"
+  version "1.1.1-beta"
 
   def install
-    bin.install "lst"
+    system "./configure"
+    system "make", "install"
   end
 
   test do
