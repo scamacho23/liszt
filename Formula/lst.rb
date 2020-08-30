@@ -7,11 +7,12 @@ class Lst < Formula
   version "1.1.2"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+			"--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/lst", "-h"
+    system "lst", "-h"
   end
 end
