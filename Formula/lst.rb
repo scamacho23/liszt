@@ -6,10 +6,10 @@ class Lst < Formula
   version "1.1.3"
 
   def install
-    system "aclocal"
     system "autoconf"
     system "automake --add-missing"
     system "./configure", "--prefix=#{prefix}"
+    system "make"
     system "make", "install"
   end
 
