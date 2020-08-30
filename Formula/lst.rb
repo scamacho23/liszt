@@ -10,7 +10,8 @@ class Lst < Formula
   def install
     system "cmake", "source"
     system "make"
-    system "make", "install", "PREFIX=#{prefix}"
+    # system "make", "install", "PREFIX=#{prefix}"
+    bin.install "lst
   end
 
   test do
