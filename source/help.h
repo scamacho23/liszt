@@ -161,6 +161,6 @@ void liszt();
 void info();
 
 
-#include "../c/help.c"
+#include "help.c"
 #endif
 

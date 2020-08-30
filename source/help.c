@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 // The below are Liszt .h files
-#include "../headers/help.h"
+#include "help.h"
 
 
 const char LISZT_PIECES[20][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre Gondola", "Mephisto Waltz No. 1",

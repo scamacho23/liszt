@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <wordexp.h>
-#include "../headers/helper.h"
-#include "../headers/install.h"
+#include "helper.h"
+#include "install.h"
 
 #define MAX_LENGTH 256
 

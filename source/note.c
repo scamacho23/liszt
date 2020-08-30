@@ -4,8 +4,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 // The below are Liszt .h files
-#include "../headers/note.h"
-#include "../headers/helper.h"
+#include "note.h"
+#include "helper.h"
 
 #define MAX_LENGTH 256
 

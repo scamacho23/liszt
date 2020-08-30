@@ -2,8 +2,8 @@
 #include <wordexp.h>
 #include <sys/stat.h>
 // The below are Liszt files
-#include "../headers/install.h"
-#include "../headers/helper.h"
+#include "install.h"
+#include "helper.h"
 
 
 /* ADD MORE DETAIL TO THIS FILE (ALSO MAYBE CHANGE NAME TO CONFIGURE)

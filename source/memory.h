@@ -69,6 +69,6 @@ void addMemory(char* args[], int numArgs);
  */
 void listMemories();
 
-#include "../c/memory.c"
+#include "memory.c"
 #endif
 
