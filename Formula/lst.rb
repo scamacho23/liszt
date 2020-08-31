@@ -16,6 +16,6 @@ class Lst < Formula
   end
 
   test do
-    system "lst", "-h"
+    system "#{bin}/lst", "-h"
   end
 end
