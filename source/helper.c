@@ -231,6 +231,9 @@ void writeToDataFile(char* filename) {
 
 
 void requestUserPermission(char* prompt, char* decision) {
+	// do this once outside of the loop so that decision has a value pre-strcmp
+	printf("%s", prompt);
+	scanf("%99s", decision);
 	while (strcmp(decision, "y") != 0 && strcmp(decision, "n") != 0) {
 		printf("%s", prompt);
 		scanf("%99s", decision);
