@@ -15,9 +15,9 @@ class Lst < Formula
   end
 
   test do
-    system "lst" "-ch" "default"
+    system "lst " "-ch " "default"
     expected = <<~EOS
-	"default"
+	"default\n"
     EOS
 
     assert_match expected, shell_output("#{bin}/lst -n")
