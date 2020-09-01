@@ -16,9 +16,9 @@ class Lst < Formula
   test do
     system "lst"
     expected = <<~EOS
-      "\e[1mLiszt v1.1.7-alpha\e[0m\n"
+	"\x1B\[1mLiszt\ v1\.1\.7\-alpha\x1B\[0m\n"\n
     EOS
 
-    assert_match expected, shell_output("#{bin}/lst -h -l")
+    assert_match expected, shell_output("#{bin}/lst -v")
   end
 end
