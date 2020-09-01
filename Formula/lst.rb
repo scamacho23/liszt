@@ -16,8 +16,7 @@ class Lst < Formula
   test do
     system "lst"
     expected = <<~EOS
-	"\033[1m-l\033[0m \033[1m\033[34m==>\033[0m for \033[1mlisting \033[0mmemories on the current note\n"
-	"     Usage: 'lst -l'\n"
+      "\e[1mLiszt v1.1.7-alpha\e[0m\n"
     EOS
 
     assert_match expected, shell_output("#{bin}/lst -h -l")
