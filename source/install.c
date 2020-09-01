@@ -115,6 +115,5 @@ int install() {
 	if (makeDir == -1 || makeFile == -1) {
 		return -1;
 	}
-	printf("\033[1m\033[3mLiszt\033[0m \033[3minstallation successful.\033[0m\n");
 	return 0;
 }	

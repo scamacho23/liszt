@@ -2,8 +2,7 @@ class Lst < Formula
   desc "Save snippets of information quickly through the command line"
   homepage "https://liszt.readthedocs.io"
   url "https://github.com/scamacho23/homebrew-liszt/archive/v1.1.7-alpha.tar.gz"
-  sha256 "30c9464e80e0b191a58471c0bd10ec6a054ae4fe668e61d1544302266b702af8"
-  license "GNU GPL v3"
+  license "GNU GPL-3.0"
   version "1.1.7-alpha"
 
   depends_on "cmake" => :build
@@ -15,10 +14,12 @@ class Lst < Formula
   end
 
   test do
+    system "lst"
     expected = <<~EOS
-      You have no memories at the moment.
+	"\033[1m-l\033[0m \033[1m\033[34m==>\033[0m for \033[1mlisting \033[0mmemories on the current note\n"
+	"     Usage: 'lst -l'\n"
     EOS
 
-    assert_match expected, shell_output("#{bin}/lst -l")
+    assert_match expected, shell_output("#{bin}/lst -h -l")
   end
 end
