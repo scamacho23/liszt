@@ -9,9 +9,8 @@ class Lst < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", "source"
+    system "cmake", ".", *std_cmake_args
     system "make"
-    # system "make", "install", "PREFIX=#{prefix}"
     bin.install "lst"
   end
 
