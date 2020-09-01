@@ -15,11 +15,11 @@ class Lst < Formula
   end
 
   test do
-    system "lst"
+    system "lst" "-ch" "default"
     expected = <<~EOS
-	"\e[1mLiszt v1.1.7-alpha\e[0m\n"
+	"default"
     EOS
 
-    assert_match expected, shell_output("#{bin}/lst -v")
+    assert_match expected, shell_output("#{bin}/lst -n")
   end
 end
