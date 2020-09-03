@@ -20,7 +20,7 @@ Liszt in Action
 Installation
 ------------
 
-Install **Liszt** by first running ``brew tap scamacho23/liszt``.
+Install **Liszt** by first running ``brew tap liszt-music/liszt``.
 Next, run ``brew install lst``. Start using ``lst`` by running ``lst -h``
 or ``lst -help`` to view the available commands.
 

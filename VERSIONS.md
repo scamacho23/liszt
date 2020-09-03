@@ -111,4 +111,10 @@ August 27, 2020
 Rewrote the entirety of qnote in C, and changed the name of the projec to *Liszt* to avoid
 naming overlap with an existing command line note editor.
 
+## **@version 1.0.20 --> 1.1.7** ##
+August 28 - September 1, 2020
+
+Added a separate help file relieve main.c of its clutter. Added the ability to request info about
+specific functions. Updated README.md and documentation.
+
 *Type `lst -version` to view your version of **Liszt***

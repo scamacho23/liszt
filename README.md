@@ -1,6 +1,8 @@
+![](liszt.png)
+
 # Liszt 
 
-**Liszt makes it easy to jot down notes in the command line, and
+**Liszt makes it easy to jot down thoughts in the command line, and
 keep ideas clear in separate notes**
 
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
@@ -10,14 +12,17 @@ keep ideas clear in separate notes**
 
 ## Installation
 
-# Homebrew
+### Homebrew
 In your command line, enter `brew tap liszt-music/liszt` to download the tap of **Liszt**. 
 Next, enter `brew install lst`, which should install `lst` on your machine in /usr/local/bin.
 
-# Git Clone
+### Git Clone
 **Liszt** can also be downloaded by running `git clone https://github.com/scamacho23/liszt.git`. 
 This will create a directory called `liszt` (or whatever you want to call it) on your computer.
 At this point, `cd` into the directory and run `cmake`, then `make`, then `make install`.
+
+### Pkg Installer
+*Coming soon!*
 
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 
