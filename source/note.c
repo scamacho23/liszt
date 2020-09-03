@@ -9,6 +9,63 @@
 
 #define MAX_LENGTH 256
 
+
+void mergeNotes(char* args[], int numArgs) {
+	char firstNote[MAX_LENGTH];
+	char secondNote[MAX_LENGTH];
+	int result = parseBinaryArgs(firstNote, secondNote, args, numArgs);
+	if (result == -1) return;
+
+	char* dirName = "notes";
+	char firstPath[MAX_LENGTH];
+	char secondPath[MAX_LENGTH];
+	getNotePath(dirName, firstNote, firstPath);
+	getNotePath(dirName, secondNote, secondPath);
+
+	// confirm that notes actually exist with the given name
+	struct stat st = {0};
+	if (stat(firstPath, &st) == -1) {
+		printf("There is no note called '%s'. Please try again.\n", firstNote);
+		return;
+	}
+	if (stat(secondPath, &st) == -1) {
+		printf("There is no note called '%s'. Please try again.\n", secondNote);
+		return;
+	}
+
+	// prevent the user from merging into or from default
+	result = checkDefault(firstNote);
+	if (result == -1) return;
+
+	result = checkDefault(secondNote);
+	if (result == -1) return;
+	
+	// append the first note to the second
+	FILE* source, * target;
+	source = fopen(firstPath, "r");
+	target = fopen(secondPath, "a");
+	char filechar;
+	while ((filechar = fgetc(source)) != EOF) {
+		fputc(filechar, target);
+	}
+	fclose(source);
+	fclose(target);
+
+	remove(firstPath);
+
+	// change to default if merging the current note	
+	char currentNote[MAX_LENGTH];
+	getCurrentNoteName(currentNote);
+	if (strcmp(currentNote, firstNote) == 0) {
+		setToDefault();
+	}
+	
+	printf("Successfully merged '%s' into '%s'\n", firstNote, secondNote);
+
+
+}
+
+
 void duplicateNote(char* args[], int numArgs) {
 	char existingNote[MAX_LENGTH];
 	char newNote[MAX_LENGTH];

@@ -88,6 +88,8 @@ int main(int argc, char* argv[]) {
 				exportNote(argv, argc);
 			} else if (strcmp(command, "-dp") == 0) {
 				duplicateNote(argv, argc);
+			} else if (strcmp(command, "-mg") == 0) {
+				mergeNotes(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
 				moveMemory(argv, argc);
 			} else if (strcmp(command, "-c") == 0) {
@@ -109,6 +111,7 @@ int main(int argc, char* argv[]) {
 				else if (strcmp(argv[2], "-dp") == 0) helpDuplicateNote(); // get help with duplicating notes
 				else if (strcmp(argv[2], "-in") == 0) helpImportNote(); // get help with importing notes
 				else if (strcmp(argv[2], "-ex") == 0) helpExportNote(); // get help with exporting notes
+				else if (strcmp(argv[2], "-mg") == 0) return 0; // get help with exporting notes ADD HERE
 				else if (strcmp(argv[2], "-ar") == 0) helpArchiveNote(); // get help with archiving notes
 				else if (strcmp(argv[2], "-unar") == 0) helpUnarchiveNote(); // get help with unarchiving notes
 				else if (strcmp(argv[2], "-lar") == 0) helpListArchivedNotes(); // get help with listing archived notes 

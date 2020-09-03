@@ -8,6 +8,14 @@
 
 
 /*
+ * Given the names of two notes, merges the
+ * first note into the second and deletes the
+ * first note
+ */
+void mergeNotes(char* args[], int numArgs);
+
+
+/*
  * Given the name of a note, duplicates that note and names
  * the new note the desired name.
  */
