@@ -66,7 +66,7 @@ void getCurrentNotePath(char* currentNotePath) {
 	
 	int sizePath = strlen(topline);
 	strncpy(currentNotePath, topline, sizePath);
-	currentNotePath[sizePath] = '\0';
+	currentNotePath[sizePath - 1] = '\0';
 	
 	fclose(toRead);
 }
@@ -98,7 +98,7 @@ void getNotePath(char* dirName, char* noteName, char* notePath) {
 
 void setToDefault() {
 	wordexp_t defaultPath;
-	wordexp("~/.liszt/notes/default", &defaultPath, 0);
+	wordexp("~/.liszt/main/default", &defaultPath, 0);
 	writeToDataFile(defaultPath.we_wordv[0]);
 	wordfree(&defaultPath);
 }
@@ -138,15 +138,15 @@ int getFileSize(char* filename) {
 }
 
 
-int checkDefault(char* note) {
-	char loweredNote[MAX_LENGTH];
-	strcpy(loweredNote, note);
-	int numChars = strlen(loweredNote);
+int checkSame(char* first, char* second) {
+	char lowered[MAX_LENGTH];
+	strcpy(lowered, first);
+	int numChars = strlen(lowered);
 	for (int i = 0; i < numChars; i++) {
-		loweredNote[i] = tolower(loweredNote[i]);
+		lowered[i] = tolower(lowered[i]);
 	}
-	if (strcmp(loweredNote, "default") == 0) {
-		printf("Sorry. 'default' is off limits.\n");
+	if (strcmp(lowered, second) == 0) {
+		printf("Sorry. '%s' is off limits.\n", second);
 		return -1;
 	}
 	return 0;

@@ -90,11 +90,11 @@ int getFileSize(char* filename);
 
 
 /*
- * Given the name of a note, checks if it
- * is default.
- * Returns 0 if note is note default, -1 if it is
+ * Given two strings, compares them without case
+ * sensitivity (whereas strcmp does)
+ * Returns 0 if string are not the same, -1 if they are 
  */
-int checkDefault(char* note);
+int checkSame(char* first, char* second);
 
 
 /*

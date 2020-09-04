@@ -152,7 +152,7 @@ void getHelp() {
 	printf("\n\033[1mGeneral\033[0m\n\n");
 	printf("'Notes' are files where we store your thoughts\n");
 	printf("'Thoughts' are the individual entries in each note\n");
-	printf("'Collections' are directories where we store your notes\n\n")
+	printf("'Collections' are directories where we store your notes\n\n");
 
 	// Thought functionality
 	printf("\033[1mTHOUGHTS\033[0m\n\n");

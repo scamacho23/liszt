@@ -44,29 +44,29 @@ int makeDirectories() {
 	}
 	wordfree(&background);
 
-	// Make notes directory
-	wordexp_t notes;
-	wordexp("~/.liszt/notes", &notes, 0);
-	char* notesPath = notes.we_wordv[0];
-	mkdir(notesPath, 0777);
-	if (stat(notesPath, &st) == -1) {
-		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", notesPath);
+	// Make main directory
+	wordexp_t main;
+	wordexp("~/.liszt/main", &main, 0);
+	char* mainPath = main.we_wordv[0];
+	mkdir(mainPath, 0777);
+	if (stat(mainPath, &st) == -1) {
+		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", mainPath);
 		printf("Please try again later.\n");
 		return -1;	
 	}
-	wordfree(&notes);
+	wordfree(&main);
 
-	// Make archive_notes directory
-	wordexp_t archiveNotes;
-	wordexp("~/.liszt/archive", &archiveNotes, 0);
-	char* archiveNotesPath = archiveNotes.we_wordv[0];
-	mkdir(archiveNotesPath, 0777);
-	if (stat(archiveNotesPath, &st) == -1) {
-		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", archiveNotesPath);
+	// Make archive directory
+	wordexp_t archive;
+	wordexp("~/.liszt/archive", &archive, 0);
+	char* archivePath = archive.we_wordv[0];
+	mkdir(archivePath, 0777);
+	if (stat(archivePath, &st) == -1) {
+		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", archivePath);
 		printf("Please try again later.\n");
 		return -1;	
 	}
-	wordfree(&archiveNotes);
+	wordfree(&archive);
 	
 	return 0;
 }
@@ -90,7 +90,7 @@ int makeFiles() {
 
 	// Make default file
 	wordexp_t defaultFile;
-	wordexp("~/.liszt/notes/default", &defaultFile, 0);
+	wordexp("~/.liszt/main/default", &defaultFile, 0);
 	char* defaultFilePath = defaultFile.we_wordv[0];
 	toCreate = fopen(defaultFilePath, "w");
 	fclose(toCreate);
@@ -117,3 +117,4 @@ int install() {
 	}
 	return 0;
 }	
+

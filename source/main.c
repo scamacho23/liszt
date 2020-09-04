@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include <wordexp.h>
 #include <ctype.h>
 #include <stdlib.h>
 // The below imports are liszt .h files
 #include "thought.h"
+#include "collection.h"
 #include "helper.h"
 #include "note.h"
 #include "help.h"
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
 				getVersion();
 			} else if (strcmp(command, "-ln") == 0) {
-				char dir[] = "notes";
+				char dir[] = "main";
 				listNotes(dir);
 			} else if (strcmp(command, "-n") == 0) {
 				printCurrentNoteName();	
@@ -64,6 +64,8 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-lar") == 0) {
 				char dir[] = "archive";
 				listNotes(dir);
+			} else if (strcmp(command, "-lc") == 0) {
+				listCollections(); 
 			} else {
 				sendErrorMessage(command);
 			}
@@ -94,6 +96,8 @@ int main(int argc, char* argv[]) {
 				moveThought(argv, argc);
 			} else if (strcmp(command, "-c") == 0) {
 				copyThought(argv, argc);
+			} else if (strcmp(command, "-ac") == 0) {
+				addCollection(argv, argc);
 			} else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
 				if (strcmp(argv[2], "-") == 0) helpAddThought(); // get help with adding thoughts
 				else if (strcmp(argv[2], "-l") == 0) helpListThoughts(); // get help with listing thoughts
