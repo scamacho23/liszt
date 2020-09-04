@@ -1,6 +1,6 @@
-![](liszt.png)
-
 # Liszt 
+
+![](liszt.png)
 
 **Liszt makes it easy to jot down thoughts in the command line, and
 keep ideas clear in separate notes**

@@ -465,8 +465,8 @@ int changeNoteHelper(char* note) {
 	}	
 
 	if (strcmp(currentNoteName, "default") == 0) {
-		int numMemories = getFileSize(currentNotePath);
-		if (numMemories > 0) {
+		int numThoughts = getFileSize(currentNotePath);
+		if (numThoughts > 0) {
 			char newNote[MAX_LENGTH];
 			printf("The current note must be named before changing notes. Please enter a name (ENTER to delete the current note): ");
 			fgets(newNote, MAX_LENGTH, stdin);

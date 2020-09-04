@@ -59,7 +59,7 @@ void unArchiveNote(char* args[], int numArgs);
 
 /*
  * Given a note-name, adds a file in the ~/.liszt/notes directory with the given name, 
- * which will then be set as the current file for memories
+ * which will then be set as the current file for thoughts
  */
 void addNote(char* args[], int numArgs);
 

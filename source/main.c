@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 // The below imports are liszt .h files
-#include "memory.h"
+#include "thought.h"
 #include "helper.h"
 #include "note.h"
 #include "help.h"
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	
-	// save first arg after program invocation as command (will be added back if just adding a memory)
+	// save first arg after program invocation as command (will be added back if just adding a thought)
 	char* command = argv[1];
 
 	// Prevent overload errors on input
@@ -41,9 +41,9 @@ int main(int argc, char* argv[]) {
 	if (command[0] == '-') {
 		if (argc == 2) {
 			if (strcmp(command, "-l") == 0) {
-				listMemories();
+				listThoughts();
 			} else if (strcmp(command, "-cl") == 0) {
-				clearMemories();
+				clearThoughts();
 			} else if (strcmp(command, "-help") == 0 || strcmp(command, "-h") == 0) {
 				getHelp();
 			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
 			}
 		} else if (argc > 2) {
 			if (strcmp(command, "-r") == 0 && argc == 3) {
-				removeMemory(argv[2]);
+				removeThought(argv[2]);
 			} else if (strcmp(command, "-a") == 0) {
 				addNote(argv, argc);
 			} else if (strcmp(command, "-ch") == 0) {
@@ -91,16 +91,16 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-mg") == 0) {
 				mergeNotes(argv, argc);
 			} else if (strcmp(command, "-m") == 0) {
-				moveMemory(argv, argc);
+				moveThought(argv, argc);
 			} else if (strcmp(command, "-c") == 0) {
-				copyMemory(argv, argc);
+				copyThought(argv, argc);
 			} else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
-				if (strcmp(argv[2], "-") == 0) helpAddMemory(); // get help with adding memories
-				else if (strcmp(argv[2], "-l") == 0) helpListMemories(); // get help with listing memories
-				else if (strcmp(argv[2], "-cl") == 0) helpClearMemories(); // get help with clearing memories
-				else if (strcmp(argv[2], "-r") == 0) helpRemoveMemory(); // get help with removing memories
-				else if (strcmp(argv[2], "-m") == 0) helpMoveMemory(); // get help with moving memories
-				else if (strcmp(argv[2], "-c") == 0) helpCopyMemory(); // get help with copying memories
+				if (strcmp(argv[2], "-") == 0) helpAddThought(); // get help with adding thoughts
+				else if (strcmp(argv[2], "-l") == 0) helpListThoughts(); // get help with listing thoughts
+				else if (strcmp(argv[2], "-cl") == 0) helpClearThoughts(); // get help with clearing thoughts
+				else if (strcmp(argv[2], "-r") == 0) helpRemoveThought(); // get help with removing thoughts
+				else if (strcmp(argv[2], "-m") == 0) helpMoveThought(); // get help with moving thoughts
+				else if (strcmp(argv[2], "-c") == 0) helpCopyThought(); // get help with copying thoughts
 				else if (strcmp(argv[2], "-a") == 0) helpAddNote(); // get help with adding notes
 				else if (strcmp(argv[2], "-ln") == 0) helpListNotes(); // get help with listing notes
 				else if (strcmp(argv[2], "-n") == 0) helpCurrentNote(); // get help with checking the current note
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
 				sendErrorMessage(command);
 			}
 		}	
-	} else addMemory(argv, argc);
+	} else addThought(argv, argc);
 	
 	return 0;
 }

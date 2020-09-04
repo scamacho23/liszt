@@ -21,38 +21,38 @@ void sendHelpError(char* command) {
 }
 
 
-void helpAddMemory() {
-	printf("\033[1m\033[3m<your_memory>\033[0m %s for \033[1madding \033[0ma memory\n", ARROW);
+void helpAddThought() {
+	printf("\033[1m\033[3m<your_thought>\033[0m %s for \033[1madding \033[0ma thought\n", ARROW);
 	printf("     Usage: 'lst Hello, World!'\n");
 }
 
 
-void helpListMemories() {
-	printf("\033[1m-l\033[0m %s for \033[1mlisting \033[0mmemories on the current note\n", ARROW);
+void helpListThoughts() {
+	printf("\033[1m-l\033[0m %s for \033[1mlisting \033[0mthoughts on the current note\n", ARROW);
 	printf("     Usage: 'lst -l'\n");
 }
 
 
-void helpClearMemories() {
-	printf("\033[1m-cl\033[0m %s for \033[1mclearing \033[0mmemories on the current note\n", ARROW);
+void helpClearThoughts() {
+	printf("\033[1m-cl\033[0m %s for \033[1mclearing \033[0mthoughts on the current note\n", ARROW);
 	printf("     Usage: 'lst -cl'\n");
 }
 
 
-void helpRemoveMemory() {
-	printf("\033[1m-r \033[3m<row_number>\033[0m %s for \033[1mremoving \033[0mthe memory at that row number in the current note (row number can be retrieved from '\033[1mlst -l\033[0m')\n", ARROW);
+void helpRemoveThought() {
+	printf("\033[1m-r \033[3m<row_number>\033[0m %s for \033[1mremoving \033[0mthe thought at that row number in the current note (row number can be retrieved from '\033[1mlst -l\033[0m')\n", ARROW);
 	printf("     Usage: 'lst -r 3'\n");
 }
 
 
-void helpMoveMemory() {
-	printf("\033[1m-m \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mmoving \033[0mthe memory at that row number in the current note to another note\n", ARROW);
+void helpMoveThought() {
+	printf("\033[1m-m \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mmoving \033[0mthe thought at that row number in the current note to another note\n", ARROW);
 	printf("     Usage: 'lst -m 3 shopping list'\n");
 }
 
 
-void helpCopyMemory() {
-	printf("\033[1m-c \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mcopying \033[0mthe memory at that row number in the current note to another note\n", ARROW);
+void helpCopyThought() {
+	printf("\033[1m-c \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mcopying \033[0mthe thought at that row number in the current note to another note\n", ARROW);
 	printf("     Usage: 'lst -c 3 shopping list'\n\n");
 }
 
@@ -151,16 +151,17 @@ void getHelp() {
 	// General concepts of Liszt
 	printf("\n\033[1mGeneral\033[0m\n\n");
 	printf("'Notes' are files where we store your thoughts\n");
-	printf("'Memories' are the individual entries in each note\n\n");	
+	printf("'Thoughts' are the individual entries in each note\n");
+	printf("'Collections' are directories where we store your notes\n\n")
 
-	// Memory functionality
-	printf("\033[1mMemories\033[0m\n\n");
-	helpAddMemory();
-	helpListMemories();
-	helpClearMemories();
-	helpRemoveMemory();
-	helpMoveMemory();
-	helpCopyMemory();
+	// Thought functionality
+	printf("\033[1mTHOUGHTS\033[0m\n\n");
+	helpAddThought();
+	helpListThoughts();
+	helpClearThoughts();
+	helpRemoveThought();
+	helpMoveThought();
+	helpCopyThought();
 
 	// Note functionality
 	printf("\033[1mNOTES\033[0m\n\n");
@@ -182,6 +183,11 @@ void getHelp() {
 	helpUnarchiveNote();
 	helpListArchivedNotes();
 	helpClearArchivedNotes();
+
+	// Collection functionality
+	printf("\033[1mCOLLECTION\033[0m\n");
+	printf("Coming soon to a Liszt near you!\n");
+
 }
 
 
@@ -198,7 +204,7 @@ void info() {
 
 	printf("If you need help in general, type 'lst -help' or 'lst -h'\n");
 	char nameOfCommand[] = "\033[3m<name_of_command>\033[0m";
-	printf("If you need help with a specific command, type 'lst -h %s', such as for help with adding memories ('lst -h -') or removing a note ('lst -h -rm')\n", nameOfCommand);
+	printf("If you need help with a specific command, type 'lst -h %s', such as for help with adding thoughts ('lst -h -') or removing a note ('lst -h -rm')\n", nameOfCommand);
 	printf("To view your version of %s, type 'lst -version' or 'lst -v'\n\n", lisztName);
 	printf("%s uses the GNU General Public License v3, so you can edit, distribute, and otherwise meddle with any of the source code.\n", lisztName);
 	printf("The only thing you can't do is take this software and make it closed-source and try to sell it. %s was designed to be free for everyone, forever.\n\n", lisztName);

@@ -17,39 +17,39 @@ void sendHelpError(char* command);
 
 
 /*
- * Prints help information about adding memories
+ * Prints help information about adding thoughts
  */
-void helpAddMemory();
+void helpAddThought();
 
 
 /*
- * Prints help information about listing memories
+ * Prints help information about listing thoughts
  */
-void helpListMemories();
+void helpListThoughts();
 
 
 /*
- * Prints help information about clearing memories
+ * Prints help information about clearing thoughts
  */
-void helpClearMemories();
+void helpClearThoughts();
 
 
 /*
- * Prints help information about removing memories
+ * Prints help information about removing thoughts
  */
-void helpRemoveMemory();
+void helpRemoveThought();
 
 
 /*
- * Prints help information about moving memories
+ * Prints help information about moving thoughts
  */
-void helpMoveMemory();
+void helpMoveThought();
 
 
 /*
- * Prints help information about copying memories
+ * Prints help information about copying thoughts
  */
-void helpCopyMemory();
+void helpCopyThought();
 
 
 /*
