@@ -5,7 +5,8 @@
 #include <sys/stat.h>
 #include <wordexp.h>
 #include "helper.h"
-#include "install.h"
+//#include "install.h"
+//#include "cJSON.h"
 
 #define MAX_LENGTH 256
 
@@ -222,7 +223,29 @@ int checkRow(char* filename, char* charRow) {
 void writeToDataFile(char* filename) {
 	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
-	// The below is a stand-in until json-c has been figured out
+
+	FILE* toRead;
+	toRead = fopen(dataFile, "r");
+	char line[MAX_LENGTH];
+	char dataStream[MAX_LENGTH];
+
+	fgets(line, sizeof(line), toRead);
+	strcpy(dataStream, line);
+
+	while (fgets(line, sizeof(line), toRead)) {
+		int length = strlen(line);
+		if (line[length - 1] == '\n') line[length - 1] = '\0';
+		strcat(dataStream, line);
+	}	
+
+	fclose(toRead);
+
+
+	cJSON* data = cJSON_Parse(dataStream);
+
+	// char* currentCollection = cJSON_GetObjectItemCaseSensitive(data, "current_collection");
+
+
 	FILE* toWrite;
 	toWrite = fopen(dataFile, "w");
 	fprintf(toWrite, "%s", filename);

@@ -3,6 +3,7 @@
 #include <wordexp.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "cJSON.h"
 // The below imports are liszt .h files
 #include "memory.h"
 #include "helper.h"
