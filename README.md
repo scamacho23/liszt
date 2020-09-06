@@ -19,6 +19,8 @@ Next, enter `brew install lst`, which should install `lst` on your machine in /u
 This will create a directory called `liszt` (or whatever you want to call it) on your computer.
 At this point, `cd` into the directory and run `cmake`, then `make`, then `make install`.
 
+[Package](liszt-1.1.7.pkg)
+
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 
 ## Contributing to the Project
