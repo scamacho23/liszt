@@ -1,6 +1,6 @@
-![](liszt.png)
-
 # Liszt 
+
+![](liszt.png)
 
 **Liszt makes it easy to jot down thoughts in the command line, and
 keep ideas clear in separate notes**
@@ -22,7 +22,9 @@ This will create a directory called `liszt` (or whatever you want to call it) on
 At this point, `cd` into the directory and run `cmake`, then `make`, then `make install`.
 
 ### Pkg Installer
-*Coming soon!*
+Click on [this](liszt-1.1.7.pkg) to be redirected to the local liszt-1.1.7.pkg
+file. Click 'download' on the right side of the page to download the package
+installer.
 
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 
