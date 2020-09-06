@@ -13,13 +13,36 @@ keep ideas clear in separate notes**
 ## Installation
 
 ### Homebrew
-In your command line, enter `brew tap liszt-music/liszt` to download the tap of **Liszt**. 
-Next, enter `brew install lst`, which should install `lst` on your machine in /usr/local/bin.
+
+*In your terminal*
+```
+$ brew tap liszt-music/liszt
+$ brew install lst
+```
+These commands will install the tap of **Liszt** on your system and then install the executable
+'lst' in /usr/local/bin. 
 
 ### Git Clone
-**Liszt** can also be downloaded by running `git clone https://github.com/scamacho23/liszt.git`. 
-This will create a directory called `liszt` (or whatever you want to call it) on your computer.
-At this point, `cd` into the directory and run `cmake`, then `make`, then `make install`.
+
+*In your terminal*
+
+```
+$ git clone https://github.com/scamacho23/liszt.git
+$ cd liszt 
+$ cmake .
+$ make
+$ make install
+```
+
+**Liszt** relies on cmake for compilation and linking so we recommend having cmake installed on your
+system. Alternatively, the following should do the trick (we use clang but any c compiler should work):
+
+```
+$ git clone https://github.com/scamacho23/liszt.git
+$ cd liszt 
+$ clang src/main.c -o lst -g
+$ cp lst /usr/local/bin/lst
+```
 
 ### Pkg Installer
 Click on [this](liszt-1.1.7.pkg) to be redirected to the local liszt-1.1.7.pkg
