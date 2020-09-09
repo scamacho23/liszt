@@ -2,7 +2,7 @@ language: c
 compiler:
   - clang
 script:
-  - clang source/main.c -o lst -g
+  - clang src/main.c -o lst -g
   - ./lst
 
 after_success:

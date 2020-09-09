@@ -43,7 +43,7 @@ system. Alternatively, the following should do the trick (we use clang but any c
 $ git clone https://github.com/scamacho23/liszt.git
 $ cd liszt 
 $ clang src/main.c -o lst -g
-$ cp lst /usr/local/bin/lst
+$ ln -s lst /usr/local/bin/lst
 ```
 
 ### Pkg Installer
