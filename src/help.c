@@ -53,7 +53,7 @@ void helpMoveMemory() {
 
 void helpCopyMemory() {
 	printf("\033[1m-c \033[3m<row_number> <other_note_name>\033[0m %s for \033[1mcopying \033[0mthe memory at that row number in the current note to another note\n", ARROW);
-	printf("     Usage: 'lst -c 3 shopping list'\n\n");
+	printf("     Usage: 'lst -c 3 shopping list'\n");
 }
 
 
@@ -116,6 +116,12 @@ void helpExportNote() {
 }
 
 
+void helpMergeNotes() {
+	printf("\033[1m-mg \033[3m<note_to_merge>\033[0m\033[1m / \033[3m<note_to_merge_into>\033[0m %s for \033[1mmerging \033[0mtwo notes (removes the first note)\n", ARROW);
+	printf("     Usage: 'lst -mg Meal Planning List / Grocery List'\n");
+}
+
+
 void helpArchiveNote() {
 	printf("\033[1m-ar \033[3m<note_name>\033[0m %s for \033[1marchiving \033[0mthe note with the given name (if no name given, removes the current note)\n", ARROW);
 	printf("     Usage: 'lst -ar To Do'\n");
@@ -161,6 +167,7 @@ void getHelp() {
 	helpRemoveMemory();
 	helpMoveMemory();
 	helpCopyMemory();
+	printf("\n");
 
 	// Note functionality
 	printf("\033[1mNOTES\033[0m\n\n");
@@ -174,6 +181,8 @@ void getHelp() {
 	helpDuplicateNote();
 	helpImportNote();
 	helpExportNote();
+	helpMergeNotes();
+	printf("\n");
 
 	// Archive Functionality
 	printf("\033[1mARCHIVE\033[0m\n");
