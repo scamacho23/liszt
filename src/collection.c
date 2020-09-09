@@ -88,7 +88,13 @@ void addCollection(char* args[], int numArgs) {
 void changeCollection(char* args[], int numArgs);
 
 
-void removeCollection(char* args[], int numArgs);
+void removeCollection(char* args[], int numArgs) {
+	
+
+}
+
+
+void renameCollection(char* args[], int numArgs);
 
 
 void clearCollections();

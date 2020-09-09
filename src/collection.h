@@ -36,6 +36,13 @@ void removeCollection(char* args[], int numArgs);
 
 
 /*
+ * Given the name of a collection and a new 
+ * name, renames that collection
+ */
+void renameCollection(char* args[], int numArgs);
+
+
+/*
  * Clears all user collections besides 'main'
  */
 void clearCollections();
