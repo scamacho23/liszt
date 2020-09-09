@@ -5,6 +5,8 @@
 **Liszt makes it easy to jot down thoughts in the command line, and
 keep ideas clear in separate notes**
 
+View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
+
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
