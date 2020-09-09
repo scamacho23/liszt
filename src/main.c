@@ -99,29 +99,30 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-ac") == 0) {
 				addCollection(argv, argc);
 			} else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
-				if (strcmp(argv[2], "-") == 0) helpAddThought(); // get help with adding thoughts
-				else if (strcmp(argv[2], "-l") == 0) helpListThoughts(); // get help with listing thoughts
-				else if (strcmp(argv[2], "-cl") == 0) helpClearThoughts(); // get help with clearing thoughts
-				else if (strcmp(argv[2], "-r") == 0) helpRemoveThought(); // get help with removing thoughts
-				else if (strcmp(argv[2], "-m") == 0) helpMoveThought(); // get help with moving thoughts
-				else if (strcmp(argv[2], "-c") == 0) helpCopyThought(); // get help with copying thoughts
-				else if (strcmp(argv[2], "-a") == 0) helpAddNote(); // get help with adding notes
-				else if (strcmp(argv[2], "-ln") == 0) helpListNotes(); // get help with listing notes
-				else if (strcmp(argv[2], "-n") == 0) helpCurrentNote(); // get help with checking the current note
-				else if (strcmp(argv[2], "-ch") == 0) helpChangeNote(); // get help with changing notes
-				else if (strcmp(argv[2], "-rn") == 0) helpRenameNote(); // get help with renaming notes
-				else if (strcmp(argv[2], "-rm") == 0) helpRemoveNote(); // get help with removing notes
-				else if (strcmp(argv[2], "-cln") == 0) helpClearNotes(); // get help with clearing notes
-				else if (strcmp(argv[2], "-dp") == 0) helpDuplicateNote(); // get help with duplicating notes
-				else if (strcmp(argv[2], "-in") == 0) helpImportNote(); // get help with importing notes
-				else if (strcmp(argv[2], "-ex") == 0) helpExportNote(); // get help with exporting notes
-				else if (strcmp(argv[2], "-mg") == 0) return 0; // get help with exporting notes ADD HERE
-				else if (strcmp(argv[2], "-ar") == 0) helpArchiveNote(); // get help with archiving notes
-				else if (strcmp(argv[2], "-unar") == 0) helpUnarchiveNote(); // get help with unarchiving notes
-				else if (strcmp(argv[2], "-lar") == 0) helpListArchivedNotes(); // get help with listing archived notes 
-				else if (strcmp(argv[2], "-clar") == 0) helpClearArchivedNotes(); // get help with clearing archived notes
+				char* needsHelp = argv[2];
+				if (strcmp(needsHelp, "-") == 0) helpAddThought(); // get help with adding thoughts
+				else if (strcmp(needsHelp, "-l") == 0) helpListThoughts(); // get help with listing thoughts
+				else if (strcmp(needsHelp, "-cl") == 0) helpClearThoughts(); // get help with clearing thoughts
+				else if (strcmp(needsHelp, "-r") == 0) helpRemoveThought(); // get help with removing thoughts
+				else if (strcmp(needsHelp, "-m") == 0) helpMoveThought(); // get help with moving thoughts
+				else if (strcmp(needsHelp, "-c") == 0) helpCopyThought(); // get help with copying thoughts
+				else if (strcmp(needsHelp, "-a") == 0) helpAddNote(); // get help with adding notes
+				else if (strcmp(needsHelp, "-ln") == 0) helpListNotes(); // get help with listing notes
+				else if (strcmp(needsHelp, "-n") == 0) helpCurrentNote(); // get help with checking the current note
+				else if (strcmp(needsHelp, "-ch") == 0) helpChangeNote(); // get help with changing notes
+				else if (strcmp(needsHelp, "-rn") == 0) helpRenameNote(); // get help with renaming notes
+				else if (strcmp(needsHelp, "-rm") == 0) helpRemoveNote(); // get help with removing notes
+				else if (strcmp(needsHelp, "-cln") == 0) helpClearNotes(); // get help with clearing notes
+				else if (strcmp(needsHelp, "-dp") == 0) helpDuplicateNote(); // get help with duplicating notes
+				else if (strcmp(needsHelp, "-in") == 0) helpImportNote(); // get help with importing notes
+				else if (strcmp(needsHelp, "-ex") == 0) helpExportNote(); // get help with exporting notes
+				else if (strcmp(needsHelp, "-mg") == 0) return 0; // get help with exporting notes ADD HERE
+				else if (strcmp(needsHelp, "-ar") == 0) helpArchiveNote(); // get help with archiving notes
+				else if (strcmp(needsHelp, "-unar") == 0) helpUnarchiveNote(); // get help with unarchiving notes
+				else if (strcmp(needsHelp, "-lar") == 0) helpListArchivedNotes(); // get help with listing archived notes 
+				else if (strcmp(needsHelp, "-clar") == 0) helpClearArchivedNotes(); // get help with clearing archived notes
 				else {
-					sendHelpError(argv[2]);
+					sendHelpError(needsHelp);
 				}
 			} else {
 				sendErrorMessage(command);

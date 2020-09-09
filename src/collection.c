@@ -11,7 +11,6 @@
 void listCollections() {
 	DIR* directory;
 	struct dirent* dir;
-	
 
 	wordexp_t dirPath;
 	char path[] = "~/.liszt";
@@ -76,8 +75,13 @@ void addCollection(char* args[], int numArgs) {
 		printf("You already have a collection with this name.\n");
 		return;
 	}
+	result = mkdir(collectionPath, 0777);
+	printf("%s\n", collectionPath);
+	printf("%d\n", result);
 	// change to this collection when changeCollection is added
 	printf("Added new collection '%s'\n", collection);
+
+	wordfree(&newCollection);
 }
 
 
