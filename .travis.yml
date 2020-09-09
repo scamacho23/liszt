@@ -5,3 +5,5 @@ script:
   - clang source/main.c -o lst -g
   - ./lst
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
