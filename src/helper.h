@@ -43,16 +43,16 @@ void getCurrentNoteName(char* currentNoteName);
 
 
 /*
+ * Returns the name and path of the current working note
+ */
+void getCurrentNote(char* currentNotePath, char* currentNoteName);
+
+
+/*
  * Fills the given currentNotePath char array
  * with the name of the current note path
  */
 void getCurrentNotePath(char* currentNotePath);
-
-
-/*
- * Returns the name and path of the current working note
- */
-void getCurrentNote(char* currentNotePath, char* currentNoteName);
 
 
 /*
@@ -123,7 +123,7 @@ int checkRow(char* filename, char* charRow);
  * Given the data_file.json file and a filename, 
  * changes the filename held in data_file 
  */
-void writeToDataFile(char* filename);
+void writeFilenameToDataFile(char* filename);
 
 
 /*

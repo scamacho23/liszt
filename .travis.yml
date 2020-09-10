@@ -1,0 +1,9 @@
+language: c
+compiler:
+  - clang
+script:
+  - clang src/main.c -o lst -g
+  - ./lst
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

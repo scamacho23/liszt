@@ -114,6 +114,12 @@ void helpExportNote();
 
 
 /*
+ * Prints help information about merging notes
+ */
+void helpMergeNotes();
+
+
+/*
  * Prints help information about archiving notes 
  */
 void helpArchiveNote();

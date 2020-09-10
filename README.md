@@ -5,24 +5,58 @@
 **Liszt makes it easy to jot down thoughts in the command line, and
 keep ideas clear in separate notes**
 
+View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
+
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
-![liszt release](https://img.shields.io/badge/release-v1.1.7-informational)
+![liszt release](https://img.shields.io/badge/release-v1.1.8-informational)
 
 ## Installation
 
+*Please note that at the moment, **Liszt** is only functional on macOS.*
+
+*Please also note that v1.1.8 does change some existing functionality that will cause incompatibility with
+the existing **Liszt** file system on your computer. If you already have **Liszt** installed, before
+updating to v1.1.8, please go to your ~/.liszt directory and rename the directory called 'notes' to
+'main'.*
+
 ### Homebrew
-In your command line, enter `brew tap liszt-music/liszt` to download the tap of **Liszt**. 
-Next, enter `brew install lst`, which should install `lst` on your machine in /usr/local/bin.
+
+*In your terminal*
+```
+$ brew tap liszt-music/liszt
+$ brew install lst
+```
+These commands will install the tap of **Liszt** on your system and then install the executable
+'lst' in /usr/local/bin. 
 
 ### Git Clone
-**Liszt** can also be downloaded by running `git clone https://github.com/scamacho23/liszt.git`. 
-This will create a directory called `liszt` (or whatever you want to call it) on your computer.
-At this point, `cd` into the directory and run `cmake`, then `make`, then `make install`.
+
+*In your terminal*
+
+```
+$ git clone https://github.com/scamacho23/liszt.git
+$ cd liszt 
+$ cmake .
+$ make
+$ make install
+```
+
+**Liszt** relies on cmake for compilation and linking so we recommend having cmake installed on your
+system. Alternatively, the following should do the trick (we use clang but any c compiler should work):
+
+```
+$ git clone https://github.com/scamacho23/liszt.git
+$ cd liszt 
+$ clang src/main.c -o lst -g
+$ ln -s lst /usr/local/bin/lst
+```
 
 ### Pkg Installer
-*Coming soon!*
+Click on [this](liszt-1.1.8.pkg) to be redirected to the local liszt-1.1.8.pkg
+file. Click 'download' on the right side of the page to download the package
+installer.
 
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 

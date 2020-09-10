@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "cJSON.h"
 // The below imports are liszt .h files
 #include "thought.h"
 #include "collection.h"
@@ -19,6 +20,7 @@
  * functions.
  */
 int main(int argc, char* argv[]) {
+
 
 	// Check if ~/.liszt exists
 	checkInstallation();

@@ -143,8 +143,8 @@ void importNote(char* args[], int numArgs) {
 
 void exportNote(char* args[], int numArgs) {
 	char note[MAX_LENGTH];
-	char export[MAX_LENGTH];
-	int result = parseBinaryArgs(note, export, args, numArgs);
+	char toExport[MAX_LENGTH];
+	int result = parseBinaryArgs(note, toExport, args, numArgs);
 
 	if (result == -1) return;
 
@@ -163,15 +163,15 @@ void exportNote(char* args[], int numArgs) {
 	result = checkSame(note, defaultNote);
 	if (result == -1) return;
 	
-	strcat(export, ".txt");
+	strcat(toExport, ".txt");
 
-	if (stat(export, &st) == 0) {
+	if (stat(toExport, &st) == 0) {
 		printf("Sorry. A file with this name already exists in the directory to which you are trying to add. Please pick a different name\n");
 		return;
 	}
 
-	copyFile(notePath, export);
-	printf("Successfully exported '%s' as '%s'\n", note, export);
+	copyFile(notePath, toExport);
+	printf("Successfully exported '%s' as '%s'\n", note, toExport);
 }
 
 
@@ -496,7 +496,7 @@ int changeNoteHelper(char* note) {
 			}
 		}
 	}
-	writeToDataFile(notePath);
+	writeFilenameToDataFile(notePath);
 	return 0;
 }
 
@@ -540,7 +540,7 @@ void renameNote(char* args[], int numArgs) {
 	getCurrentNote(currentNotePath, currentNoteName);
 
 	if (strcmp(oldPath, currentNotePath) == 0) {
-		writeToDataFile(newPath);
+		writeFilenameToDataFile(newPath);
 	}
 	
 	printf("Renamed '%s' to '%s'\n", oldName, newName);
