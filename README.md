@@ -10,9 +10,16 @@ View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
-![liszt release](https://img.shields.io/badge/release-v1.1.7-informational)
+![liszt release](https://img.shields.io/badge/release-v1.1.8-informational)
 
 ## Installation
+
+*Please note that at the moment, **Liszt** is only functional on macOS.*
+
+*Please also note that v1.1.8 does change some existing functionality that will cause incompatibility with
+the existing **Liszt** file system on your computer. If you already have **Liszt** installed, before
+updating to v1.1.8, please go to your ~/.liszt directory and rename the directory called 'notes' to
+'main'.*
 
 ### Homebrew
 
@@ -47,7 +54,7 @@ $ ln -s lst /usr/local/bin/lst
 ```
 
 ### Pkg Installer
-Click on [this](liszt-1.1.7.pkg) to be redirected to the local liszt-1.1.7.pkg
+Click on [this](liszt-1.1.8.pkg) to be redirected to the local liszt-1.1.8.pkg
 file. Click 'download' on the right side of the page to download the package
 installer.
 

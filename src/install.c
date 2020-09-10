@@ -45,16 +45,16 @@ int makeDirectories() {
 	wordfree(&background);
 
 	// Make notes directory
-	wordexp_t notes;
-	wordexp("~/.liszt/notes", &notes, 0);
-	char* notesPath = notes.we_wordv[0];
+	wordexp_t main;
+	wordexp("~/.liszt/main", &notes, 0);
+	char* notesPath = main.we_wordv[0];
 	mkdir(notesPath, 0777);
 	if (stat(notesPath, &st) == -1) {
 		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", notesPath);
 		printf("Please try again later.\n");
 		return -1;	
 	}
-	wordfree(&notes);
+	wordfree(&main);
 
 	// Make archive_notes directory
 	wordexp_t archiveNotes;
