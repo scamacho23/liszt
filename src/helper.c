@@ -6,13 +6,13 @@
 #include <wordexp.h>
 #include "helper.h"
 #include "install.h"
+#include "cJSON.h"
 
 #define MAX_LENGTH 256
 
 /*
  * TO DO
  * readDirectory() --- requires array completion
- * writeToDataFile() --- requires JSON completion 
  */
 
 
@@ -53,31 +53,37 @@ void getCurrentNoteName(char* currentNoteName) {
 }
 
 
-void getCurrentNotePath(char* currentNotePath) {
-	char dataFile[MAX_LENGTH];
-	getDataFile(dataFile);
-
-	FILE* toRead;
-	toRead = fopen(dataFile, "r");
-
-	char topline[100];
-
-	fgets(topline, sizeof(topline), toRead);
-	
-	int sizePath = strlen(topline);
-	strncpy(currentNotePath, topline, sizePath);
-	currentNotePath[sizePath] = '\0';
-	
-	fclose(toRead);
-}
-
-
 void getCurrentNote(char* currentNotePath, char* currentNoteName) {
 	getCurrentNotePath(currentNotePath);
 	char slash = '/';
 	char* lastSlash = strrchr(currentNotePath, slash);
 	strcpy(currentNoteName, lastSlash + 1);
 }	
+
+void getCurrentNotePath(char* currentNotePath) {
+	char dataFile[MAX_LENGTH];
+	getDataFile(dataFile);
+
+	FILE* toRead;
+	toRead = fopen(dataFile, "r");
+	char line[MAX_LENGTH];
+	char dataStream[MAX_LENGTH];
+
+	fgets(line, sizeof(line), toRead);
+	strcpy(dataStream, line);
+	while (fgets(line, sizeof(line), toRead)) {
+		strcat(dataStream, line);
+	}	
+	fclose(toRead);
+
+	cJSON* data = cJSON_Parse(dataStream);
+	cJSON* currentNote = cJSON_GetObjectItem(data, "current_note");
+	char* temp = cJSON_PrintUnformatted(currentNote);
+	temp++;
+	temp[strlen(temp) - 1] = '\0';
+	strcpy(currentNotePath, temp);
+	cJSON_Delete(data);
+}
 
 
 void getNotePath(char* dirName, char* noteName, char* notePath) {
@@ -98,16 +104,15 @@ void getNotePath(char* dirName, char* noteName, char* notePath) {
 
 void setToDefault() {
 	wordexp_t defaultPath;
-	wordexp("~/.liszt/notes/default", &defaultPath, 0);
-	writeToDataFile(defaultPath.we_wordv[0]);
+	wordexp("~/.liszt/main/default", &defaultPath, 0);
+	writeFilenameToDataFile(defaultPath.we_wordv[0]);
 	wordfree(&defaultPath);
 }
 
 
 void getDataFile(char* dataFile) {
 	char* dirName = "background";
-	// while json-c is being figured out, data_file will act as data_file.json
-	char* data = "data_file";
+	char* data = "data_file.json";
 	getNotePath(dirName, data, dataFile);
 }
 
@@ -219,14 +224,41 @@ int checkRow(char* filename, char* charRow) {
 }
 
 
-void writeToDataFile(char* filename) {
+void writeFilenameToDataFile(char* filename) {
+	// get path to data_file.json
 	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
-	// The below is a stand-in until json-c has been figured out
+
+	// open data_file and read contents into dataStream
+	// should be decomposed
+	FILE* toRead;
+	toRead = fopen(dataFile, "r");
+	char line[MAX_LENGTH];
+	char dataStream[MAX_LENGTH];
+
+	fgets(line, sizeof(line), toRead);
+	strcpy(dataStream, line);
+	while (fgets(line, sizeof(line), toRead)) {
+		strcat(dataStream, line);
+	}	
+	fclose(toRead);
+
+	// move dataStream into data as a true JSON object
+	cJSON* data = cJSON_Parse(dataStream);
+
+	// replace the existing current note with the given one
+	cJSON* file = cJSON_CreateString(filename);
+	cJSON_ReplaceItemInObjectCaseSensitive(data, "current_note", file);
+
+	char* newStream = cJSON_Print(data);
+
 	FILE* toWrite;
 	toWrite = fopen(dataFile, "w");
-	fprintf(toWrite, "%s", filename);
+	fprintf(toWrite, "%s", newStream);
 	fclose(toWrite);
+
+	cJSON_Delete(data);
+
 }
 
 

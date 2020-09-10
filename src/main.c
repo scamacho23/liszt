@@ -3,6 +3,7 @@
 #include <wordexp.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "cJSON.h"
 // The below imports are liszt .h files
 #include "memory.h"
 #include "helper.h"
@@ -19,6 +20,7 @@
  * functions.
  */
 int main(int argc, char* argv[]) {
+
 
 	// Check if ~/.liszt exists
 	checkInstallation();
@@ -49,7 +51,7 @@ int main(int argc, char* argv[]) {
 			} else if (strcmp(command, "-version") == 0 || strcmp(command, "-v") == 0) {
 				getVersion();
 			} else if (strcmp(command, "-ln") == 0) {
-				char dir[] = "notes";
+				char dir[] = "main";
 				listNotes(dir);
 			} else if (strcmp(command, "-n") == 0) {
 				printCurrentNoteName();	

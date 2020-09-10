@@ -70,7 +70,7 @@ void moveMemory(char* args[], int numArgs) {
 	char note[MAX_LENGTH];
 	parseSpecialArgs(note, args, numArgs);
 	
-	char dirName[] = "notes";
+	char dirName[] = "main";
 	char notePath[MAX_LENGTH];
 	getNotePath(dirName, note, notePath);
 	
@@ -99,7 +99,7 @@ void copyMemory(char* args[], int numArgs) {
 	char currentNotePath[MAX_LENGTH];
 	getCurrentNote(currentNotePath, currentNoteName);
 
-	char dirName[] = "notes";
+	char dirName[] = "main";
 	char notePath[MAX_LENGTH];
 	getNotePath(dirName, note, notePath);
 	

@@ -16,7 +16,7 @@ void mergeNotes(char* args[], int numArgs) {
 	int result = parseBinaryArgs(firstNote, secondNote, args, numArgs);
 	if (result == -1) return;
 
-	char* dirName = "notes";
+	char* dirName = "main";
 	char firstPath[MAX_LENGTH];
 	char secondPath[MAX_LENGTH];
 	getNotePath(dirName, firstNote, firstPath);
@@ -72,7 +72,7 @@ void duplicateNote(char* args[], int numArgs) {
 	int result = parseBinaryArgs(existingNote, newNote, args, numArgs);
 	if (result == -1) return;
 
-	char* dirName = "notes";
+	char* dirName = "main";
 	char existingPath[MAX_LENGTH];
 	char newPath[MAX_LENGTH];
 	getNotePath(dirName, existingNote, existingPath);
@@ -126,7 +126,7 @@ void importNote(char* args[], int numArgs) {
 		printf("\033[1mLiszt\033[0m only understands '.txt' files at the moment.\n");
 		return;
 	}
-	char* dirName = "notes";	
+	char* dirName = "main";	
 	char fullNotePath[MAX_LENGTH];
 	getNotePath(dirName, note, fullNotePath);
 
@@ -140,13 +140,13 @@ void importNote(char* args[], int numArgs) {
 
 void exportNote(char* args[], int numArgs) {
 	char note[MAX_LENGTH];
-	char export[MAX_LENGTH];
-	int result = parseBinaryArgs(note, export, args, numArgs);
+	char toExport[MAX_LENGTH];
+	int result = parseBinaryArgs(note, toExport, args, numArgs);
 
 	if (result == -1) return;
 
 	char notePath[MAX_LENGTH];
-	char* dirName = "notes";
+	char* dirName = "main";
 	getNotePath(dirName, note, notePath);
 	
 	struct stat st = {0};
@@ -159,15 +159,15 @@ void exportNote(char* args[], int numArgs) {
 	result = checkDefault(note);
 	if (result == -1) return;
 	
-	strcat(export, ".txt");
+	strcat(toExport, ".txt");
 
-	if (stat(export, &st) == 0) {
+	if (stat(toExport, &st) == 0) {
 		printf("Sorry. A file with this name already exists in the directory to which you are trying to add. Please pick a different name\n");
 		return;
 	}
 
-	copyFile(notePath, export);
-	printf("Successfully exported '%s' as '%s'\n", note, export);
+	copyFile(notePath, toExport);
+	printf("Successfully exported '%s' as '%s'\n", note, toExport);
 }
 
 
@@ -200,7 +200,7 @@ void archiveNote(char* args[], int numArgs) {
 
 	char noteToArchive[MAX_LENGTH];
 	parseUnaryArgs(noteToArchive, args, numArgs);
-	char* dirName = "notes";
+	char* dirName = "main";
 	char notePath[MAX_LENGTH];
 	getNotePath(dirName, noteToArchive, notePath);
 
@@ -249,7 +249,7 @@ void unArchiveNote(char* args[], int numArgs) {
 		return;
 	}
 
-	dirName = "notes";
+	dirName = "main";
 	char newPath[MAX_LENGTH];
 	getNotePath(dirName, noteToUnArchive, newPath);
 
@@ -273,7 +273,7 @@ void addNote(char* args[], int numArgs) {
 	int result = checkDefault(note);
 	if (result == -1) return;
 	
-	char* dirName = "notes";
+	char* dirName = "main";
 	getNotePath(dirName, note, notePath);
 
 	result = makeNote(notePath);
@@ -293,7 +293,7 @@ void listNotes(char* directory) {
 	wordexp(path, &dir, 0);
 
 	char shortName[15];
-	if (strcmp(directory, "notes") == 0) {
+	if (strcmp(directory, "main") == 0) {
 		strcpy(shortName, " ");
 	} else if (strcmp(directory, "archive") == 0) {
 		strcpy(shortName, " archived ");
@@ -351,7 +351,7 @@ void removeNote(char* args[], int numArgs) {
 	char decision[50];
 	requestUserPermission(prompt, decision);
 	if (strcmp(decision, "y") == 0) {
-		char* dirName = "notes";
+		char* dirName = "main";
 		char fullNotePath[MAX_LENGTH];
 		getNotePath(dirName, note, fullNotePath);
 
@@ -384,11 +384,11 @@ void clearNotes() {
 	char decision[50];
 	requestUserPermission(prompt, decision);
 	if (strcmp(decision, "y") == 0) {
-		wordexp_t notesDir;
-		wordexp("~/.liszt/notes", &notesDir, 0);
+		wordexp_t mainDir;
+		wordexp("~/.liszt/main", &mainDir, 0);
 		char* notes[MAX_LENGTH];
 		int numNotes = 0;
-		readDirectory(notesDir.we_wordv[0], notes, &numNotes);
+		readDirectory(mainDir.we_wordv[0], notes, &numNotes);
 		if (numNotes == 1) {
 			printf("You have no notes to clear!\n");
 			return;
@@ -396,7 +396,7 @@ void clearNotes() {
 
 		for (int i = 0; i < numNotes; i++) {
 			if (strcmp(notes[i], "default") == 0) continue;
-			char* dirName = "notes";
+			char* dirName = "main";
 			char note[MAX_LENGTH];
 			getNotePath(dirName, notes[i], note);
 			remove(note);	
@@ -404,7 +404,7 @@ void clearNotes() {
 		if (strcmp(currentNote, "default") != 0) {
 			setToDefault();
 		}
-		wordfree(&notesDir);	
+		wordfree(&mainDir);	
 		printf("Cleared all user notes from Liszt cache\n");
 	} else printf("Clearing of notes aborted\n");
 }
@@ -455,7 +455,7 @@ int changeNoteHelper(char* note) {
 
 	struct stat st = {0};
 	
-	char* dirName = "notes";
+	char* dirName = "main";
 	char notePath[MAX_LENGTH];
 	getNotePath(dirName, note, notePath);
 
@@ -485,7 +485,7 @@ int changeNoteHelper(char* note) {
 			}
 		}
 	}
-	writeToDataFile(notePath);
+	writeFilenameToDataFile(notePath);
 	return 0;
 }
 
@@ -504,7 +504,7 @@ void renameNote(char* args[], int numArgs) {
 	int result = parseBinaryArgs(oldName, newName, args, numArgs);
 	if (result == -1) return;
 	
-	char* dirName = "notes";	
+	char* dirName = "main";	
 	char oldPath[MAX_LENGTH];
 	char newPath[MAX_LENGTH];
 	getNotePath(dirName, oldName, oldPath);
@@ -528,7 +528,7 @@ void renameNote(char* args[], int numArgs) {
 	getCurrentNote(currentNotePath, currentNoteName);
 
 	if (strcmp(oldPath, currentNotePath) == 0) {
-		writeToDataFile(newPath);
+		writeFilenameToDataFile(newPath);
 	}
 	
 	printf("Renamed '%s' to '%s'\n", oldName, newName);

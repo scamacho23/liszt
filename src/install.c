@@ -100,7 +100,7 @@ int makeFiles() {
 		return -1;	
 	}
 
-	writeToDataFile(defaultFilePath);
+	writeFilenameToDataFile(defaultFilePath);
 
 	wordfree(&dataFile);
 	wordfree(&defaultFile);
