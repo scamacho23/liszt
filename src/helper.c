@@ -224,6 +224,30 @@ int checkRow(char* filename, char* charRow) {
 }
 
 
+void overwriteFilenameToDataFile(char* filename, char* dirname) {
+	// get path to data_file.json
+	char dataFile[MAX_LENGTH];
+	getDataFile(dataFile);
+
+	cJSON* data = cJSON_CreateObject();
+	cJSON* note = cJSON_CreateString(filename);
+	cJSON_AddItemToObject(data, "current_note", note);
+
+	cJSON* collection = cJSON_CreateString(dirname);
+	cJSON_AddItemToObject(data, "current_collection", collection);
+	
+	char* stringJSON = cJSON_Print(data);
+
+	FILE* toWrite;
+	toWrite = fopen(dataFile, "w");
+	fprintf(toWrite, "%s", stringJSON);
+	fclose(toWrite);
+
+	cJSON_Delete(data);
+
+}
+
+
 void writeFilenameToDataFile(char* filename) {
 	// get path to data_file.json
 	char dataFile[MAX_LENGTH];

@@ -120,6 +120,13 @@ int checkRow(char* filename, char* charRow);
 
 
 /*
+ * Given the data_file.json file and a filename and a
+ * dirname, overwrites the existing data_file.json 
+ */
+void overwriteFilenameToDataFile(char* filename, char* dirname);
+
+
+/*
  * Given the data_file.json file and a filename, 
  * changes the filename held in data_file 
  */

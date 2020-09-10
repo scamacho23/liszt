@@ -8,15 +8,6 @@
  */
 
 
-/*
- * Makes an empty dot directory called liszt in the user's home directory. Inside that directory,
- * creates three directories: "main", "archive", and "background". Note files are stored in
- * either "main" or "archive", while data_file.json is stored in "background".
- * Returns 0 if successful, -1 if not.
- */
-int makeDirectories();
-
-
 /* 
  * Creates data_file.json inside the user's ~/.liszt/background directory.
  * Creates default inside the user's ~/.liszt/notes directory
@@ -24,6 +15,19 @@ int makeDirectories();
  */
 int makeFiles();
 
+
+/*
+ * Helper that makes an individual directory and returns -1 if it fails to do so
+ */
+int makeDir();
+
+/*
+ * Makes an empty dot directory called liszt in the user's home directory. Inside that directory,
+ * creates three directories: "notes", "archive_notes", and "background". Note files are stored in
+ * either "notes" or "archive_notes", while data_file.json is stored in "background".
+ * Returns 0 if successful, -1 if not.
+ */
+int makeDirectories();
 
 
 /*
