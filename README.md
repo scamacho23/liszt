@@ -3,14 +3,25 @@
 ![](liszt.png)
 
 **Liszt makes it easy to jot down thoughts in the command line, and
-keep ideas clear in separate notes**
+keep ideas clear in separate notes.**
 
 View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
 
 [![Documentation Status](https://readthedocs.org/projects/liszt/badge/?version=latest)](https://liszt.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.com/scamacho23/liszt.svg?branch=master)](https://travis-ci.com/scamacho23/liszt)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
 ![liszt release](https://img.shields.io/badge/release-v1.1.8-informational)
+
+## Table of Contents
+  - [Installation](#installation)
+    - [Homebrew](#homebrew)
+    - [Git Clone](#git-clone)
+    - [Pkg Installer](#pkg-installer)
+  - [Usage](#usage)
+  - [Contributing to the Project](#contributing-to-the-project)
+  - [Community Information](#community-information)
+  
 
 ## Installation
 
