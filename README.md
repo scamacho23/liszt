@@ -12,6 +12,7 @@ View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/scamacho23/homebrew-liszt.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/scamacho23/homebrew-liszt/context:cpp)
 ![liszt license](https://img.shields.io/badge/license-GPL%20v3-success)
 ![liszt release](https://img.shields.io/badge/release-v1.1.8-informational)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 ## Table of Contents
   - [Installation](#installation)
@@ -70,6 +71,10 @@ file. Click 'download' on the right side of the page to download the package
 installer.
 
 *Any issues with installation should be emailed to liszt.central@gmail.com*
+
+# Usage
+
+*Coming soon!*
 
 ## Contributing to the Project
 For more information, see the `CONTRIBUTING.md` file.
