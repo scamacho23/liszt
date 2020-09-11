@@ -8,6 +8,17 @@
  */
 
 
+/*
+ * Checks to see if the necessary directory
+ * and file system for Liszt functionality
+ * has been installed on the user's machine.
+ * If not, attempts to install the system.
+ * If installation is unsuccessful, exits
+ * the program with an error code of 1.
+ */
+void checkInstallation();
+
+
 /* 
  * Creates data_file.json inside the user's ~/.liszt/background directory.
  * Creates default inside the user's ~/.liszt/notes directory

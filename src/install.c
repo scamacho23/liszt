@@ -17,6 +17,23 @@
  */
 
 
+void checkInstallation() {
+	struct stat st = {0};
+	wordexp_t liszt;
+	wordexp("~/.liszt", &liszt, 0);
+	char* lisztPath = liszt.we_wordv[0];
+	if (stat(liszt.we_wordv[0], &st) == -1) {
+		// if ~/.liszt does not exist (e.g. user deleted it), create a new one
+		int installation = install();
+		// if installation fails again, hard quit
+		if (installation == -1) {
+			exit(1);
+		}
+	}
+	wordfree(&liszt);
+}
+
+
 int makeFiles() {
 	FILE* toCreate;
 	struct stat st = {0};

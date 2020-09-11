@@ -5,9 +5,23 @@
 #include <unistd.h>
 // The below are Liszt .h files
 #include "note.h"
+#include "parse.h"
 #include "helper.h"
 
 #define MAX_LENGTH 256
+
+
+int makeNote(char* filePath) {
+	struct stat st = {0};
+	if (stat(filePath, &st) != -1) {
+		printf("A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.\n");
+		return -1;
+	}
+	FILE* toCreate;
+	toCreate = fopen(filePath, "w");
+	fclose(toCreate);
+	return 0;
+}
 
 
 void mergeNotes(char* args[], int numArgs) {

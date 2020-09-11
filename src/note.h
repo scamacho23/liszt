@@ -8,6 +8,14 @@
 
 
 /*
+ * Given the path to a file,
+ * makes a new note with that name. Returns 0 if
+ * successful, returns -1 if not 
+ */
+int makeNote(char* filePath);
+
+
+/*
  * Given the names of two notes, merges the
  * first note into the second and deletes the
  * first note

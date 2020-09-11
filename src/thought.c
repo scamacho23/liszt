@@ -3,8 +3,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "thought.h"
+#include "parse.h"
 #include "helper.h"
-// #include "../../json-c/json_object.h"
 
 #define MAX_LENGTH 256
 
