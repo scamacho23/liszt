@@ -25,7 +25,9 @@ void listCollections() {
 			}
 		}
 		counter -= 4; // decrement counter bc don't want to include 'archive', 'background', '.', and '..' in the count
-		printf("\033[1mFound %d collection(s)\033[0m\n", counter);
+		if (counter == 1) {
+			printf("\033[1mFound 1 collection\033[0m\n");
+		} else printf("\033[1mFound %d collections\033[0m\n", counter);
 		rewinddir(directory);
 
 		while ((dir = readdir(directory)) != NULL) {
@@ -75,6 +77,7 @@ void addCollection(char* args[], int numArgs) {
 		printf("You already have a collection with this name.\n");
 		return;
 	}
+	// TODO: mkdir exiting with -1 and not making a dir
 	result = mkdir(collectionPath, 0777);
 	printf("%s\n", collectionPath);
 	printf("%d\n", result);
@@ -88,10 +91,7 @@ void addCollection(char* args[], int numArgs) {
 void changeCollection(char* args[], int numArgs);
 
 
-void removeCollection(char* args[], int numArgs) {
-	
-
-}
+void removeCollection(char* args[], int numArgs);
 
 
 void renameCollection(char* args[], int numArgs);
