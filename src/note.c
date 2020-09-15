@@ -391,6 +391,7 @@ void clearNotes() {
 		readDirectory(mainDir.we_wordv[0], notes, &numNotes);
 		if (numNotes == 1) {
 			printf("You have no notes to clear!\n");
+			wordfree(&mainDir);
 			return;
 		}
 
@@ -422,6 +423,7 @@ void clearArchiveNotes() {
 		readDirectory(archiveDir.we_wordv[0], archives, &numNotes);
 		if (!numNotes) {
 			printf("You have no notes to clear!\n");
+			wordfree(&archiveDir);
 			return;
 		}
 

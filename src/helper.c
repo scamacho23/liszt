@@ -82,6 +82,7 @@ void getCurrentNotePath(char* currentNotePath) {
 	temp++;
 	temp[strlen(temp) - 1] = '\0';
 	strcpy(currentNotePath, temp);
+	free(--temp);
 	cJSON_Delete(data);
 }
 
@@ -189,6 +190,7 @@ void printDirectory(char* dirName, char* shortName) {
 		if (strcmp(shortName, " ") == 0) counter--; // decrement counter bc don't want to include default in the count
 		if (!counter) {
 			printf("You have no%snotes at the moment.\n", shortName);
+			closedir(directory);
 			return;
 		}
 		printf("\033[1mFound %d%snotes\033[0m\n", counter, shortName);
