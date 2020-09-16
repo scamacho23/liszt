@@ -9,6 +9,7 @@
 #include "cJSON.h"
 
 #define MAX_LENGTH 256
+#define FAIL 1
 
 /*
  * TO DO
@@ -17,9 +18,8 @@
 
 
 void sendErrorMessage(char* command) {
-	printf("lst error: command '%s' not recognized. Please try again.\n", command);	
-	printf("(hint: did you include the necessary arguments for this command? Run 'lst -h' to find out)\n");
-	exit(1);
+	printf("lst: command '%s' not recognized. Please try again. Run 'lst -h' to confirm that you included all necessary arguments.\n", command);
+	exit(FAIL);
 }
 
 
@@ -33,7 +33,7 @@ void checkInstallation() {
 		int installation = install();
 		// if installation fails again, hard quit
 		if (installation == -1) {
-			exit(1);
+			exit(FAIL);
 		}
 	}
 	wordfree(&liszt);

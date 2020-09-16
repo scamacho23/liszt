@@ -4,6 +4,7 @@
 // The below are Liszt .h files
 #include "help.h"
 
+#define FAIL 1
 
 const char LISZT_PIECES[20][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre Gondola", "Mephisto Waltz No. 1",
 				"Piano Sonata in B Minor", "A Faust Symphony", "Piano Concerto No. 1", "Piano Concerto No. 2", 
@@ -16,8 +17,8 @@ const char ARROW[] = "\033[1m\033[34m==>\033[0m";
 
 
 void sendHelpError(char* command) {
-	printf("lst error: command '%s' not recognized for help request. Please try again.\n", command);	
-	exit(1);
+	printf("lst: command '%s' not recognized for help request. Please try again.\n", command);
+	exit(FAIL);
 }
 
 
