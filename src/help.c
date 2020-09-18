@@ -16,7 +16,7 @@ const char LISZT_PIECES[20][70] = {"Hungarian Rhapsodies Nos 1-19", "La Lagubre 
 const char ARROW[] = "\033[1m\033[34m==>\033[0m";
 
 
-void sendHelpError(char* command) {
+void sendHelpError(char *command) {
 	printf("lst: command '%s' not recognized for help request. Please try again.\n", command);
 	exit(FAIL);
 }

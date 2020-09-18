@@ -17,7 +17,7 @@
  */
 
 
-void sendErrorMessage(char* command) {
+void sendErrorMessage(char *command) {
 	printf("lst: command '%s' not recognized. Please try again. Run 'lst -h' to confirm that you included all necessary arguments.\n", command);
 	exit(FAIL);
 }
@@ -27,7 +27,7 @@ void checkInstallation() {
 	struct stat st = {0};
 	wordexp_t liszt;
 	wordexp("~/.liszt", &liszt, 0);
-	char* lisztPath = liszt.we_wordv[0];
+	char *lisztPath = liszt.we_wordv[0];
 	if (stat(liszt.we_wordv[0], &st) == -1) {
 		// if ~/.liszt does not exist (e.g. user deleted it), create a new one
 		int installation = install();
@@ -47,24 +47,24 @@ void printCurrentNoteName() {
 }
 
 
-void getCurrentNoteName(char* currentNoteName) {
+void getCurrentNoteName(char *currentNoteName) {
 	char currentNotePath[MAX_LENGTH];
 	getCurrentNote(currentNotePath, currentNoteName);
 }
 
 
-void getCurrentNote(char* currentNotePath, char* currentNoteName) {
+void getCurrentNote(char *currentNotePath, char *currentNoteName) {
 	getCurrentNotePath(currentNotePath);
 	char slash = '/';
-	char* lastSlash = strrchr(currentNotePath, slash);
+	char *lastSlash = strrchr(currentNotePath, slash);
 	strcpy(currentNoteName, lastSlash + 1);
 }	
 
-void getCurrentNotePath(char* currentNotePath) {
+void getCurrentNotePath(char *currentNotePath) {
 	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
 
-	FILE* toRead;
+	FILE *toRead;
 	toRead = fopen(dataFile, "r");
 	char line[MAX_LENGTH];
 	char dataStream[MAX_LENGTH];
@@ -76,9 +76,9 @@ void getCurrentNotePath(char* currentNotePath) {
 	}	
 	fclose(toRead);
 
-	cJSON* data = cJSON_Parse(dataStream);
-	cJSON* currentNote = cJSON_GetObjectItem(data, "current_note");
-	char* temp = cJSON_PrintUnformatted(currentNote);
+	cJSON *data = cJSON_Parse(dataStream);
+	cJSON *currentNote = cJSON_GetObjectItem(data, "current_note");
+	char *temp = cJSON_PrintUnformatted(currentNote);
 	temp++;
 	temp[strlen(temp) - 1] = '\0';
 	strcpy(currentNotePath, temp);
@@ -86,8 +86,8 @@ void getCurrentNotePath(char* currentNotePath) {
 }
 
 
-void getNotePath(char* dirName, char* noteName, char* notePath) {
-	char* tilde = "~";	
+void getNotePath(char *dirName, char *noteName, char *notePath) {
+	char *tilde = "~";	
 	wordexp_t newNote;
 	// expand tilde bc that is user specific
 	wordexp(tilde, &newNote, 0);
@@ -110,15 +110,15 @@ void setToDefault() {
 }
 
 
-void getDataFile(char* dataFile) {
-	char* dirName = "background";
-	char* data = "data_file.json";
+void getDataFile(char *dataFile) {
+	char *dirName = "background";
+	char *data = "data_file.json";
 	getNotePath(dirName, data, dataFile);
 }
 
 
-void copyFile(char* firstFile, char* secondFile) {
-	FILE* source, * target;
+void copyFile(char *firstFile, char *secondFile) {
+	FILE *source, *target;
 	source = fopen(firstFile, "r");
 	target = fopen(secondFile, "w");
 	char filechar;
@@ -130,8 +130,8 @@ void copyFile(char* firstFile, char* secondFile) {
 }
 
 
-int getFileSize(char* filename) {
-	FILE* toRead;
+int getFileSize(char *filename) {
+	FILE *toRead;
 	char newline;
 	int numLines = 0;
 	toRead = fopen(filename, "r");
@@ -143,7 +143,7 @@ int getFileSize(char* filename) {
 }
 
 
-int checkDefault(char* note) {
+int checkDefault(char *note) {
 	char loweredNote[MAX_LENGTH];
 	strcpy(loweredNote, note);
 	int numChars = strlen(loweredNote);
@@ -158,13 +158,13 @@ int checkDefault(char* note) {
 }
 
 
-void readDirectory(char* dirName, char* files[], int* numFiles) {
-	DIR* directory;
-	struct dirent* dir;
+void readDirectory(char *dirName, char *files[], int *numFiles) {
+	DIR *directory;
+	struct dirent *dir;
 	directory = opendir(dirName);
 	if (directory) {
 		while ((dir = readdir(directory)) != NULL) {
-			char* filename = dir->d_name;
+			char *filename = dir->d_name;
 			if (dir->d_type == DT_REG) {
 				files[*numFiles] = filename;	
 				(*numFiles)++;
@@ -175,9 +175,9 @@ void readDirectory(char* dirName, char* files[], int* numFiles) {
 }
 
 
-void printDirectory(char* dirName, char* shortName) {
-	DIR* directory;
-	struct dirent* dir;
+void printDirectory(char *dirName, char *shortName) {
+	DIR *directory;
+	struct dirent *dir;
 	directory = opendir(dirName);
 	if (directory) {
 		int counter = 0; // for counting the number of files
@@ -205,7 +205,7 @@ void printDirectory(char* dirName, char* shortName) {
 }  
 
 
-int checkRow(char* filename, char* charRow) {
+int checkRow(char *filename, char *charRow) {
 	int row = atoi(charRow);	
  	if (row <= 0) {
          	printf("You have entered in a faulty row number. Please choose an integer value.\n");
@@ -224,21 +224,21 @@ int checkRow(char* filename, char* charRow) {
 }
 
 
-void overwriteFilenameToDataFile(char* filename, char* dirname) {
+void overwriteFilenameToDataFile(char *filename, char *dirname) {
 	// get path to data_file.json
 	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
 
-	cJSON* data = cJSON_CreateObject();
-	cJSON* note = cJSON_CreateString(filename);
+	cJSON *data = cJSON_CreateObject();
+	cJSON *note = cJSON_CreateString(filename);
 	cJSON_AddItemToObject(data, "current_note", note);
 
-	cJSON* collection = cJSON_CreateString(dirname);
+	cJSON *collection = cJSON_CreateString(dirname);
 	cJSON_AddItemToObject(data, "current_collection", collection);
 	
-	char* stringJSON = cJSON_Print(data);
+	char *stringJSON = cJSON_Print(data);
 
-	FILE* toWrite;
+	FILE *toWrite;
 	toWrite = fopen(dataFile, "w");
 	fprintf(toWrite, "%s", stringJSON);
 	fclose(toWrite);
@@ -248,14 +248,14 @@ void overwriteFilenameToDataFile(char* filename, char* dirname) {
 }
 
 
-void writeFilenameToDataFile(char* filename) {
+void writeFilenameToDataFile(char *filename) {
 	// get path to data_file.json
 	char dataFile[MAX_LENGTH];
 	getDataFile(dataFile);
 
 	// open data_file and read contents into dataStream
 	// should be decomposed
-	FILE* toRead;
+	FILE *toRead;
 	toRead = fopen(dataFile, "r");
 	char line[MAX_LENGTH];
 	char dataStream[MAX_LENGTH];
@@ -268,15 +268,15 @@ void writeFilenameToDataFile(char* filename) {
 	fclose(toRead);
 
 	// move dataStream into data as a true JSON object
-	cJSON* data = cJSON_Parse(dataStream);
+	cJSON *data = cJSON_Parse(dataStream);
 
 	// replace the existing current note with the given one
-	cJSON* file = cJSON_CreateString(filename);
+	cJSON *file = cJSON_CreateString(filename);
 	cJSON_ReplaceItemInObjectCaseSensitive(data, "current_note", file);
 
-	char* newStream = cJSON_Print(data);
+	char *newStream = cJSON_Print(data);
 
-	FILE* toWrite;
+	FILE *toWrite;
 	toWrite = fopen(dataFile, "w");
 	fprintf(toWrite, "%s", newStream);
 	fclose(toWrite);
@@ -286,7 +286,7 @@ void writeFilenameToDataFile(char* filename) {
 }
 
 
-void requestUserPermission(char* prompt, char* decision) {
+void requestUserPermission(char *prompt, char *decision) {
 	// do this once outside of the loop so that decision has a value pre-strcmp
 	printf("%s", prompt);
 	scanf("%99s", decision);
@@ -297,7 +297,7 @@ void requestUserPermission(char* prompt, char* decision) {
 }
 	
 
-int parseSpecialArgs(char* filename, char* args[], int numArgs) {
+int parseSpecialArgs(char *filename, char *args[], int numArgs) {
 	// start at 2 to avoid program invocation, command, and row (argv[0], argv[1], and argv[2])
 	if (numArgs >= 4) strcpy(filename, args[3]);
 	if (numArgs > 5) strcat(filename, " ");
@@ -309,7 +309,7 @@ int parseSpecialArgs(char* filename, char* args[], int numArgs) {
 }
 
 
-int parseUnaryArgs(char* word, char* args[], int numArgs) {
+int parseUnaryArgs(char *word, char *args[], int numArgs) {
 	if (numArgs == 2) return 1; // just exit if it's a single word
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(word, args[2]);
@@ -322,7 +322,7 @@ int parseUnaryArgs(char* word, char* args[], int numArgs) {
 }
 
 
-int parseBinaryArgs(char* first, char* second, char* args[], int numArgs) {
+int parseBinaryArgs(char *first, char *second, char *args[], int numArgs) {
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(first, args[2]);
 	if (numArgs >= 4 && strcmp(args[3], "/") != 0) strcat(first, " ");
@@ -354,12 +354,12 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs) {
 }
 
 
-int makeNote(char* filePath) {
+int makeNote(char *filePath) {
 	if (access(filePath, F_OK) != -1) {
 		printf("A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.\n");
 		return -1;
 	}
-	FILE* toCreate;
+	FILE *toCreate;
 	toCreate = fopen(filePath, "w");
 	fclose(toCreate);
 	return 0;
