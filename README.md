@@ -43,7 +43,7 @@ $ brew install lst
 These commands will install the tap of **Liszt** on your system and then install the executable
 'lst' in /usr/local/bin. 
 
-### Git Clone
+###Git Clone
 
 *In your terminal*
 
