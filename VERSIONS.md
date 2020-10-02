@@ -118,3 +118,22 @@ Added a separate help file relieve main.c of its clutter. Added the ability to r
 specific functions. Updated README.md and documentation.
 
 *Type `lst -version` to view your version of **Liszt***
+
+## **@version 1.0.21** ##
+September 14, 2020
+
+Plugging memory leaks
+
+-added "wordfree(&mainDir);" to line 394 of note.c in clearNotes()
+-added "wordfree(&archiveDir);" to line 426 of note.c in clearArchiveNotes()
+The above lines free the words even if there's an early return in the case of no notes
+
+-added "free(--temp);" to line 86 of helper.c in getCurrentNotePath()
+This is necessary since "cJSON_PrintUnformatted()" returns a malloced char array
+
+-added "closedir(directory);" on line 194 of helper.c in printDirectory()
+That way in the case of an early return, the directory is still freed, which didn't
+occur before
+
+by Bwoltz
+
