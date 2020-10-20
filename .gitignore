@@ -2,6 +2,12 @@
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm+all,python,macos,windows,linux,visualstudiocode,virtualenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm+all,python,macos,windows,linux,visualstudiocode,virtualenv
 
+# generate by "cmake .; make; sudo make install"
+cmake_install.cmake
+Makefile
+lst
+install_manifest.txt
+
 ### Linux ###
 *~
 
@@ -87,6 +93,8 @@ Temporary Items
 
 # CMake
 cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
