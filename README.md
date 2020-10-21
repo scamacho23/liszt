@@ -26,7 +26,7 @@ View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
 
 ## Installation
 
-*Please note that at the moment, **Liszt** is only functional on macOS.*
+*Please note that at the moment, **Liszt** is only tested on macOS, but it will build on linux.*
 
 *Please also note that v1.1.8 does change some existing functionality that will cause incompatibility with
 the existing **Liszt** file system on your computer. If you already have **Liszt** installed, before
