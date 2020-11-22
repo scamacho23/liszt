@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HELPER_FUNC_H
 #define HELPER_FUNC_H
 /*
@@ -6,6 +5,12 @@
  * for helper functions for the Liszt project.
  * See helper_func.c for the definitions.
  */
+
+
+typedef struct {
+	char *first;
+	char *second;
+} pair_t;
 
 
 /*
@@ -36,23 +41,16 @@ void printCurrentNoteName();
 
 
 /*
- * Fills the given currentNoteName char array
- * with the name of the current note name 
- */
-void getCurrentNoteName(char* currentNoteName);
-
-
-/*
  * Returns the name and path of the current working note
  */
-void getCurrentNote(char* currentNotePath, char* currentNoteName);
+char *getCurrentNote(char** currentNotePath);
 
 
 /*
  * Fills the given currentNotePath char array
  * with the name of the current note path
  */
-void getCurrentNotePath(char* currentNotePath);
+char *getCurrentNotePath();
 
 
 /*
@@ -64,7 +62,7 @@ void setToDefault();
 /*
  * Finds the path to the data_file
  */
-void getDataFile(char* dataFile); 
+char *getDataFile(); 
 
 
 /*
@@ -72,7 +70,7 @@ void getDataFile(char* dataFile);
  * either ~/.liszt/notes or ~/.liszt/archive,
  * finds the full path to the note 
  */
-void getNotePath(char* dirName, char* noteName, char* notePath);
+char *getNotePath(char* dirName, char* noteName);
 
 
 /*
@@ -98,14 +96,6 @@ int checkDefault(char* note);
 
 
 /*
- * Given the path to a directory, populates
- * the given files array with the names of files
- * in the directory
- */
-void readDirectory(char* dirName, char* files[], int* numFiles);
-
-
-/*
  * Given the path to a directory, prints the names
  * of the files in that directory (not the paths)
  */
@@ -116,7 +106,7 @@ void printDirectory(char* dirName, char* shortName);
  * confirms that the entered row is a valid row number.
  * Returns 0 if successful, -1 if not
  */ 
-int checkRow(char* filename, char* charRow);
+long checkRow(char* filename, char* charRow);
 
 
 /*
@@ -144,21 +134,21 @@ void requestUserPermission(char* prompt, char* decision);
  * note name
  * Returns 0 if successful, -1 if not
  */
-int parseSpecialArgs(char* filename, char* args[], int numArgs);
+char *parseSpecialArgs(char* args[], int numArgs);
 
 
 /*
  * Given an array of arguments, parses them and returns the found word
  * Returns 0 if successful, -1 if not
  */
-int parseUnaryArgs(char* word, char* args[], int numArgs);
+char *parseUnaryArgs(char* args[], int numArgs);
 
 
 /*
  * Given a set of arguments, parses the words to the left and right of the '/'
  * Returns 0 if successful, -1 if not
  */
-int parseBinaryArgs(char* first, char* second, char* args[], int numArgs);
+int parseBinaryArgs(pair_t *notes, char* args[], int numArgs);
 
 
 /*
@@ -168,6 +158,6 @@ int parseBinaryArgs(char* first, char* second, char* args[], int numArgs);
  */
 int makeNote(char* filePath);
 
-#include "helper.c"
+#include "util.c"
 #endif
 

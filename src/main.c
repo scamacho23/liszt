@@ -6,7 +6,7 @@
 #include "cJSON.h"
 // The below imports are liszt .h files
 #include "memory.h"
-#include "helper.h"
+#include "util.h"
 #include "note.h"
 #include "help.h"
 #include "install.h"

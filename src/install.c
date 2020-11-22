@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 // The below are Liszt files
 #include "install.h"
-#include "helper.h"
+#include "util.h"
 
 #define MAX_LENGTH 256
 

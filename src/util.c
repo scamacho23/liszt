@@ -4,17 +4,12 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <wordexp.h>
-#include "helper.h"
+#include "util.h"
 #include "install.h"
 #include "cJSON.h"
 
 #define MAX_LENGTH 256
 #define FAIL 1
-
-/*
- * TO DO
- * readDirectory() --- requires array completion
- */
 
 
 void sendErrorMessage(char *command) {
@@ -41,31 +36,27 @@ void checkInstallation() {
 
 
 void printCurrentNoteName() {
-	char currentNoteName[MAX_LENGTH];
-	getCurrentNoteName(currentNoteName);
-	printf("%s\n", currentNoteName);
+	char *current_note_path;
+	char *current_note_name = getCurrentNote(&current_note_path);
+	printf("%s\n", current_note_name);
+	free(current_note_name);
+	free(current_note_path);
 }
 
 
-void getCurrentNoteName(char *currentNoteName) {
-	char currentNotePath[MAX_LENGTH];
-	getCurrentNote(currentNotePath, currentNoteName);
-}
-
-
-void getCurrentNote(char *currentNotePath, char *currentNoteName) {
-	getCurrentNotePath(currentNotePath);
+char *getCurrentNote(char **current_note_path) {
+	*current_note_path = getCurrentNotePath();
 	char slash = '/';
-	char *lastSlash = strrchr(currentNotePath, slash);
-	strcpy(currentNoteName, lastSlash + 1);
+	char *current_note_name = malloc(MAX_LENGTH * sizeof(char));
+	strcpy(current_note_name, strrchr(*current_note_path, '/') + 1);
+	return current_note_name;
 }	
 
-void getCurrentNotePath(char *currentNotePath) {
-	char dataFile[MAX_LENGTH];
-	getDataFile(dataFile);
+char *getCurrentNotePath() {
+	char *data_file = getDataFile();
 
 	FILE *toRead;
-	toRead = fopen(dataFile, "r");
+	toRead = fopen(data_file, "r");
 	char line[MAX_LENGTH];
 	char dataStream[MAX_LENGTH];
 
@@ -78,28 +69,29 @@ void getCurrentNotePath(char *currentNotePath) {
 
 	cJSON *data = cJSON_Parse(dataStream);
 	cJSON *currentNote = cJSON_GetObjectItem(data, "current_note");
-	char *temp = cJSON_PrintUnformatted(currentNote);
-	temp++;
-	temp[strlen(temp) - 1] = '\0';
-	strcpy(currentNotePath, temp);
-	free(--temp);
+	char *current_note_path = cJSON_PrintUnformatted(currentNote);
+	current_note_path[strlen(current_note_path) + 1] = '\0';
 	cJSON_Delete(data);
+	free(data_file);
+	return current_note_path;
 }
 
 
-void getNotePath(char *dirName, char *noteName, char *notePath) {
+char *getNotePath(char *dirName, char *noteName) {
 	char *tilde = "~";	
 	wordexp_t newNote;
 	// expand tilde bc that is user specific
 	wordexp(tilde, &newNote, 0);
-	
-	strcpy(notePath, newNote.we_wordv[0]);
-	strcat(notePath, "/.liszt/");
-	strcat(notePath, dirName);
-	strcat(notePath, "/");
-	strcat(notePath, noteName);
+
+	char *note_path = malloc(PATH_MAX * sizeof(char));
+	strcpy(note_path, newNote.we_wordv[0]);
+	strcat(note_path, "/.liszt/");
+	strcat(note_path, dirName);
+	strcat(note_path, "/");
+	strcat(note_path, noteName);
 
 	wordfree(&newNote);	
+	return note_path;
 }
 
 
@@ -111,20 +103,18 @@ void setToDefault() {
 }
 
 
-void getDataFile(char *dataFile) {
-	char *dirName = "background";
-	char *data = "data_file.json";
-	getNotePath(dirName, data, dataFile);
+char *getDataFile() {
+	return getNotePath("background", "data_file.json");
 }
 
 
-void copyFile(char *firstFile, char *secondFile) {
+void copyFile(char *first_file, char *second_file) {
 	FILE *source, *target;
-	source = fopen(firstFile, "r");
-	target = fopen(secondFile, "w");
-	char filechar;
-	while ((filechar = fgetc(source)) != EOF) {
-		fputc(filechar, target);
+	source = fopen(first_file, "r");
+	target = fopen(second_file, "w");
+	char line[MAX_LENGTH];
+	while (fgets(line, MAX_LENGTH * sizeof(char), source) != NULL) {
+		fprintf(target, "%s", line);
 	}
 	fclose(source);
 	fclose(target);
@@ -133,25 +123,25 @@ void copyFile(char *firstFile, char *secondFile) {
 
 int getFileSize(char *filename) {
 	FILE *toRead;
-	char newline;
-	int numLines = 0;
+	char line[MAX_LENGTH];
+	int num_lines = 0;
 	toRead = fopen(filename, "r");
-	while ((newline = fgetc(toRead)) != EOF) {
-		if (newline == '\n') numLines++;
+	while (fgets(line, MAX_LENGTH * sizeof(char), toRead) != NULL) {
+		num_lines++;
 	}
 	fclose(toRead);
-	return numLines;
+	return num_lines;
 }
 
 
 int checkDefault(char *note) {
-	char loweredNote[MAX_LENGTH];
-	strcpy(loweredNote, note);
-	int numChars = strlen(loweredNote);
-	for (int i = 0; i < numChars; i++) {
-		loweredNote[i] = tolower(loweredNote[i]);
+	char lowered_note[strlen(note) + 1];
+	strcpy(lowered_note, note);
+	size_t num_chars = strlen(lowered_note);
+	for (int i = 0; i < num_chars; i++) {
+		lowered_note[i] = tolower(lowered_note[i]);
 	}
-	if (strcmp(loweredNote, "default") == 0) {
+	if (!strcmp(lowered_note, "default")) {
 		printf("Sorry. 'default' is off limits.\n");
 		return -1;
 	}
@@ -159,59 +149,45 @@ int checkDefault(char *note) {
 }
 
 
-void readDirectory(char *dirName, char *files[], int *numFiles) {
-	DIR *directory;
-	struct dirent *dir;
-	directory = opendir(dirName);
-	if (directory) {
-		while ((dir = readdir(directory)) != NULL) {
-			char *filename = dir->d_name;
-			if (dir->d_type == DT_REG) {
-				files[*numFiles] = filename;	
-				(*numFiles)++;
-			}
-		}
-		closedir(directory);
+int filter_entries(const struct dirent *entry) {
+	const char *name = entry->d_name;
+	if (strspn(name, ".")) {
+		return 0;	
 	}
+	if (!strcmp(name, "default")) {
+		return 0;
+	}
+	return 1;
 }
 
 
 void printDirectory(char *dirName, char *shortName) {
-	DIR *directory;
-	struct dirent *dir;
-	directory = opendir(dirName);
-	if (directory) {
-		int counter = 0; // for counting the number of files
-		while ((dir = readdir(directory)) != NULL) {
-			if (dir->d_type == DT_REG) {
-				counter++;
-			}
-		}
-		if (strcmp(shortName, " ") == 0) counter--; // decrement counter bc don't want to include default in the count
-		if (!counter) {
-			printf("You have no%snotes at the moment.\n", shortName);
-			closedir(directory);
-			return;
-		}
-		printf("\033[1mFound %d%snotes\033[0m\n", counter, shortName);
-		rewinddir(directory);
-		int index = 1;
-		while ((dir = readdir(directory)) != NULL) {
-			if (dir->d_type == DT_REG && strcmp(dir->d_name, "default") != 0) {
-				printf("\033[1m%d.\033[0m %s\n", index, dir->d_name);
-				index++;
-			}
-		}
-		closedir(directory);
+	struct dirent **entries;
+	int numEntries = scandir(dirName, &entries, filter_entries, NULL);
+	if (numEntries < 0) {
+		printf("\033[1mLiszt\033[0m wasn\'t able to complete your request at this time.\n");
+		printf("Please try again later.\n");
+		return;
 	}
+	if (!numEntries) {
+		printf("You have no%snotes at the moment.\n", shortName);
+		return;	
+	}
+	printf("\033[1mFound %d%snotes\033[0m\n", numEntries, shortName);
+	for (int i = 0; i < numEntries; i++) {
+		struct dirent* entry = entries[i];
+		printf("\033[1m%d.\033[0m %s\n", i + 1, entry->d_name);
+		free(entry);
+	}
+	free(entries);
 }  
 
 
-int checkRow(char *filename, char *charRow) {
-	int row = atoi(charRow);	
+long checkRow(char *filename, char *char_row) {
+	long row = strtol(char_row, NULL, 10);
  	if (row <= 0) {
          	printf("You have entered in a faulty row number. Please choose an integer value.\n");
- 		printf("hint: %s was not valid!\n", charRow);
+ 		printf("hint: %s was not valid!\n", char_row);
  		return -1;
  	}
 
@@ -222,14 +198,13 @@ int checkRow(char *filename, char *charRow) {
  		return -1;
  	}
 
- 	return 0;
+ 	return row;
 }
 
 
 void overwriteFilenameToDataFile(char *filename, char *dirname) {
 	// get path to data_file.json
-	char dataFile[MAX_LENGTH];
-	getDataFile(dataFile);
+	char *data_file = getDataFile();
 
 	cJSON *data = cJSON_CreateObject();
 	cJSON *note = cJSON_CreateString(filename);
@@ -241,24 +216,24 @@ void overwriteFilenameToDataFile(char *filename, char *dirname) {
 	char *stringJSON = cJSON_Print(data);
 
 	FILE *toWrite;
-	toWrite = fopen(dataFile, "w");
+	toWrite = fopen(data_file, "w");
 	fprintf(toWrite, "%s", stringJSON);
 	fclose(toWrite);
 
 	cJSON_Delete(data);
+	free(data_file);
 
 }
 
 
 void writeFilenameToDataFile(char *filename) {
 	// get path to data_file.json
-	char dataFile[MAX_LENGTH];
-	getDataFile(dataFile);
+	char *data_file = getDataFile();
 
 	// open data_file and read contents into dataStream
 	// should be decomposed
 	FILE *toRead;
-	toRead = fopen(dataFile, "r");
+	toRead = fopen(data_file, "r");
 	char line[MAX_LENGTH];
 	char dataStream[MAX_LENGTH];
 
@@ -279,12 +254,12 @@ void writeFilenameToDataFile(char *filename) {
 	char *newStream = cJSON_Print(data);
 
 	FILE *toWrite;
-	toWrite = fopen(dataFile, "w");
+	toWrite = fopen(data_file, "w");
 	fprintf(toWrite, "%s", newStream);
 	fclose(toWrite);
 
 	cJSON_Delete(data);
-
+	free(data_file);
 }
 
 
@@ -299,7 +274,8 @@ void requestUserPermission(char *prompt, char *decision) {
 }
 	
 
-int parseSpecialArgs(char *filename, char *args[], int numArgs) {
+char *parseSpecialArgs(char *args[], int numArgs) {
+	char *filename = malloc(MAX_LENGTH * sizeof(char));
 	// start at 2 to avoid program invocation, command, and row (argv[0], argv[1], and argv[2])
 	if (numArgs >= 4) strcpy(filename, args[3]);
 	if (numArgs > 5) strcat(filename, " ");
@@ -307,12 +283,15 @@ int parseSpecialArgs(char *filename, char *args[], int numArgs) {
 		strcat(filename, args[i]);	
 		if (numArgs > i + 1) strcat(filename, " ");
 	}
-	return 0;
+	return filename;
 }
 
 
-int parseUnaryArgs(char *word, char *args[], int numArgs) {
-	if (numArgs == 2) return 1; // just exit if it's a single word
+char *parseUnaryArgs(char *args[], int numArgs) {
+	if (numArgs == 2) {
+		return NULL; // just exit if it's a single word
+	}
+	char *word = malloc(MAX_LENGTH * sizeof(char));
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(word, args[2]);
 	if (numArgs >= 4) strcat(word, " ");
@@ -320,11 +299,24 @@ int parseUnaryArgs(char *word, char *args[], int numArgs) {
 		strcat(word, args[i]);	
 		if (numArgs > i + 1) strcat(word, " ");
 	}
-	return 0;
+	return word;
 }
 
 
-int parseBinaryArgs(char *first, char *second, char *args[], int numArgs) {
+int parseBinaryArgs(pair_t *notes, char *args[], int numArgs) {
+	char first[MAX_LENGTH];
+	char second[MAX_LENGTH];
+	// NEW IMPLEMENTATION
+	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
+	/*
+	char *temp = " ";
+	for (int i = 2; i < numArgs; i++) {
+		strcat
+			
+	}
+	*/
+
+	// OLD IMPLEMENTATION
 	// start at 2 to avoid program invocation and command (argv[0] and argv[1])
 	if (numArgs > 2) strcpy(first, args[2]);
 	if (numArgs >= 4 && strcmp(args[3], "/") != 0) strcat(first, " ");
@@ -352,6 +344,8 @@ int parseBinaryArgs(char *first, char *second, char *args[], int numArgs) {
 		if (numArgs > counter + 1) strcat(second, " ");
 		counter++;
 	}	
+	notes->first = strdup(first);
+	notes->second = strdup(first);
 	return 0;
 }
 
