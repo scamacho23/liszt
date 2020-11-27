@@ -52,17 +52,20 @@ char *getCurrentNote(char **current_note_path) {
 	return current_note_name;
 }	
 
+
 char *getCurrentNotePath() {
 	char *data_file = getDataFile();
 
-	FILE *toRead;
-	toRead = fopen(data_file, "r");
-	char line[MAX_LENGTH];
-	char dataStream[MAX_LENGTH];
+	FILE *to_read;
+	to_read = fopen(data_file, "r");
+	//char dataStream[MAX_LENGTH];
 
-	fgets(line, sizeof(line), toRead);
-	strcpy(dataStream, line);
-	while (fgets(line, sizeof(line), toRead)) {
+	//fgets(line, sizeof(line), toRead);
+	//strcpy(dataStream, line);
+	char line[MAX_LENGTH];
+	char *current_note_path = strdup(fgets(line, MAX_LENGTH * sizeof(char), to_read));
+	/*
+	while (fgets(line, MAX_LENGTH * sizeof(char), toRead)) {
 		strcat(dataStream, line);
 	}	
 	fclose(toRead);
@@ -70,9 +73,11 @@ char *getCurrentNotePath() {
 	cJSON *data = cJSON_Parse(dataStream);
 	cJSON *currentNote = cJSON_GetObjectItem(data, "current_note");
 	char *current_note_path = cJSON_PrintUnformatted(currentNote);
-	current_note_path[strlen(current_note_path) + 1] = '\0';
-	cJSON_Delete(data);
+	*/
+	current_note_path[strlen(current_note_path)] = '\0'; // to get rid of the newline
+	//cJSON_Delete(data);
 	free(data_file);
+	fclose(to_read);
 	return current_note_path;
 }
 
@@ -104,7 +109,7 @@ void setToDefault() {
 
 
 char *getDataFile() {
-	return getNotePath("background", "data_file.json");
+	return getNotePath("background", "data_file");
 }
 
 
@@ -201,26 +206,27 @@ long checkRow(char *filename, char *char_row) {
  	return row;
 }
 
-
+// the following this screwed up (intentionally)
+// needs to be fixed for the purpose of adding collections
 void overwriteFilenameToDataFile(char *filename, char *dirname) {
 	// get path to data_file.json
 	char *data_file = getDataFile();
 
-	cJSON *data = cJSON_CreateObject();
-	cJSON *note = cJSON_CreateString(filename);
-	cJSON_AddItemToObject(data, "current_note", note);
+	//cJSON *data = cJSON_CreateObject();
+	//cJSON *note = cJSON_CreateString(filename);
+	//cJSON_AddItemToObject(data, "current_note", note);
 
-	cJSON *collection = cJSON_CreateString(dirname);
-	cJSON_AddItemToObject(data, "current_collection", collection);
+	//cJSON *collection = cJSON_CreateString(dirname);
+	//cJSON_AddItemToObject(data, "current_collection", collection);
 	
-	char *stringJSON = cJSON_Print(data);
+	//char *stringJSON = cJSON_Print(data);
 
 	FILE *toWrite;
 	toWrite = fopen(data_file, "w");
-	fprintf(toWrite, "%s", stringJSON);
+	fprintf(toWrite, "%s", filename);
 	fclose(toWrite);
 
-	cJSON_Delete(data);
+	//cJSON_Delete(data);
 	free(data_file);
 
 }
@@ -232,6 +238,7 @@ void writeFilenameToDataFile(char *filename) {
 
 	// open data_file and read contents into dataStream
 	// should be decomposed
+/*
 	FILE *toRead;
 	toRead = fopen(data_file, "r");
 	char line[MAX_LENGTH];
@@ -252,13 +259,14 @@ void writeFilenameToDataFile(char *filename) {
 	cJSON_ReplaceItemInObjectCaseSensitive(data, "current_note", file);
 
 	char *newStream = cJSON_Print(data);
+*/
 
 	FILE *toWrite;
 	toWrite = fopen(data_file, "w");
-	fprintf(toWrite, "%s", newStream);
+	fprintf(toWrite, "%s", filename);
 	fclose(toWrite);
 
-	cJSON_Delete(data);
+//	cJSON_Delete(data);
 	free(data_file);
 }
 
@@ -355,8 +363,7 @@ int makeNote(char *filePath) {
 		printf("A note with this name already exists. Please choose a different name, delete the other note, or rename the other note.\n");
 		return -1;
 	}
-	FILE *toCreate;
-	toCreate = fopen(filePath, "w");
+	FILE *toCreate = fopen(filePath, "w");
 	fclose(toCreate);
 	return 0;
 }

@@ -1,9 +1,9 @@
-#ifndef HELPER_FUNC_H
-#define HELPER_FUNC_H
+#ifndef UTIL_H
+#define UTIL_H
 /*
  * This file contains function declarations 
  * for helper functions for the Liszt project.
- * See helper_func.c for the definitions.
+ * See util.c for the definitions.
  */
 
 

@@ -283,10 +283,13 @@ void addNote(char* args[], int numArgs) {
 
 	result = makeNote(note_path);
 	if (result == -1) {
+		free(note);
+		free(note_path);
 		return;	
 	}
 	result = changeNoteHelper(note); 
 	printf("Added new note '%s'\n", note);
+	free(note);
 	free(note_path);
 }
 
@@ -459,11 +462,19 @@ int changeNoteHelper(char* note) {
 	// stop if the note to be changed to is the current note	
 	if (!strcmp(current_note_name, note)) {
 		printf("The note you are trying to change to is already the current note.\n");
+		free(current_note_path);
+		free(current_note_name);
+		free(data_file);
 		return -1;
 	}
 	// stop if the note to be changed to is 'default'
 	int result = checkDefault(note);
-	if (result == -1) return -1;
+	if (result == -1) {
+		free(current_note_path);
+		free(current_note_name);
+		free(data_file);
+		return -1;
+	}
 
 	struct stat st = {0};
 
@@ -472,10 +483,14 @@ int changeNoteHelper(char* note) {
 
 	if (stat(note_path, &st) == -1) {
 		printf("Hmmm. The note you entered doesn't seem to exist. Please try again.\n");
+		free(current_note_path);
+		free(current_note_name);
+		free(data_file);
+		free(note_path);
 		return -1;
 	}	
 
-	if (strcmp(current_note_name, "default") == 0) {
+	if (!strcmp(current_note_name, "default")) {
 		int numMemories = getFileSize(current_note_path);
 		if (numMemories > 0) {
 			char new_note[MAX_LENGTH];
@@ -487,7 +502,14 @@ int changeNoteHelper(char* note) {
 				char *new_note_path = getNotePath(dirName, new_note);
 
 				result = makeNote(new_note_path);
-				if (result == -1) return -1;
+				if (result == -1) { 
+					free(current_note_path);
+					free(current_note_name);
+					free(data_file);
+					free(note_path);
+					free(new_note_path);
+					return -1;
+				}
 				copyFile(current_note_path, new_note_path);
 				// the following is for clearing 'default'
 				FILE* toClear = fopen(current_note_path, "w");
@@ -500,6 +522,7 @@ int changeNoteHelper(char* note) {
 	free(note_path);
 	free(current_note_path);
 	free(current_note_name);
+	free(data_file);
 	return 0;
 }
 

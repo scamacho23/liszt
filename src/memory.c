@@ -156,20 +156,20 @@ void clearMemories() {
 	char prompt[] = "Are you sure you want to clear your memories on your current note? \033[1mThere is no going back (y/n): \033[0m";
 	char decision[50];
 	requestUserPermission(prompt, decision);
-	if (strcmp(decision, "y") == 0) {
+	if (!strcmp(decision, "y")) {
 		fclose(fopen(current_note_path, "w"));
 		printf("Memories cleared\n");
 	} else printf("Memory clearing aborted\n");	
+	free(note);
+	free(current_note_path);
 }
 
 
 void addMemory(char* args[], int numArgs) {
-	char* current_note_path;
-	char *note = getCurrentNote(&current_note_path);
-
+	char* current_note_path = getCurrentNotePath();
 	char *sans_first_word = parseUnaryArgs(args, numArgs);
 	if (sans_first_word == NULL) {
-		appendMemory(args[1], note);
+		appendMemory(args[1], current_note_path);
 		printf("Remembered '%s'\n", args[1]);
 	} else {
 		char memory[MAX_LENGTH];
@@ -179,10 +179,11 @@ void addMemory(char* args[], int numArgs) {
 		strcat(memory, " ");
 		strcat(memory, sans_first_word);
 
-		appendMemory(memory, note);
+		appendMemory(memory, current_note_path);
 		printf("Remembered '%s'\n", memory);
 	}
 	free(sans_first_word);
+	free(current_note_path);
 }
 
 
@@ -198,6 +199,8 @@ void listMemories() {
 	int numLines = getFileSize(note_path);
 	if (numLines == 0) {
 		printf("You have no memories on this note\n");
+		free(note_path);
+		free(note_name);
 		return;
 	}
 	printf("\033[1m\033[3mFound %d memories on '%s'\033[0m\n", numLines, note_name);
@@ -213,5 +216,7 @@ void listMemories() {
 	}	
 
 	fclose(toRead);
+	free(note_path);
+	free(note_name);
 }
 	

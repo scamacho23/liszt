@@ -28,14 +28,14 @@ int makeFiles() {
 	// Make data_file.json
 	char dataFilePath[MAX_LENGTH];
 	strcpy(dataFilePath, tilde);
-	strcat(dataFilePath, "/.liszt/background/data_file.json");
+	strcat(dataFilePath, "/.liszt/background/data_file");
 	toCreate = fopen(dataFilePath, "w");
 	fclose(toCreate);
 	if (stat(dataFilePath, &st) == -1) {
 		printf("\033[1mLiszt\033[0m installation unsuccessful. Failed to install '%s'\n", dataFilePath);
 		printf("Please try again later.\n");
 		return -1;	
-	} else printf("Created ~/.liszt/background/data_file.json file\n");
+	} else printf("Created ~/.liszt/background/data_file file\n");
 
 	// Make default file
 	char defaultFilePath[MAX_LENGTH];
