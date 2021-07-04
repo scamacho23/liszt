@@ -14,6 +14,20 @@ void appendMemory(char* memory, char* note) {
 	fclose(toWrite);
 }
 
+void loopHelper(char temp[MAX_LENGTH], char line[MAX_LENGTH], FILE* source, long row, FILE* target, int doPrint) {
+	int counter = 0;
+
+	while (fgets(line, sizeof(line), source)) {
+		if (counter + 1 == row) {
+			strcpy(temp, line);
+			counter++;
+			continue;
+		}
+		if (doPrint == 1) fprintf(target, "%s", line);
+		counter++;
+	}
+}
+
 
 int changeMemory(char* charRow, char* memory) {
 	char *current_note_path;
@@ -219,4 +233,4 @@ void listMemories() {
 	free(note_path);
 	free(note_name);
 }
-	
+
