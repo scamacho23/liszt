@@ -77,7 +77,7 @@ int makeDirectories() {
 	char* tilde = "~";
 	wordexp(tilde, &liszt, 0);
 	tilde = liszt.we_wordv[0];
-	const char *dirnames[4];
+	char *dirnames[4];
 	dirnames[0] = "/.liszt";
 	dirnames[1] = "/.liszt/background";
 	dirnames[2] = "/.liszt/main";
