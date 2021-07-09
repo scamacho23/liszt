@@ -13,6 +13,8 @@
  * Creates default.txt inside the user's ~/.liszt/notes directory
  * Returns 0 if successful, -1 if not.
  */
+int errorHelper();
+
 int makeFiles();
 
 
