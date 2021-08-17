@@ -70,33 +70,20 @@ int main(int argc, char* argv[]) {
 				sendErrorMessage(command);
 			}
 		} else if (argc > 2) {
-			if (strcmp(command, "-r") == 0 && argc == 3) {
-				removeMemory(argv[2]);
-			} else if (strcmp(command, "-a") == 0) {
-				addNote(argv, argc);
-			} else if (strcmp(command, "-ch") == 0) {
-				changeNote(argv, argc);
-			} else if (strcmp(command, "-rn") == 0 ) {
-				renameNote(argv, argc);
-			} else if (strcmp(command, "-rm") == 0) {
-				removeNote(argv, argc);
-			} else if (strcmp(command, "-ar") == 0) {
-				archiveNote(argv, argc);
-			} else if (strcmp(command, "-unar") == 0) {
-				unArchiveNote(argv, argc);
-			} else if (strcmp(command, "-in") == 0) {
-				importNote(argv, argc);
-			} else if (strcmp(command, "-ex") == 0) {
-				exportNote(argv, argc);
-			} else if (strcmp(command, "-dp") == 0) {
-				duplicateNote(argv, argc);
-			} else if (strcmp(command, "-mg") == 0) {
-				mergeNotes(argv, argc);
-			} else if (strcmp(command, "-m") == 0) {
-				moveMemory(argv, argc);
-			} else if (strcmp(command, "-c") == 0) {
-				copyMemory(argv, argc);
-			} else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
+			if (strcmp(command, "-r") == 0 && argc == 3) removeMemory(argv[2]);
+			else if (strcmp(command, "-a") == 0) addNote(argv, argc);
+			else if (strcmp(command, "-ch") == 0) changeNote(argv, argc);
+			else if (strcmp(command, "-rn") == 0 ) renameNote(argv, argc);
+			else if (strcmp(command, "-rm") == 0) removeNote(argv, argc);
+			else if (strcmp(command, "-ar") == 0) archiveNote(argv, argc);
+			else if (strcmp(command, "-unar") == 0) unArchiveNote(argv, argc);
+			else if (strcmp(command, "-in") == 0) importNote(argv, argc);
+			else if (strcmp(command, "-ex") == 0) exportNote(argv, argc);
+			else if (strcmp(command, "-dp") == 0) duplicateNote(argv, argc);
+			else if (strcmp(command, "-mg") == 0) mergeNotes(argv, argc);
+			else if (strcmp(command, "-m") == 0) moveMemory(argv, argc);
+			else if (strcmp(command, "-c") == 0) copyMemory(argv, argc);
+			else if (argc == 3 && (strcmp(command, "-help") == 0 || strcmp(command, "-h")) == 0) {
 				if (strcmp(argv[2], "-") == 0) helpAddMemory(); // get help with adding memories
 				else if (strcmp(argv[2], "-l") == 0) helpListMemories(); // get help with listing memories
 				else if (strcmp(argv[2], "-cl") == 0) helpClearMemories(); // get help with clearing memories
