@@ -48,34 +48,44 @@ char *getCurrentNote(char **current_note_path) {
 	*current_note_path = getCurrentNotePath();
 	char slash = '/';
 	char *current_note_name = malloc(MAX_LENGTH * sizeof(char));
-	strcpy(current_note_name, strrchr(*current_note_path, '/') + 1);
+	if (*current_note_path != NULL && *current_note_path[0] != '\0') {
+		strcpy(current_note_name, strrchr(*current_note_path, '/') + 1);
+	}
 	return current_note_name;
 }	
 
 
 char *getCurrentNotePath() {
+	char *current_note_path = calloc(1, sizeof(char));
 	char *data_file = getDataFile();
 
 	FILE *to_read;
 	to_read = fopen(data_file, "r");
-	//char dataStream[MAX_LENGTH];
 
-	//fgets(line, sizeof(line), toRead);
-	//strcpy(dataStream, line);
-	char line[MAX_LENGTH];
-	char *current_note_path = strdup(fgets(line, MAX_LENGTH * sizeof(char), to_read));
-	/*
-	while (fgets(line, MAX_LENGTH * sizeof(char), toRead)) {
-		strcat(dataStream, line);
-	}	
-	fclose(toRead);
+	if (to_read) {
+		//char dataStream[MAX_LENGTH];
 
-	cJSON *data = cJSON_Parse(dataStream);
-	cJSON *currentNote = cJSON_GetObjectItem(data, "current_note");
-	char *current_note_path = cJSON_PrintUnformatted(currentNote);
-	*/
-	current_note_path[strlen(current_note_path)] = '\0'; // to get rid of the newline
-	//cJSON_Delete(data);
+		//fgets(line, sizeof(line), toRead);
+		//strcpy(dataStream, line);
+		char line[MAX_LENGTH];
+		char *res = fgets(line, MAX_LENGTH * sizeof(char), to_read);
+		if (res != NULL) {
+			free(current_note_path);
+			current_note_path = strdup(res);
+			/*
+			while (fgets(line, MAX_LENGTH * sizeof(char), toRead)) {
+				strcat(dataStream, line);
+			}
+			fclose(toRead);
+
+			cJSON *data = cJSON_Parse(dataStream);
+			cJSON *currentNote = cJSON_GetObjectItem(data, "current_note");
+			char *current_note_path = cJSON_PrintUnformatted(currentNote);
+			*/
+			current_note_path[strlen(current_note_path)] = '\0'; // to get rid of the newline
+			//cJSON_Delete(data);
+		}
+	}
 	free(data_file);
 	fclose(to_read);
 	return current_note_path;
