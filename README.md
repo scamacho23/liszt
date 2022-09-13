@@ -73,8 +73,24 @@ installer.
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 
 # Usage
+*Please note that all functions listed below require `lst` before the command.*
 
-*Coming soon!*
+| Command | Function |
+|---------|----------|
+| `-a <note title>` | Add a new note | 
+| `-r <memory index>` | Remove memory at specified index |
+| `<memory content>` | Add a new memory in current note |
+| `-ch` | Change to a different note |
+| `-rn` | Rename note |
+| `-rm` | Remove note |
+| `-ar` | Archive note |
+| `-unar` | Unarchive note |
+| `-in` | Import note |
+| `-ex` | Export note |
+| `-dp` | Duplicate note |
+| `-mg` | Merge notes |
+| `-c` | Copy memory |
+| `-h <function handle>` | Get help for a specific function | 
 
 ## Contributing to the Project
 For more information, see the `CONTRIBUTING.md` file.
