@@ -36,36 +36,37 @@ int makeFiles() {
 
 	// Make data_file.json
 	char dataFilePath[MAX_LENGTH];
-	strcpy(dataFilePath, tilde);
-	strcat(dataFilePath, "/.liszt/background/data_file");
+	str_append(dataFilePath, tilde, "/.liszt/background/data_file");
 	toCreate = fopen(dataFilePath, "w");
 	fclose(toCreate);
 	if (errorHelper(st, dataFilePath) == -1) return -1;
 
 	// Make default file
 	char defaultFilePath[MAX_LENGTH];
-	strcpy(defaultFilePath, tilde);
-	strcat(defaultFilePath, "/.liszt/main/default");
+	str_append(defaultFilePath, tilde, "/.liszt/main/default");
 	toCreate = fopen(defaultFilePath, "w");
 	fclose(toCreate);
 	if (errorHelper(st, dataFilePath) == -1) return -1;
 
 	char defaultCollectionPath[MAX_LENGTH];
-	strcpy(defaultCollectionPath, tilde);
-	strcat(defaultCollectionPath, "/.liszt/main");	
+	str_append(defaultCollectionPath, tilde, "/.liszt/main");	
 	overwriteFilenameToDataFile(defaultFilePath, defaultCollectionPath);
 
 	wordfree(&liszt);
 	
 	return 0;
-}	
+}
 
+void str_append(char* destination_str, char* str, char* appendant)
+{
+    strcpy(destination_str, str);
+    strcat(destination_str, appendant);
+}
 
 int makeDir(char* tilde, char* dirname) {
 	struct stat st = {0};
 	char path[MAX_LENGTH];
-	strcpy(path, tilde);
-	strcat(path, dirname);
+	str_append(path, tilde, dirname);
 	mkdir(path, 0777);	
 	if (errorHelper(st, path) == -1) return -1;
 	return 0;
@@ -77,12 +78,8 @@ int makeDirectories() {
 	char* tilde = "~";
 	wordexp(tilde, &liszt, 0);
 	tilde = liszt.we_wordv[0];
-	char *dirnames[4];
-	dirnames[0] = "/.liszt";
-	dirnames[1] = "/.liszt/background";
-	dirnames[2] = "/.liszt/main";
-	dirnames[3] = "/.liszt/archive";
-
+	const char* dirnames[] = {"/.liszt", "/.liszt/background", "/.liszt/main", "/.liszt/archive"};
+	
 	for (int i = 0; i <= 3; i++) {
 		char* dirname = dirnames[i];
 		int result = makeDir(tilde, dirname);
