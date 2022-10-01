@@ -21,6 +21,11 @@ int makeFiles();
 /*
  * Helper that makes an individual directory and returns -1 if it fails to do so
  */
+void str_append(char* destination_str, char* str, char* appendant);
+/*
+ * Function which helps to reuse code in makeFiles() function
+ */
+
 int makeDir();
 
 /*
