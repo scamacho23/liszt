@@ -17,7 +17,7 @@ void appendMemory(char* memory, char* note) {
 void loopHelper(char temp[MAX_LENGTH], char line[MAX_LENGTH], FILE* source, long row, FILE* target, int doPrint) {
 	int counter = 0;
 
-	while (fgets(line, sizeof(line), source)) {
+	while (fgets(line, MAX_LENGTH, source)) {
 		if (counter + 1 == row) {
 			strcpy(temp, line);
 			counter++;
