@@ -400,6 +400,9 @@ void clearNotes() {
 		if (!numNotes) {
 			printf("You have no notes to clear!\n");
 			wordfree(&mainDir);
+			free(current_note_path);
+			free(current_note);
+			free(data_file);
 			return;
 		}
 
