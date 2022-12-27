@@ -33,7 +33,11 @@ int changeMemory(char* charRow, char* memory) {
 	char *current_note_path;
 	char *current_note_name = getCurrentNote(&current_note_path);
 	long row = checkRow(current_note_path, charRow);
-	if (row <= 0) return -1;
+	if (row <= 0) {
+		free(current_note_path);
+		free(current_note_name);
+		return -1;
+	}
 	
 	FILE* source;
 	source = fopen(current_note_path, "r");

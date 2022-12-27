@@ -201,7 +201,7 @@ void printDirectory(char *dirName, char *shortName) {
 long checkRow(char *filename, char *char_row) {
 	long row = strtol(char_row, NULL, 10);
  	if (row <= 0) {
-         	printf("You have entered in a faulty row number. Please choose an integer value.\n");
+        printf("You have entered in a faulty row number. Please choose an integer value.\n");
  		printf("hint: %s was not valid!\n", char_row);
  		return -1;
  	}
