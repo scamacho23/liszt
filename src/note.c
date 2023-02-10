@@ -320,7 +320,11 @@ void removeCurrent() {
 
 	// prevent the user from archiving default
 	int result = checkDefault(current_note_name);
-	if (result == -1) return;
+	if (result == -1) {
+		free(current_note_path);
+		free(current_note_name);
+		return;
+	}
 	
 	char prompt[MAX_LENGTH] = "Are you sure you want to remove '";
 	strcat(prompt, current_note_name);
@@ -333,7 +337,7 @@ void removeCurrent() {
 		// if the user is removing the current note
 		setToDefault();
 
-		printf("Sucessfully removed '%s'\n", current_note_name);
+		printf("Successfully removed '%s'\n", current_note_name);
 	} else printf("Note removal aborted\n");
 	free(current_note_path);
 	free(current_note_name);
@@ -349,7 +353,13 @@ void removeNote(char* args[], int numArgs) {
 	char *note = parseUnaryArgs(args, numArgs);
 	// prevent the user from deleting default
 	int result = checkDefault(note);
-	if (result == -1) return;
+	if (result == -1) {
+		free(note);
+		free(data_file);
+		free(current_note_path);
+		free(current_note_name);
+		return;
+	}
 	
 	char prompt[MAX_LENGTH] = "Are you sure you want to remove '";
 	strcat(prompt, note);
@@ -364,7 +374,11 @@ void removeNote(char* args[], int numArgs) {
 		struct stat st = {0};
 		if (stat(full_note_path, &st) == -1) {
 			printf("The note you are trying to remove does not exist. Please try again.\n");
+			free(note);
+			free(data_file);
 			free(full_note_path);
+			free(current_note_path);
+			free(current_note_name);
 			return;
 		}
 		remove(full_note_path);
@@ -373,13 +387,13 @@ void removeNote(char* args[], int numArgs) {
 			setToDefault();
 		}
 		
-		 printf("Sucessfully removed '%s'\n", note);
+		 printf("Successfully removed '%s'\n", note);
 		 free(full_note_path);
 	} else printf("Note removal aborted\n");
-	free(current_note_path);
-	free(data_file);
-	free(current_note_name);
 	free(note);
+	free(data_file);
+	free(current_note_path);
+	free(current_note_name);
 }
 
 
@@ -400,6 +414,9 @@ void clearNotes() {
 		if (!numNotes) {
 			printf("You have no notes to clear!\n");
 			wordfree(&mainDir);
+			free(current_note_path);
+			free(current_note);
+			free(data_file);
 			return;
 		}
 

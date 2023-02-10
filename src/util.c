@@ -201,7 +201,7 @@ void printDirectory(char *dirName, char *shortName) {
 long checkRow(char *filename, char *char_row) {
 	long row = strtol(char_row, NULL, 10);
  	if (row <= 0) {
-         	printf("You have entered in a faulty row number. Please choose an integer value.\n");
+        printf("You have entered in a faulty row number. Please choose an integer value.\n");
  		printf("hint: %s was not valid!\n", char_row);
  		return -1;
  	}
@@ -284,10 +284,11 @@ void writeFilenameToDataFile(char *filename) {
 void requestUserPermission(char *prompt, char *decision) {
 	// do this once outside of the loop so that decision has a value pre-strcmp
 	printf("%s", prompt);
-	scanf("%99s", decision);
+	// set to 49 to match allocation to decision[50]
+	scanf("%49s", decision);
 	while (strcmp(decision, "y") != 0 && strcmp(decision, "n") != 0) {
 		printf("%s", prompt);
-		scanf("%99s", decision);
+		scanf("%49s", decision);
 	}
 }
 	
