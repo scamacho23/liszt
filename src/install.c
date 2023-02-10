@@ -57,13 +57,13 @@ int makeFiles() {
 	return 0;
 }
 
-void str_append(char* destination_str, char* str, char* appendant)
+void str_append(char* destination_str, const char* str, const char* appendant)
 {
     strcpy(destination_str, str);
     strcat(destination_str, appendant);
 }
 
-int makeDir(char* tilde, char* dirname) {
+int makeDir(char* tilde, const char* dirname) {
 	struct stat st = {0};
 	char path[MAX_LENGTH];
 	str_append(path, tilde, dirname);
@@ -81,7 +81,7 @@ int makeDirectories() {
 	const char* dirnames[] = {"/.liszt", "/.liszt/background", "/.liszt/main", "/.liszt/archive"};
 	
 	for (int i = 0; i <= 3; i++) {
-		char* dirname = dirnames[i];
+		const char* dirname = dirnames[i];
 		int result = makeDir(tilde, dirname);
 		if (result == -1) return -1;
 	};
