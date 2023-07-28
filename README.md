@@ -20,6 +20,8 @@ View **Liszt** documentation [here](https://liszt.readthedocs.io "Liszt")
     - [Git Clone](#git-clone)
     - [Pkg Installer](#pkg-installer)
   - [Usage](#usage)
+    - [Commands](#commands)
+    - [Example](#example)
   - [Contributing to the Project](#contributing-to-the-project)
   - [Community Information](#community-information)
   
