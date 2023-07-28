@@ -72,7 +72,9 @@ installer.
 
 *Any issues with installation should be emailed to liszt.central@gmail.com*
 
-# Usage
+## Usage
+
+### Commands
 *Please note that all functions listed below require `lst` before the command.*
 
 | Command | Function |
@@ -90,7 +92,84 @@ installer.
 | `-dp` | Duplicate note |
 | `-mg` | Merge notes |
 | `-c` | Copy memory |
-| `-h <function handle>` | Get help for a specific function | 
+| `-h <function handle>` | Get help for a specific function |
+
+### Example
+
+*Add a note and a few memories*
+
+```
+$ lst -a school
+Added new note 'school'
+$ lst Complete assignment one
+Remembered 'Complete assignment one'
+$ lst Study for quiz
+Remembered 'Study for quiz'
+```
+
+*Add another note and memories*
+
+```
+$ lst -a work
+Added new note 'work'
+$ lst Check emails
+Remembered 'Check emails'
+$ lst Complete code review
+Remembered 'Complete code review'
+$ lst Submit PTO request
+Remembered 'Submit PTO request'
+```
+
+*Review memories on the current note*
+
+```
+$ lst -l
+Found 3 memories on 'work'
+1. Check emails
+2. Complete code review
+3. Submit PTO request
+```
+
+*Remove a memory by line number, i.e. complete a task*
+
+```
+$ lst -r 2
+Removed memory 'Complete code review'
+$ lst -l
+Found 2 memories on 'work'
+1. Check emails
+2. Submit PTO request
+$ lst -r 1
+Removed memory 'Check emails'
+$ lst -l
+Found 1 memories on 'work'
+1. Submit PTO request
+```
+
+*List all notes and change to a specified note*
+
+```
+$ lst -ln
+Found 2 notes
+1. work
+2. school
+$ lst -ch school
+Changed current note to 'school'
+```
+
+*List memories on this note and remove one after completion*
+
+```
+$ lst -l
+Found 2 memories on 'school'
+1. Complete assignment one
+2. Study for quiz
+$ lst -r 1
+Removed memory 'Complete assignment one'
+$ lst -l
+Found 1 memories on 'school'
+1. Study for quiz
+```
 
 ## Contributing to the Project
 For more information, see the `CONTRIBUTING.md` file.
